@@ -1,6 +1,7 @@
 package projects
 
 import ch.tutteli.atrium.api.fluent.en_GB.toEqual
+import ch.tutteli.atrium.api.fluent.en_GB.toThrow
 import ch.tutteli.atrium.api.verbs.expect
 import db.BaseMocks
 import db.TestData.admin
@@ -9,6 +10,7 @@ import db.TestData.projectMember
 import db.TestData.user
 import io.mockk.every
 import io.mockk.verify
+import klite.ForbiddenException
 import org.junit.jupiter.api.Test
 import project.ProjectMemberUser
 import project.ProjectRoutes
@@ -17,7 +19,14 @@ class ProjectRoutesTest: BaseMocks() {
   val routes = create<ProjectRoutes>()
 
   @Test fun get() {
-    expect(routes.get(project.id)).toEqual(project)
+    expect(routes.get(project.id, admin)).toEqual(project)
+    every{ projectMemberRepository.isMember(project.id, user.id) } returns true
+    expect(routes.get(project.id, user)).toEqual(project)
+  }
+
+  @Test fun `get access forbidden`(){
+    every{ projectMemberRepository.isMember(project.id, user.id) } returns false
+    expect { routes.get(project.id, user) }.toThrow<ForbiddenException>()
   }
 
   @Test fun create() {

@@ -11,6 +11,7 @@ import project.ProjectRepository
 import db.TestData.project
 import db.TestData.projectMember
 import db.TestData.user
+import org.junit.jupiter.api.Assertions.assertEquals
 import project.ProjectMemberUser
 import users.UserRepository
 
@@ -28,4 +29,11 @@ class ProjectMemberRepositoryTest: DBTest() {
     val projectMemberUser = ProjectMemberUser(projectMember, user)
     expect(repository.list(project.id)).toContain(projectMemberUser)
   }
+
+  @Test fun isMember() {
+    customerRepository.save(customer)
+    projectRepository.save(project)
+    userRepository.save(user)
+    repository.save(projectMember)
+    assertEquals(true, repository.isMember(project.id, user.id))  }
 }

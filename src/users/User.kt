@@ -10,7 +10,7 @@ import java.net.URI
 import java.time.Instant
 
 enum class AuthRole {
-  ADMIN, USER, EXTERNAl
+  ADMIN, USER, EXTERNAL
 }
 
 data class User(

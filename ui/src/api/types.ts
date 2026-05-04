@@ -12,7 +12,7 @@ export interface ProjectMemberUser {id: Id<ProjectMember>; member: ProjectMember
 // class project.Role
 export enum Role {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT', INTERN = 'INTERN', CUSTOMER = 'CUSTOMER'}
 // class users.AuthRole
-export enum AuthRole {ADMIN = 'ADMIN', USER = 'USER', EXTERNAl = 'EXTERNAl'}
+export enum AuthRole {ADMIN = 'ADMIN', USER = 'USER', EXTERNAL = 'EXTERNAL'}
 // class users.User
 export interface User {authRole: AuthRole; avatarUrl?: URI; createdAt: Instant; email: Email; firstName: string; id: Id<User>; lastName: string; updatedAt?: Instant}
 

@@ -22,7 +22,7 @@ class AuthUserProvider(
     val authRole = when {
       admins.contains(email) -> AuthRole.ADMIN
       email.endsWith("@$users") -> AuthRole.USER
-      else -> AuthRole.EXTERNAl
+      else -> AuthRole.EXTERNAL
     }
     var user = userRepository.by(User::email to profile.email)
     if (user == null) {

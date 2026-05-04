@@ -6,7 +6,7 @@ import project.Project
 import project.ProjectMember
 import project.ProjectMemberUser
 import project.Role
-import users.AuthRole.EXTERNAl
+import users.AuthRole.EXTERNAL
 import users.AuthRole.ADMIN
 import users.User
 import java.time.LocalDate
@@ -18,7 +18,7 @@ object TestData {
   val now = date.atStartOfDay().toInstant(UTC)
 
   val admin = User("Admin", "Admin", Email("admin@test.ee"), authRole = ADMIN , createdAt = now)
-  val user = User("User", "User", Email("user@test.ee"), authRole = EXTERNAl, createdAt = now)
+  val user = User("User", "User", Email("user@test.ee"), authRole = EXTERNAL, createdAt = now)
 
   val customer = Customer(Id(), "Customer1")
   val project = Project(Id(1), customer.id, "Project1", currency = "EUR", hourlyRate = 10.toBigDecimal())
