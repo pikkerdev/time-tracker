@@ -12,4 +12,5 @@ class UserRoutesTest: BaseMocks() {
   @Test fun list(){
     expect(routes.list()).toEqual(listOf(user))
   }
+
 }

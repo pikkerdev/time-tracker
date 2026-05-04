@@ -4,12 +4,13 @@ import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
 import db.BaseMocks
 import db.TestData.admin
-import db.TestData.customer
 import db.TestData.project
+import db.TestData.projectMember
 import db.TestData.user
 import io.mockk.every
 import io.mockk.verify
 import org.junit.jupiter.api.Test
+import project.ProjectMemberUser
 import project.ProjectRoutes
 
 class ProjectRoutesTest: BaseMocks() {
@@ -46,6 +47,13 @@ class ProjectRoutesTest: BaseMocks() {
   @Test fun `list for admin`() {
     val projects = listOf(project)
     expect(routes.list(admin)).toEqual(projects)
+  }
+
+  @Test fun members() {
+    val projectMemberUser = ProjectMemberUser(projectMember, user)
+    val projectMembers = listOf(projectMemberUser)
+    every { projectMemberRepository.list(project.id) } returns projectMembers
+    expect(routes.members(project.id)).toEqual(projectMembers)
   }
 
   }
