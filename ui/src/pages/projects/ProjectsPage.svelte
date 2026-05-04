@@ -7,14 +7,17 @@ import api from 'src/api/api'
 import {t} from 'i18n'
 import {Link} from 'src/router'
 import {user} from 'src/stores/auth'
+import Button from 'src/components/Button.svelte'
 
 let projects: Project[] = []
 let customerMap: Record<string, string> = {}
 export let customerId: Id<Customer>
 
-async function getProjects(customerId: Id<Customer> | undefined = undefined) {
-  if (customerId) { projects = await api.get(`customers/${customerId}/projects`) }
-  else { projects = await api.get('projects') }
+async function getProjects(customerId: Id<Customer> | undefined = undefined, myProjects: boolean = false ) {
+  let url = 'projects'
+  if (customerId) { url =`customers/${customerId}/projects` }
+  if (myProjects) { url += '?myProjects=true' }
+  projects = await api.get(url)
 }
 
 onMount(async () => {
@@ -25,7 +28,12 @@ onMount(async () => {
 </script>
 
 <MainPageLayout class="relative">
-  <div class="flex justify-end"><NewProjectButton/></div>
+  <div class="flex justify-end">
+    <NewProjectButton/>
+    {#if $user.authRole === 'ADMIN'}
+      <Button label={t.projects.myProjects} onclick={() => getProjects(customerId, true)}/>
+    {/if}
+  </div>
   <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 my-3 text-lg">
     {#each projects ?? [] as p}
       <Link to="/projects/{p.id}" class=" py-3 bg-white hover:bg-stone-50">

@@ -44,7 +44,8 @@
     "currency": "Currency",
     "edit": "Edit project",
     "addMember": "Add member",
-    "members": "Members"
+    "members": "Members",
+    "myProjects": "My projects"
   },
   "users": {
     "users": "Users",
