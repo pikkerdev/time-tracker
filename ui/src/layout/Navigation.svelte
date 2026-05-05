@@ -1,13 +1,14 @@
 <script lang="ts">
   import {user} from 'src/stores/auth'
+  import {Link} from 'src/router'
 </script>
 
 <div class="text-lg flex items-center gap-6 max-md:hidden">
   {#if $user}
-    <a href="/projects">Projects</a>
+    <Link to="/projects">Projects</Link>
     {#if $user.authRole === 'ADMIN'}
-      <a href="/customers">Customers</a>
-      <a href="/users">Users</a>
+      <Link to="/customers">Customers</Link>
+      <Link to="/users">Users</Link>
     {/if}
   {/if}
 </div>
