@@ -5,17 +5,17 @@
   import Avatar from 'src/layout/Avatar.svelte'
 </script>
 
-<MainPageLayout class="flex flex-col items-center gap-8">
+<MainPageLayout class="flex flex-col items-center gap-4 lg:gap-8">
   {#if $user}
     Insert Dashboard here :P
   {:else}
     <div class="flex gap-2 items-center">
-      <img src="/favicon.svg" class="size-40" title="Time Tracker Logo" alt="Logo">
-      <h1 class="font-bold text-9xl">{t.title}</h1>
+      <img src="/favicon.svg" class="size-14 sm:size-28 lg:size-40" title="Time Tracker Logo" alt="Logo">
+      <h1 class="font-bold text-4xl sm:text-7xl lg:text-9xl">{t.title}</h1>
     </div>
-    <div class="flex flex-col items-center">
-      <h4>{t.home.intro}.</h4>
-      <h5>{t.home.slogan}!</h5>
+    <div class="flex flex-col items-center text-center">
+      <h4 class="text-lg lg:text-2xl">{t.home.intro}.</h4>
+      <h5 class="text-base lg:text-lg">{t.home.slogan}!</h5>
     </div>
     <Avatar/>
   {/if}
