@@ -7,6 +7,7 @@
   import ProjectsPage from 'src/pages/projects/ProjectsPage.svelte'
   import ProjectPage from 'src/pages/projects/ProjectPage.svelte'
   import UsersPage from 'src/pages/users/UsersPage.svelte'
+  import Header from 'src/layout/Header.svelte'
 </script>
 
 <svelte:head>
@@ -17,12 +18,14 @@
 
 <slot/>
 
-<Router>
-  <Route path="/" component={HomePage}/>
-  <Route path="/customers" component={CustomersPage}/>
-  <Route path="/projects" component={ProjectsPage}/>
-  <Route path="/projects/:id" component={ProjectPage}/>
-  <Route path="/customers/:customerId/projects" component={ProjectsPage}/>
-  <Route path="/users" component={UsersPage}/>
-</Router>
-
+<div class="min-h-screen flex flex-col">
+  <Header/>
+  <Router>
+    <Route path="/" component={HomePage}/>
+    <Route path="/customers" component={CustomersPage}/>
+    <Route path="/projects" component={ProjectsPage}/>
+    <Route path="/projects/:id" component={ProjectPage}/>
+    <Route path="/customers/:customerId/projects" component={ProjectsPage}/>
+    <Route path="/users" component={UsersPage}/>
+  </Router>
+</div>
