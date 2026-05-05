@@ -34,7 +34,7 @@
 
   :global(.dropdown) {
     @apply origin-top-left min-w-min
-    bg-white ring-1 ring-black focus:outline-none overflow-hidden text-sm
+    bg-white ring-1 ring-gray-300 focus:outline-none overflow-hidden text-sm
     absolute z-10 shadow-lg mt-2 rounded-md py-1;
   }
 </style>

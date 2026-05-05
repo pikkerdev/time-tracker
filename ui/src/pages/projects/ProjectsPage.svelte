@@ -42,7 +42,7 @@
   </div>
   <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 my-3 text-lg">
     {#each projects ?? [] as p}
-      <Link to="/projects/{p.id}" class="border rounded-lg px-4 py-3 bg-white hover:bg-stone-50">
+      <Link to="/projects/{p.id}" class="border border-gray-300 rounded-lg px-4 py-3 bg-white hover:bg-stone-50">
         <h4>{p.name}</h4>
         <div class="flex justify-between text-sm">
           <p><span class="font-medium">{t.customers.customer}</span>: {customerMap[p.customerId]}</p>
