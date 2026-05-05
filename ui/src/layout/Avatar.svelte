@@ -10,7 +10,7 @@
 {#if $user}
   <Dropdown class="right-0 z-50!" bind:open={isDropDownOpen}>
     <Button class="gap-2">
-      <img src={$user.avatarUrl} alt="" class="rounded-full w-10">
+      <img src={$user.avatarUrl} alt="" class="rounded-full w-8">
       {$user.firstName + " " + $user.lastName}
     </Button>
     <svelte:fragment slot="open">
