@@ -1,5 +1,9 @@
 {
   "title": "Time tracker",
+  "home": {
+    "intro": "Time tracker is a simple and clean alternative to other time tracking tools",
+    "slogan": "Sometimes less is more"
+  },
   "general": {
     "close": "Close",
     "optional": "Optional",
