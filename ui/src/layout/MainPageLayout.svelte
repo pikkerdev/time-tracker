@@ -13,7 +13,7 @@
   <Header>
     <slot name="header"/>
   </Header>
-  <main class="px-2 pt-2 sm:px-3 grow bg-stone-100 {$$restProps.class}">
+  <main class="px-2 pt-6 sm:px-3 grow bg-stone-100 {$$restProps.class}">
     <slot/>
   </main>
 </div>
