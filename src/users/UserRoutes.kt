@@ -2,6 +2,7 @@ package users
 
 import auth.Access
 import klite.annotations.GET
+import klite.annotations.POST
 
 @Access(AuthRole.ADMIN)
 class UserRoutes(
@@ -9,7 +10,5 @@ class UserRoutes(
 ) {
   @GET
   fun list() = userRepository.list()
-
-  @GET("/authroles")
-  fun roles() = AuthRole.entries.associateBy({ it.name }, { it.name })
 }
+
