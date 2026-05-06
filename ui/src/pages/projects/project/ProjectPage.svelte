@@ -1,6 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import {AuthRole, type Id, type Project, type ProjectMemberUser} from 'src/api/types'
+  import {type Id, type Project, type ProjectMemberUser} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {t} from 'i18n'
@@ -25,7 +25,7 @@
 
 <MainPageLayout class="relative">
   {#if projectContext}
-    {#if $user.authRole === AuthRole.ADMIN}
+    {#if $user.isAdmin}
       <div class="flex justify-end">
         <ProjectMembersModal {projectContext}/>
         <ProjectFromModal project={project} label={t.projects.edit}/>

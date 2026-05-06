@@ -22,4 +22,6 @@ data class User(
   val createdAt: Instant = nowSec(),
   override var updatedAt: Instant? = null,
   override val id: Id<User> = Id()
-): Entity<User>, OAuthUser, UpdatableEntity
+): Entity<User>, OAuthUser, UpdatableEntity {
+  val isAdmin = authRole == AuthRole.ADMIN
+}

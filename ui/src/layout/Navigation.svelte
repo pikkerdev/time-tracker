@@ -6,7 +6,7 @@
 <div class="text-lg flex items-center gap-6 max-md:hidden">
   {#if $user}
     <Link to="/projects">Projects</Link>
-    {#if $user.authRole === 'ADMIN'}
+    {#if $user.isAdmin}
       <Link to="/customers">Customers</Link>
       <Link to="/users">Users</Link>
     {/if}

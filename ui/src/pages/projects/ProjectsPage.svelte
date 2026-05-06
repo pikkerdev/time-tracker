@@ -31,7 +31,7 @@
 <MainPageLayout class="relative">
   <div class="flex justify-end">
     <div class="flex gap-4">
-      {#if $user.authRole === 'ADMIN'}
+      {#if $user.isAdmin}
         <Button label={t.projects.myProjects} onclick={() => getProjects(customerId, true)}/>
         <ProjectFromModal/>
       {/if}
