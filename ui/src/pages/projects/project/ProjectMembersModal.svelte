@@ -11,7 +11,7 @@
 
   export let projectContext: ProjectContext
 
-  let users: User[]
+  let users: User[] = []
   let show = false
   let newMemberId: Id<User>
 
