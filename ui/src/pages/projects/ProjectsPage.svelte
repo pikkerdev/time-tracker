@@ -1,6 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import NewProjectButton from 'src/pages/projects/NewProjectButton.svelte'
+  import ProjectFromModal from 'src/pages/projects/ProjectFromModal.svelte'
   import type {Customer, Id, ProjectDto} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
@@ -33,7 +33,7 @@
     <div class="flex gap-4">
       {#if $user.authRole === 'ADMIN'}
         <Button label={t.projects.myProjects} onclick={() => getProjects(customerId, true)}/>
-        <NewProjectButton/>
+        <ProjectFromModal/>
       {/if}
     </div>
   </div>
