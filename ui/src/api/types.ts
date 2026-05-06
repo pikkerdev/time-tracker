@@ -11,8 +11,6 @@ export interface ProjectDto {currency: string; customerName: string; description
 export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; projectId: Id<Project>; role: Role; updatedAt?: Instant; userId: Id<User>}
 // class project.ProjectMemberUser
 export interface ProjectMemberUser {id: Id<ProjectMember>; member: ProjectMember; role: Role; user: User}
-// class project.ProjectWithCustomer
-export interface ProjectWithCustomer {customer: Customer; customerName: string; id: Id<Customer>; name: string; project: Project; storyTrackerId?: number}
 // class project.Role
 export enum Role {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT', INTERN = 'INTERN', CUSTOMER = 'CUSTOMER'}
 // class users.AuthRole

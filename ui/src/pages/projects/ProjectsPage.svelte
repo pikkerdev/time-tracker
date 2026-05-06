@@ -1,7 +1,7 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import NewProjectButton from 'src/pages/projects/NewProjectButton.svelte'
-  import type {Customer, Id, Project, ProjectWithCustomer} from 'src/api/types'
+  import type {Customer, Id, ProjectDto} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {t} from 'i18n'
@@ -9,7 +9,7 @@
   import {user} from 'src/stores/auth'
   import Button from 'src/components/Button.svelte'
 
-  let projects: ProjectWithCustomer[] = []
+  let projects: ProjectDto[] = []
   export let customerId: Id<Customer>
 
   async function getProjects(customerId: Id<Customer> | undefined = undefined, myProjects: boolean = false) {
@@ -38,13 +38,13 @@
     </div>
   </div>
   <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 my-3 text-lg">
-    {#each projects ?? [] as p}
-      <Link to="/projects/{p.project.id}" class="border border-gray-300 rounded-lg px-4 py-3 bg-white hover:bg-stone-50">
-        <h4>{p.project.name}</h4>
+    {#each projects ?? [] as project}
+      <Link to="/projects/{project.id}" class="border border-gray-300 rounded-lg px-4 py-3 bg-white hover:bg-stone-50">
+        <h4>{project.name}</h4>
         <div class="flex justify-between text-sm">
-          <p><span class="font-medium">{p.customer.name}</span></p>
-          {#if p.project.storyTrackerId}
-            <p><span class="font-medium">{t.projects.storyTrackerId}</span>: {p.project.storyTrackerId}</p>
+          <p><span class="font-medium">{project.customerName}</span></p>
+          {#if project.storyTrackerId}
+            <p><span class="font-medium">{t.projects.storyTrackerId}</span>: {project.storyTrackerId}</p>
           {/if}
         </div>
       </Link>
