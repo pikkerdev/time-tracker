@@ -13,4 +13,8 @@ class UserRoutesTest: BaseMocks() {
     expect(routes.list()).toEqual(listOf(user))
   }
 
+  @Test fun roles() {
+    expect(routes.roles()).toEqual(mapOf("ADMIN" to "ADMIN", "USER" to "USER", "EXTERNAL" to "EXTERNAL"))
+  }
+
 }
