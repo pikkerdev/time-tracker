@@ -5,7 +5,7 @@
   import HomePage from 'src/pages/HomePage.svelte'
   import CustomersPage from 'src/pages/customers/CustomersPage.svelte'
   import ProjectsPage from 'src/pages/projects/ProjectsPage.svelte'
-  import ProjectPage from 'src/pages/projects/ProjectPage.svelte'
+  import ProjectPage from 'src/pages/projects/project/ProjectPage.svelte'
   import UsersPage from 'src/pages/users/UsersPage.svelte'
   import Header from 'src/layout/Header.svelte'
 </script>
