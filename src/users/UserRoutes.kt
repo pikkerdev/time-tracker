@@ -10,6 +10,6 @@ class UserRoutes(
   @GET
   fun list() = userRepository.list()
 
-  @GET("/roles")
+  @GET("/authroles")
   fun roles() = AuthRole.entries.associateBy({ it.name }, { it.name })
 }

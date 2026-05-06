@@ -19,7 +19,7 @@
   onMount(
     async () => {
       users = await api.get('users')
-      authRoles = await api.get('users/roles')
+      authRoles = await api.get('users/authroles')
     })
 
 </script>
