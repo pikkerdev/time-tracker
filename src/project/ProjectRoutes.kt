@@ -12,6 +12,7 @@ import users.AuthRole.USER
 import users.AuthRole.EXTERNAL
 import users.AuthRole.ADMIN
 import users.User
+import java.math.BigDecimal
 
 class ProjectRoutes(
   val projectRepository: ProjectRepository,
@@ -52,3 +53,13 @@ class ProjectRoutes(
   fun members(@PathParam id: Id<Project>): List<ProjectMemberUser> =
     projectMemberRepository.list(id)
 }
+
+data class ProjectDto(
+  val id: Id<Project>,
+  val customerName: String,
+  val name: String,
+  val description: String? = null,
+  val currency: String = "EUR",
+  val hourlyRate: BigDecimal,
+  val storyTrackerId: Int? = null,
+)
