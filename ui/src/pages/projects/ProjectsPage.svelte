@@ -31,8 +31,8 @@
 <MainPageLayout class="relative">
   <div class="flex justify-end">
     <div class="flex gap-4">
-      <Button label={t.projects.myProjects} onclick={() => getProjects(customerId, true)}/>
       {#if $user.authRole === 'ADMIN'}
+        <Button label={t.projects.myProjects} onclick={() => getProjects(customerId, true)}/>
         <NewProjectButton/>
       {/if}
     </div>
