@@ -7,9 +7,8 @@ import customers.CustomerRepository
 import db.DBTest
 import db.TestData.customer
 import db.TestData.project
-import db.TestData.projectWithCustomer
+import db.TestData.projectDto
 import db.TestData.user
-import io.mockk.every
 import org.junit.jupiter.api.Test
 import project.ProjectMember
 import project.ProjectMemberRepository
@@ -24,7 +23,7 @@ class ProjectRepositoryTest: DBTest() {
     CustomerRepository(db).save(customer)
     UserRepository(db).save(user)
     repository.save(project)
-    expect(repository.getWithCustomer(project.id)).toEqual(projectWithCustomer)
+    expect(repository.getDto(project.id)).toEqual(projectDto)
   }
 
   @Test fun `get lists`() {
@@ -32,8 +31,8 @@ class ProjectRepositoryTest: DBTest() {
     UserRepository(db).save(user)
     repository.save(project)
     memberRepository.save(ProjectMember(project.id, user.id))
-    expect(repository.listForMemberWithCustomer(user.id)).toContain(projectWithCustomer)
-    expect(repository.listForCustomerAndMember(customer.id, user.id)).toContain(projectWithCustomer)
-    expect(repository.listWithCustomers()).toContain(projectWithCustomer)
+    expect(repository.dtoListForMember(user.id)).toContain(projectDto)
+    expect(repository.dtoListByCustomerAndMember(customer.id, user.id)).toContain(projectDto)
+    expect(repository.dtoList()).toContain(projectDto)
   }
 }

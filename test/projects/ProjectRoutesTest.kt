@@ -6,8 +6,8 @@ import ch.tutteli.atrium.api.verbs.expect
 import db.BaseMocks
 import db.TestData.admin
 import db.TestData.project
+import db.TestData.projectDto
 import db.TestData.projectMember
-import db.TestData.projectWithCustomer
 import db.TestData.user
 import io.mockk.every
 import io.mockk.verify
@@ -20,9 +20,9 @@ class ProjectRoutesTest: BaseMocks() {
   val routes = create<ProjectRoutes>()
 
   @Test fun get() {
-    expect(routes.get(project.id, admin)).toEqual(projectWithCustomer)
+    expect(routes.get(project.id, admin)).toEqual(projectDto)
     every{ projectMemberRepository.isMember(project.id, user.id) } returns true
-    expect(routes.get(project.id, user)).toEqual(projectWithCustomer)
+    expect(routes.get(project.id, user)).toEqual(projectDto)
   }
 
   @Test fun `get access forbidden`(){
@@ -49,15 +49,15 @@ class ProjectRoutesTest: BaseMocks() {
   }
 
   @Test fun `list for member`() {
-    val projectsWithCustomer = listOf(projectWithCustomer)
-    every { projectRepository.listForMemberWithCustomer(user.id) } returns projectsWithCustomer
+    val projectsWithCustomer = listOf(projectDto)
+    every { projectRepository.dtoListForMember(user.id) } returns projectsWithCustomer
     expect(routes.list(user)).toEqual(projectsWithCustomer)
   }
 
   @Test fun `list for admin`() {
-    val projectsWithCustomer = listOf(projectWithCustomer)
-    every { projectRepository.listForMemberWithCustomer(admin.id) } returns projectsWithCustomer
-    every { projectRepository.listWithCustomers() } returns projectsWithCustomer
+    val projectsWithCustomer = listOf(projectDto)
+    every { projectRepository.dtoListForMember(admin.id) } returns projectsWithCustomer
+    every { projectRepository.dtoList() } returns projectsWithCustomer
     expect(routes.list(admin)).toEqual(projectsWithCustomer)
     expect(routes.list(admin, myProjects = true)).toEqual(projectsWithCustomer)
   }

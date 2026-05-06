@@ -5,6 +5,8 @@ export type Entity<T extends Entity<T>> = {id: Id<T>}
 export interface Customer {businessRegistryCode?: string; id: Id<Customer>; invoiceEmail?: Email; legalAddress?: string; legalName?: string; name: string; phone?: Phone; vatId?: string}
 // class project.Project
 export interface Project {currency: string; customerId: Id<Customer>; description?: string; hourlyRate: number; id: Id<Project>; name: string; storyTrackerId?: number}
+// class project.ProjectDto
+export interface ProjectDto {currency: string; customerName: string; description?: string; hourlyRate: number; id: Id<Project>; name: string; storyTrackerId?: number}
 // class project.ProjectMember
 export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; projectId: Id<Project>; role: Role; updatedAt?: Instant; userId: Id<User>}
 // class project.ProjectMemberUser

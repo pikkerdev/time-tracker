@@ -22,7 +22,7 @@ data class ProjectMember(
   override var updatedAt: Instant? = null,
   val createdAt: Instant = nowSec(),
   override val id: Id<ProjectMember> = Id(),
-  ): Entity<ProjectMember>, UpdatableEntity
+): Entity<ProjectMember>, UpdatableEntity
 
 
 data class ProjectMemberUser(

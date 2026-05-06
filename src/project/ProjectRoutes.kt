@@ -3,51 +3,45 @@ package project
 import auth.Access
 import db.Id
 import klite.ForbiddenException
-import klite.annotations.AttrParam
-import klite.annotations.GET
-import klite.annotations.POST
-import klite.annotations.PathParam
-import klite.annotations.QueryParam
-import users.AuthRole.USER
-import users.AuthRole.EXTERNAL
-import users.AuthRole.ADMIN
+import klite.annotations.*
+import users.AuthRole.*
 import users.User
 import java.math.BigDecimal
 
 class ProjectRoutes(
   val projectRepository: ProjectRepository,
-  val projectMemberRepository: ProjectMemberRepository)
-{
+  val projectMemberRepository: ProjectMemberRepository
+) {
 
   @GET("/:id") @Access(ADMIN, USER, EXTERNAL)
-  fun get(@PathParam id: Id<Project>, @AttrParam user: User): ProjectWithCustomer? =
-    if (user.authRole == ADMIN || projectMemberRepository.isMember(id, user.id)) projectRepository.getWithCustomer(id)
+  fun get(@PathParam id: Id<Project>, @AttrParam user: User) =
+    if (user.authRole == ADMIN || projectMemberRepository.isMember(id, user.id)) projectRepository.getDto(id)
     else throw ForbiddenException()
 
   @POST @Access(ADMIN)
-  fun create(@AttrParam user: User, project: Project) : Project {
+  fun create(@AttrParam user: User, project: Project): Project {
     projectRepository.save(project)
     projectMemberRepository.save(ProjectMember(project.id, user.id))
     return project
   }
 
   @POST("/:id") @Access(ADMIN)
-    fun save(project: Project, @PathParam id: Id<Project>) :Project {
+  fun save(project: Project, @PathParam id: Id<Project>): Project {
     require(id == project.id) { "Wrong id" }
     projectRepository.save(project)
     return project
   }
 
   @POST("/:id/members") @Access(ADMIN)
-    fun save(@PathParam id: Id<Project>, userId: Id<User>) {
+  fun save(@PathParam id: Id<Project>, userId: Id<User>) {
     println(userId.toString())
     projectMemberRepository.save(ProjectMember(id, userId))
   }
 
   @GET @Access(ADMIN, USER, EXTERNAL)
   fun list(@AttrParam user: User, @QueryParam myProjects: Boolean? = false) =
-    if (myProjects == true || user.authRole != ADMIN) projectRepository.listForMemberWithCustomer(user.id)
-    else projectRepository.listWithCustomers()
+    if (myProjects == true || user.authRole != ADMIN) projectRepository.dtoListForMember(user.id)
+    else projectRepository.dtoList()
 
   @GET("/:id/members") @Access(ADMIN, USER, EXTERNAL)
   fun members(@PathParam id: Id<Project>): List<ProjectMemberUser> =

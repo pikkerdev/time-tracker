@@ -14,14 +14,3 @@ data class Project(
   val hourlyRate: BigDecimal,
   val storyTrackerId: Int? = null,
 ): Entity<Project>
-
-data class ProjectWithCustomer(
-  val project: Project,
-  val customer: Customer
-) {
-  val id get() = customer.id
-  val customerName get() = customer.name
-  val name get() = project.name
-  val storyTrackerId get() = project.storyTrackerId
-
-}

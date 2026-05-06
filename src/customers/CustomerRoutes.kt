@@ -24,5 +24,5 @@ class CustomerRoutes(
   @GET fun list() = repository.list()
 
   @GET("/:id/projects") fun projects(@PathParam id: Id<Customer>, @AttrParam user: User) =
-    projectRepository.listForCustomerAndMember(id, user.id)
+    projectRepository.dtoListByCustomerAndMember(id, user.id)
 }

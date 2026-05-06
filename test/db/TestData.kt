@@ -2,13 +2,9 @@ package db
 
 import customers.Customer
 import klite.Email
-import project.Project
-import project.ProjectMember
-import project.ProjectMemberUser
-import project.ProjectWithCustomer
-import project.Role
-import users.AuthRole.EXTERNAL
+import project.*
 import users.AuthRole.ADMIN
+import users.AuthRole.EXTERNAL
 import users.User
 import java.time.LocalDate
 import java.time.ZoneOffset.UTC
@@ -25,5 +21,5 @@ object TestData {
   val project = Project(Id(1), customer.id, "Project1", currency = "EUR", hourlyRate = 10.toBigDecimal())
   val projectMember = ProjectMember(project.id, user.id, Role.DEVELOPER, createdAt = now)
   val projectMemberUser = ProjectMemberUser(projectMember, user)
-  val projectWithCustomer = ProjectWithCustomer(project, customer)
+  val projectDto = ProjectDto(project.id, customer.name, project.name, project.description, project.currency, project.hourlyRate, project.storyTrackerId)
 }
