@@ -10,10 +10,15 @@
   import {showToast} from 'src/stores/toasts'
 
   export let projectContext: ProjectContext
-  export let users: User[]
 
+  let users: User[]
   let show = false
   let newMemberId: Id<User>
+
+  async function onclick() {
+    show = true
+    users = await api.get('users')
+  }
 
   async function submit() {
     await api.post(`projects/${projectContext.id}/members`, newMemberId)
@@ -22,7 +27,7 @@
   }
 </script>
 
-<Button label={t.projects.members} onclick={() => show = true}/>
+<Button label={t.projects.members} {onclick}/>
 
 <Modal bind:show title={t.projects.members} wide>
   <SortableTable labels={t.users} columns={[

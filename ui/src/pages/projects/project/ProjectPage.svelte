@@ -1,6 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import type {Id, Project, ProjectMemberUser, User} from 'src/api/types'
+  import {AuthRole, type Id, type Project, type ProjectMemberUser} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {t} from 'i18n'
@@ -8,11 +8,11 @@
 
   import type {ProjectContext} from 'src/pages/projects/context'
   import ProjectMembersModal from 'src/pages/projects/project/ProjectMembersModal.svelte'
+  import {user} from 'src/stores/auth'
 
   export let id: Id<Project>
 
   let projectContext: ProjectContext | undefined
-  let users: User[]
   let project = projectContext as unknown as Project
 
   onMount(async () => {
@@ -20,16 +20,17 @@
     api.get<ProjectMemberUser[]>(`projects/${id}/members`).then(r => {
       projectContext!.members = r.indexBy(m => m.user.id)
     })
-    users = await api.get('users')
   })
 </script>
 
 <MainPageLayout class="relative">
   {#if projectContext}
-    <div class="flex justify-end">
-      <ProjectMembersModal {projectContext} {users}/>
-      <NewProjectButton project={project} label={t.projects.edit}/>
-    </div>
+    {#if $user.authRole === AuthRole.ADMIN}
+      <div class="flex justify-end">
+        <ProjectMembersModal {projectContext}/>
+        <NewProjectButton project={project} label={t.projects.edit}/>
+      </div>
+    {/if}
     <h2 class="text-2xl font-bold mb-4">{projectContext?.name}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div>
