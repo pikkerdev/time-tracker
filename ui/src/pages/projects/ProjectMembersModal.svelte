@@ -9,14 +9,14 @@
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
 
-  export let project: ProjectContext
+  export let projectContext: ProjectContext
   export let users: User[]
 
   let show = false
   let newMemberId: Id<User>
 
   async function submit() {
-    await api.post(`projects/${project.id}/members`, newMemberId)
+    await api.post(`projects/${projectContext.id}/members`, newMemberId)
     showToast(t.general.saved)
     show = false
   }
@@ -30,7 +30,7 @@
     [t.users.email, m => m.user.email],
     [t.users.role, m => m.role],
     ]
-    } items={Object.values(project.members)} let:item={m}>
+    } items={Object.values(projectContext.members)} let:item={m}>
     <tr>
       <td>{m.user.firstName + ' ' + m.user.lastName}</td>
       <td>{m.user.email}</td>
@@ -39,7 +39,7 @@
   </SortableTable>
   <div>
     <SelectField label={t.projects.addMember} bind:value={newMemberId}
-                 options={users.filter(u => !Object.keys(project.members).includes(u.id)).map(c => [c.id, c.firstName + ' ' + c.lastName]).toObject()}
+                 options={users.filter(u => !Object.keys(projectContext.members).includes(u.id)).map(c => [c.id, c.firstName + ' ' + c.lastName]).toObject()}
                  emptyOption=""/>
     <Button label={t.projects.addMember} onclick={submit}/>
   </div>

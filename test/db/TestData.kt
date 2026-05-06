@@ -5,6 +5,7 @@ import klite.Email
 import project.Project
 import project.ProjectMember
 import project.ProjectMemberUser
+import project.ProjectWithCustomer
 import project.Role
 import users.AuthRole.EXTERNAL
 import users.AuthRole.ADMIN
@@ -24,4 +25,5 @@ object TestData {
   val project = Project(Id(1), customer.id, "Project1", currency = "EUR", hourlyRate = 10.toBigDecimal())
   val projectMember = ProjectMember(project.id, user.id, Role.DEVELOPER, createdAt = now)
   val projectMemberUser = ProjectMemberUser(projectMember, user)
+  val projectWithCustomer = ProjectWithCustomer(project, customer)
 }

@@ -1,5 +1,5 @@
-import type {Id, Project, ProjectMemberUser, User} from 'src/api/types'
+import type {Id, ProjectMemberUser, ProjectWithCustomer, User} from 'src/api/types'
 
-export type ProjectContext = Project & {
+export type ProjectContext = ProjectWithCustomer & {
   members: Record<Id<User>, ProjectMemberUser>
 }

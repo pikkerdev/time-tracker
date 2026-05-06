@@ -9,7 +9,6 @@
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
   import SelectField from 'src/forms/SelectField.svelte'
-  import {onMount} from 'svelte'
   import {navigate} from 'src/router'
 
   export let project = {} as Project
@@ -28,12 +27,13 @@
     show = false
   }
 
-  onMount(
-    async () => customers = await api.get('customers')
-  )
+  async function onclick() {
+    show = true
+    customers = await api.get('customers')
+  }
 </script>
 
-<Button {label} onclick={() => show = true}/>
+<Button {label} {onclick}/>
 <Modal bind:show title={label}>
   <Form {submit}>
     <SelectField label={t.customers.customers} bind:value={project.customerId} options={Object.values(customers).map(c => [c.id, c.name]).toObject()} emptyOption=""/>

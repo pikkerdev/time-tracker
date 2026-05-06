@@ -7,6 +7,7 @@ import db.BaseMocks
 import db.TestData.admin
 import db.TestData.project
 import db.TestData.projectMember
+import db.TestData.projectWithCustomer
 import db.TestData.user
 import io.mockk.every
 import io.mockk.verify
@@ -19,9 +20,9 @@ class ProjectRoutesTest: BaseMocks() {
   val routes = create<ProjectRoutes>()
 
   @Test fun get() {
-    expect(routes.get(project.id, admin)).toEqual(project)
+    expect(routes.get(project.id, admin)).toEqual(projectWithCustomer)
     every{ projectMemberRepository.isMember(project.id, user.id) } returns true
-    expect(routes.get(project.id, user)).toEqual(project)
+    expect(routes.get(project.id, user)).toEqual(projectWithCustomer)
   }
 
   @Test fun `get access forbidden`(){
@@ -48,14 +49,17 @@ class ProjectRoutesTest: BaseMocks() {
   }
 
   @Test fun `list for member`() {
-    val projects = listOf(project)
-    every { projectRepository.listForMember(user.id) } returns projects
-    expect(routes.list(user)).toEqual(projects)
+    val projectsWithCustomer = listOf(projectWithCustomer)
+    every { projectRepository.listForMemberWithCustomer(user.id) } returns projectsWithCustomer
+    expect(routes.list(user)).toEqual(projectsWithCustomer)
   }
 
   @Test fun `list for admin`() {
-    val projects = listOf(project)
-    expect(routes.list(admin)).toEqual(projects)
+    val projectsWithCustomer = listOf(projectWithCustomer)
+    every { projectRepository.listForMemberWithCustomer(admin.id) } returns projectsWithCustomer
+    every { projectRepository.listWithCustomers() } returns projectsWithCustomer
+    expect(routes.list(admin)).toEqual(projectsWithCustomer)
+    expect(routes.list(admin, myProjects = true)).toEqual(projectsWithCustomer)
   }
 
   @Test fun members() {

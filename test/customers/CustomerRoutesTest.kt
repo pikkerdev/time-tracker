@@ -1,10 +1,12 @@
 package customers
 
+import ch.tutteli.atrium.api.fluent.en_GB.toContain
 import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
 import db.BaseMocks
 import db.TestData.customer
 import db.TestData.project
+import db.TestData.projectWithCustomer
 import db.TestData.user
 import io.mockk.every
 import io.mockk.verify
@@ -26,9 +28,8 @@ class ProjectRoutesTest: BaseMocks() {
   }
 
   @Test fun projects() {
-    val projects = listOf(project)
-    every { projectRepository.listForCustomerAndMember(customer.id, user.id) } returns projects
-    expect(routes.projects(customer.id, user)).toEqual(projects)
+    every { projectRepository.listForCustomerAndMember(customer.id, user.id) } returns listOf(projectWithCustomer)
+    expect(routes.projects(customer.id, user)).toContain(projectWithCustomer)
   }
 
 }

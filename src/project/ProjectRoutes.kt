@@ -19,8 +19,8 @@ class ProjectRoutes(
 {
 
   @GET("/:id") @Access(ADMIN, USER, EXTERNAL)
-  fun get(@PathParam id: Id<Project>, @AttrParam user: User) =
-    if (user.authRole == ADMIN || projectMemberRepository.isMember(id, user.id)) projectRepository.get(id)
+  fun get(@PathParam id: Id<Project>, @AttrParam user: User): ProjectWithCustomer? =
+    if (user.authRole == ADMIN || projectMemberRepository.isMember(id, user.id)) projectRepository.getWithCustomer(id)
     else throw ForbiddenException()
 
   @POST @Access(ADMIN)
@@ -45,8 +45,8 @@ class ProjectRoutes(
 
   @GET @Access(ADMIN, USER, EXTERNAL)
   fun list(@AttrParam user: User, @QueryParam myProjects: Boolean? = false) =
-    if (myProjects == true || user.authRole != ADMIN) projectRepository.listForMember(user.id)
-    else projectRepository.list()
+    if (myProjects == true || user.authRole != ADMIN) projectRepository.listForMemberWithCustomer(user.id)
+    else projectRepository.listWithCustomers()
 
   @GET("/:id/members") @Access(ADMIN, USER, EXTERNAL)
   fun members(@PathParam id: Id<Project>): List<ProjectMemberUser> =

@@ -2,6 +2,7 @@ package db
 
 import customers.CustomerRepository
 import db.TestData.project
+import db.TestData.projectWithCustomer
 import db.TestData.user
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -15,7 +16,6 @@ import project.ProjectMemberRepository
 import project.ProjectRepository
 import users.UserRepository
 import java.net.URI
-import kotlin.collections.get
 
 abstract class BaseMocks {
   companion object {
@@ -53,7 +53,7 @@ abstract class BaseMocks {
 
     }
     projectRepository.apply {
-      every { get(project.id) } returns project
+      every { getWithCustomer(project.id) } returns projectWithCustomer
       every { list()} returns listOf(project)
     }
   }
