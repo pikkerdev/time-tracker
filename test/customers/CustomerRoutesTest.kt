@@ -27,8 +27,8 @@ class ProjectRoutesTest: BaseMocks() {
   }
 
   @Test fun projects() {
-    every { projectRepository.dtoListByCustomerAndMember(customer.id, user.id) } returns listOf(projectDto)
-    expect(routes.projects(customer.id, user)).toContain(projectDto)
+    every { projectRepository.dtoListByCustomer(customer.id) } returns listOf(projectDto)
+    expect(routes.projects(customer.id)).toContain(projectDto)
   }
 
 }

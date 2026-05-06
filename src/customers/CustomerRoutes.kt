@@ -2,13 +2,11 @@ package customers
 
 import auth.Access
 import db.Id
-import klite.annotations.AttrParam
 import klite.annotations.GET
 import klite.annotations.POST
 import klite.annotations.PathParam
 import project.ProjectRepository
 import users.AuthRole.ADMIN
-import users.User
 
 @Access(ADMIN)
 class CustomerRoutes(
@@ -23,6 +21,6 @@ class CustomerRoutes(
 
   @GET fun list() = repository.list()
 
-  @GET("/:id/projects") fun projects(@PathParam id: Id<Customer>, @AttrParam user: User) =
-    projectRepository.dtoListByCustomerAndMember(id, user.id)
+  @GET("/:id/projects") fun projects(@PathParam id: Id<Customer>) =
+    projectRepository.dtoListByCustomer(id)
 }

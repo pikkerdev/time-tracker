@@ -42,10 +42,9 @@ class ProjectRepository(db: DataSource): CrudRepository<Project>(db, "projects")
       projectDtoMapper()
     }
 
-  fun dtoListByCustomerAndMember(customerId: Id<Customer>, userId: Id<User>): List<ProjectDto> =
+  fun dtoListByCustomer(customerId: Id<Customer>): List<ProjectDto> =
     db.select(
-      "$table p join customers c on p.customerId = c.id join project_members m on p.id = m.projectId",
-      listOf("p.customerId" to customerId.value, "m.userId" to userId.value)
+      "$table p join customers c on p.customerId = c.id", "p.customerId" to customerId.value
     ) {
       projectDtoMapper()
     }

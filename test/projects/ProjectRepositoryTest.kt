@@ -32,7 +32,7 @@ class ProjectRepositoryTest: DBTest() {
     repository.save(project)
     memberRepository.save(ProjectMember(project.id, user.id))
     expect(repository.dtoListForMember(user.id)).toContain(projectDto)
-    expect(repository.dtoListByCustomerAndMember(customer.id, user.id)).toContain(projectDto)
+    expect(repository.dtoListByCustomer(customer.id)).toContain(projectDto)
     expect(repository.dtoList()).toContain(projectDto)
   }
 }
