@@ -9,9 +9,8 @@
   import {showToast} from 'src/stores/toasts'
   import Button from 'src/components/Button.svelte'
 
-  let users: User[]
+  let users: User[] = []
   let authRoles = AuthRole
-  let user = {} as User
 
   const columns: [string, any][] = [
     [t.users.name, 'name'],
@@ -19,15 +18,16 @@
     [t.users.role, 'role'],
   ]
 
-  async function onClick() {
-    api.post('users', user)
+  async function save(user: User) {
+    const newUser: User = await api.post(`users/${user.id}`, user)
+    const userIndex = users.findIndex(u => u.id === newUser.id)
+    users[userIndex] = newUser
     showToast(t.general.saved)
   }
 
   onMount(
     async () => users = await api.get('users')
     )
-
 </script>
 
 <MainPageLayout class="relative flex flex-col gap-4">
@@ -36,7 +36,7 @@
       <td>{item.firstName} {item.lastName}</td>
       <td>{item.email}</td>
       <td><SelectField bind:value={item.authRole} options={authRoles}/></td>
-      <td> <Button {onClick} type="submit" label={t.general.save} class="primary"/></td>
+      <td><Button onclick={() => save(item)} type="submit" label={t.general.save} class="primary"/></td>
     </tr>
   </SortableTable>
 </MainPageLayout>
