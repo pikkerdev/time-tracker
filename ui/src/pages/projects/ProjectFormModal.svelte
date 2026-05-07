@@ -15,14 +15,12 @@
   export let customers = {} as Customer
   export let label = t.projects.new
   export let show = false
-  export let onCreated: (project: Project) => void = () => {}
 
   async function submit() {
     const isNew = !project.id
     if (isNew) { project = await api.post('projects', project) }
     else { project = await api.post(`projects/${project.id}`, project) }
     showToast(t.general.saved)
-    onCreated(project)
     setTimeout(() => navigate(`/projects/${project.id}`), 500)
     show = false
   }
