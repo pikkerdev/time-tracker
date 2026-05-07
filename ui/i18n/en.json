@@ -16,7 +16,8 @@
     "technical": "Technical error, please try again",
     "tooLong": "Too long",
     "alreadyExists": "Project already exists",
-    "cannotModifyYourRole": "You cannot modify your own role"
+    "cannotModifyYourRole": "You cannot modify your own authentification role",
+    "cannotModifyInitialAdminRole": "You cannot modify initial admin authentification role"
   },
   "contacts": {
     "email": "Email"
