@@ -15,7 +15,8 @@
   "errors": {
     "technical": "Technical error, please try again",
     "tooLong": "Too long",
-    "alreadyExists": "Project already exists"
+    "alreadyExists": "Project already exists",
+    "cannotModifyYourRole": "You cannot modify your own role"
   },
   "contacts": {
     "email": "Email"
