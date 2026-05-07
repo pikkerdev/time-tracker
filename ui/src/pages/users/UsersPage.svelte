@@ -8,6 +8,7 @@
   import SelectField from 'src/forms/SelectField.svelte'
   import {showToast} from 'src/stores/toasts'
   import Button from 'src/components/Button.svelte'
+  import {user} from 'src/stores/auth'
 
   let users: User[] = []
   let authRoles = AuthRole
@@ -31,14 +32,23 @@
   )
 </script>
 
-
 <MainPageLayout class="relative flex flex-col gap-4">
   <SortableTable {columns} items={users} let:item>
+    {@const isCurrentUser = $user.id === item.id}
     <tr>
       <td>{item.firstName} {item.lastName}</td>
       <td>{item.email}</td>
-      <td><SelectField bind:value={item.authRole} options={authRoles}/></td>
-      <td><Button onclick={() => save(item)} type="submit" label={t.general.save} class="primary"/></td>
+      <td>
+        {#if !isCurrentUser}
+          <SelectField bind:value={item.authRole} options={authRoles}/>
+        {:else} <span>{item.authRole}</span>
+        {/if}
+      </td>
+      <td>
+        {#if !isCurrentUser}
+          <Button onclick={() => save(item)} type="submit" label={t.general.save} class="primary"/>
+        {/if}
+      </td>
     </tr>
   </SortableTable>
 </MainPageLayout>
