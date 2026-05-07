@@ -4,7 +4,7 @@
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {t} from 'i18n'
-  import ProjectFromModal from 'src/pages/projects/ProjectFromModal.svelte'
+  import ProjectFormModal from 'src/pages/projects/ProjectFormModal.svelte'
 
   import type {ProjectContext} from 'src/pages/projects/context'
   import ProjectMembersModal from 'src/pages/projects/project/ProjectMembersModal.svelte'
@@ -28,7 +28,7 @@
     {#if $user.isAdmin}
       <div class="flex justify-end">
         <ProjectMembersModal {projectContext}/>
-        <ProjectFromModal project={project} label={t.projects.edit}/>
+        <ProjectFormModal project={project} label={t.projects.edit}/>
       </div>
     {/if}
     <h2 class="text-2xl font-bold mb-4">{projectContext?.name}</h2>
