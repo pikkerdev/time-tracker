@@ -1,4 +1,4 @@
-<script  lang="ts">
+<script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import SortableTable from 'src/components/SortableTable.svelte'
   import {t} from 'i18n'
@@ -16,6 +16,7 @@
     [t.users.name, 'name'],
     [t.users.email, 'email'],
     [t.users.role, 'role'],
+    ['', '']
   ]
 
   async function save(user: User) {
@@ -27,11 +28,12 @@
 
   onMount(
     async () => users = await api.get('users')
-    )
+  )
 </script>
 
+
 <MainPageLayout class="relative flex flex-col gap-4">
-  <SortableTable class="w-1/2" {columns} items = {users} let:item>
+  <SortableTable {columns} items={users} let:item>
     <tr>
       <td>{item.firstName} {item.lastName}</td>
       <td>{item.email}</td>
