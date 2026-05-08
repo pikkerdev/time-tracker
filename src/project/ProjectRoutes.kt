@@ -46,6 +46,10 @@ class ProjectRoutes(
   @GET("/:id/members") @Access(ADMIN, USER, EXTERNAL)
   fun members(@PathParam id: Id<Project>): List<ProjectMemberUser> =
     projectMemberRepository.list(id)
+
+  @DELETE("/:id") @Access(ADMIN)
+  fun deleteMember(@PathParam id: Id<ProjectMember>) {
+  projectMemberRepository.delete(id) }
 }
 
 data class ProjectDto(
