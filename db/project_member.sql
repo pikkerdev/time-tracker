@@ -17,3 +17,5 @@ alter table project_members alter column userId type bigint using userId::bigint
 
 --changeset project_members:default-role-to-developer
 alter table project_members alter column role set default 'DEVELOPER';
+
+GRANT DELETE ON TABLE project_members TO app;
