@@ -47,7 +47,7 @@ class ProjectRoutes(
   fun members(@PathParam id: Id<Project>): List<ProjectMemberUser> =
     projectMemberRepository.list(id)
 
-  @DELETE("/:id") @Access(ADMIN)
+  @DELETE("/member/:id") @Access(ADMIN)
   fun deleteMember(@PathParam id: Id<ProjectMember>) {
   projectMemberRepository.delete(id) }
 }

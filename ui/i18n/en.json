@@ -10,7 +10,8 @@
     "saved": "saved",
     "save": "save",
     "noItems": "no items",
-    "edit": "edit"
+    "edit": "edit",
+    "deleted": "Deleted"
   },
   "errors": {
     "technical": "Technical error, please try again",
@@ -51,6 +52,7 @@
     "edit": "Edit project",
     "addMember": "Add member",
     "members": "Members",
+    "deleteMember": "Delete member",
     "myProjects": "My projects"
   },
   "users": {

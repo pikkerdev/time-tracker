@@ -5,7 +5,7 @@
   import type {ProjectContext} from 'src/pages/projects/context'
   import SortableTable from 'src/components/SortableTable.svelte'
   import SelectField from 'src/forms/SelectField.svelte'
-  import type {Id, User} from 'src/api/types'
+  import type {Id, ProjectMember, User} from 'src/api/types'
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
 
@@ -25,6 +25,12 @@
     showToast(t.general.saved)
     show = false
   }
+
+  async function deleteMember(memberId: Id<ProjectMember>) {
+    await api.delete(`projects/member/${memberId}`)
+    showToast(t.general.deleted)
+  }
+
 </script>
 
 <Button label={t.projects.members} {onclick}/>
@@ -34,12 +40,15 @@
     [t.users.name, m => m.user.firstName],
     [t.users.email, m => m.user.email],
     [t.users.role, m => m.role],
+    ['', '']
     ]
     } items={Object.values(projectContext.members)} let:item={m}>
     <tr>
       <td>{m.user.firstName + ' ' + m.user.lastName}</td>
       <td>{m.user.email}</td>
       <td>{m.role}</td>
+      <td> <Button type="button" icon="trash" title={t.projects.deleteMember} onclick={() => deleteMember(m.id)}/>
+      </td>
     </tr>
   </SortableTable>
   <div>
