@@ -69,4 +69,8 @@ class ProjectRoutesTest: BaseMocks() {
     expect(routes.members(project.id)).toEqual(projectMembers)
   }
 
+  @Test fun `delete member`() {
+    routes.deleteMember(projectMember.id)
+    verify { projectMemberRepository.delete(projectMember.id) }
+  }
   }
