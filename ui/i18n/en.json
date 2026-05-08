@@ -11,7 +11,8 @@
     "save": "save",
     "noItems": "no items",
     "edit": "edit",
-    "deleted": "Deleted"
+    "deleted": "Deleted",
+    "deleteConfirm": "Are you sure?"
   },
   "errors": {
     "technical": "Technical error, please try again",
@@ -50,9 +51,6 @@
     "storyTrackerId": "Story tracker id",
     "currency": "Currency",
     "edit": "Edit project",
-    "addMember": "Add member",
-    "members": "Members",
-    "deleteMember": "Delete member",
     "myProjects": "My projects"
   },
   "users": {
@@ -62,5 +60,11 @@
     "lastName": "Last name",
     "email": "Email",
     "role": "Role"
+  },
+
+  "members": {
+    "members": "Members",
+    "addMember": "Add member",
+    "deleteMember": "Delete member"
   }
 }
