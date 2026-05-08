@@ -27,15 +27,16 @@
   }
 
   async function deleteMember(memberId: Id<ProjectMember>) {
-    await api.delete(`projects/member/${memberId}`)
+    if (confirm(t.general.deleteConfirm))
+      await api.delete(`projects/member/${memberId}`)
     showToast(t.general.deleted)
   }
 
 </script>
 
-<Button label={t.projects.members} {onclick}/>
+<Button label={t.members.members} {onclick}/>
 
-<Modal bind:show title={t.projects.members} wide>
+<Modal bind:show title={t.members.members} wide>
   <SortableTable labels={t.users} columns={[
     [t.users.name, m => m.user.firstName],
     [t.users.email, m => m.user.email],
@@ -47,14 +48,14 @@
       <td>{m.user.firstName + ' ' + m.user.lastName}</td>
       <td>{m.user.email}</td>
       <td>{m.role}</td>
-      <td> <Button type="button" icon="trash" title={t.projects.deleteMember} onclick={() => deleteMember(m.id)}/>
+      <td> <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => deleteMember(m.id)}/>
       </td>
     </tr>
   </SortableTable>
   <div>
-    <SelectField label={t.projects.addMember} bind:value={newMemberId}
+    <SelectField label={t.members.addMember} bind:value={newMemberId}
                  options={users.filter(u => !Object.keys(projectContext.members).includes(u.id)).map(c => [c.id, c.firstName + ' ' + c.lastName]).toObject()}
                  emptyOption=""/>
-    <Button label={t.projects.addMember} onclick={submit}/>
+    <Button label={t.members.addMember} onclick={submit}/>
   </div>
 </Modal>
