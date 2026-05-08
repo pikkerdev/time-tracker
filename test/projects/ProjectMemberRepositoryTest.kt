@@ -23,28 +23,26 @@ class ProjectMemberRepositoryTest: DBTest() {
   val customerRepository = CustomerRepository(db)
 
   @Test fun list() {
-    customerRepository.save(customer)
-    projectRepository.save(project)
-    userRepository.save(user)
-    repository.save(projectMember)
+    save()
     val projectMemberUser = ProjectMemberUser(projectMember, user)
     expect(repository.list(project.id)).toContain(projectMemberUser)
   }
 
   @Test fun isMember() {
-    customerRepository.save(customer)
-    projectRepository.save(project)
-    userRepository.save(user)
-    repository.save(projectMember)
+    save()
     assertEquals(true, repository.isMember(project.id, user.id))  }
 
   @Test fun delete() {
+    save()
+    repository.delete(projectMember.id)
+    expect(repository.list(project.id)).toBeEmpty()
+  }
+
+  private fun save() {
     customerRepository.save(customer)
     projectRepository.save(project)
     userRepository.save(user)
     repository.save(projectMember)
-    repository.delete(projectMember.id)
-    expect(repository.list(project.id)).toBeEmpty()
   }
 
 }
