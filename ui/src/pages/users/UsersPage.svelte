@@ -6,7 +6,7 @@
   import api from 'src/api/api'
   import {AuthRole, type User} from 'src/api/types'
   import SelectField from 'src/forms/SelectField.svelte'
-  import {showToast} from 'src/stores/toasts'
+  import {showToast, ToastType} from 'src/stores/toasts'
   import Button from 'src/components/Button.svelte'
   import {user} from 'src/stores/auth'
 
@@ -21,10 +21,15 @@
   ]
 
   async function save(user: User) {
-    const newUser: User = await api.post(`users/${user.id}`, user)
-    const userIndex = users.findIndex(u => u.id === newUser.id)
-    users[userIndex] = newUser
-    showToast(t.general.saved)
+    try {
+      const newUser: User = await api.post(`users/${user.id}`, user)
+      const userIndex = users.findIndex(u => u.id === newUser.id)
+      users[userIndex] = newUser
+      showToast(t.general.saved)
+    } catch (e) {
+      users = await api.get('users')
+      showToast(t.errors.cannotModifyInitialAdminRole, { type: ToastType.ERROR })
+    }
   }
 
   onMount(
@@ -41,7 +46,7 @@
       <td>
         {#if !isCurrentUser}
           <SelectField bind:value={item.authRole} options={authRoles}/>
-        {:else} <span>{item.authRole}</span>
+        {:else}<span>{item.authRole}</span>
         {/if}
       </td>
       <td>
