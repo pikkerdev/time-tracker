@@ -5,7 +5,7 @@
   import type {ProjectContext} from 'src/pages/projects/context'
   import SortableTable from 'src/components/SortableTable.svelte'
   import SelectField from 'src/forms/SelectField.svelte'
-  import type {Id, ProjectMember, User} from 'src/api/types'
+  import type {Id, ProjectMember, ProjectMemberUser, User} from 'src/api/types'
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
 
@@ -14,6 +14,11 @@
   let users: User[] = []
   let show = false
   let newMemberId: Id<User>
+  let projectContexts: ProjectContext[]
+
+  function memberAdded(newProjectContext: ProjectContext){
+    projectContexts =  [ newProjectContext, ...projectContexts]
+  }
 
   async function onclick() {
     show = true
@@ -27,9 +32,17 @@
   }
 
   async function deleteMember(memberId: Id<ProjectMember>) {
-    if (confirm(t.general.deleteConfirm))
+    if (confirm(t.general.deleteConfirm)) {
       await api.delete(`projects/member/${memberId}`)
-    showToast(t.general.deleted)
+      const updatedMembers: Record<Id<User>, ProjectMemberUser> = {}
+      for (const userId in projectContext.members) {
+        if (projectContext.members[userId].id !== memberId) {
+          updatedMembers[userId] = projectContext.members[userId]
+        }
+      }
+      projectContext.members = updatedMembers
+      showToast(t.general.deleted)
+    }
   }
 
 </script>
@@ -56,6 +69,6 @@
     <SelectField label={t.members.addMember} bind:value={newMemberId}
                  options={users.filter(u => !Object.keys(projectContext.members).includes(u.id)).map(c => [c.id, c.firstName + ' ' + c.lastName]).toObject()}
                  emptyOption=""/>
-    <Button label={t.members.addMember} onclick={submit}/>
+    <Button label={t.members.addMember} onclick={submit} {memberAdded}/>
   </div>
 </Modal>
