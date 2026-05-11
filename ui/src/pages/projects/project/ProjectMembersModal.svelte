@@ -1,4 +1,4 @@
-<script lang="ts">
+remove<script lang="ts">
   import Modal from 'src/components/Modal.svelte'
   import {t} from 'i18n'
   import Button from 'src/components/Button.svelte'
@@ -14,11 +14,6 @@
   let users: User[] = []
   let show = false
   let newMemberId: Id<User>
-  let projectContexts: ProjectContext[]
-
-  function memberAdded(newProjectContext: ProjectContext){
-    projectContexts =  [ newProjectContext, ...projectContexts]
-  }
 
   async function onclick() {
     show = true
@@ -69,6 +64,6 @@
     <SelectField label={t.members.addMember} bind:value={newMemberId}
                  options={users.filter(u => !Object.keys(projectContext.members).includes(u.id)).map(c => [c.id, c.firstName + ' ' + c.lastName]).toObject()}
                  emptyOption=""/>
-    <Button label={t.members.addMember} onclick={submit} {memberAdded}/>
+    <Button label={t.members.addMember} onclick={submit} />
   </div>
 </Modal>
