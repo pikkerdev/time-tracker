@@ -1,4 +1,4 @@
-remove<script lang="ts">
+<script lang="ts">
   import Modal from 'src/components/Modal.svelte'
   import {t} from 'i18n'
   import Button from 'src/components/Button.svelte'
