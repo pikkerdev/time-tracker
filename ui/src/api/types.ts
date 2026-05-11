@@ -8,11 +8,13 @@ export interface Project {currency: string; customerId: Id<Customer>; descriptio
 // class project.ProjectDto
 export interface ProjectDto {currency: string; customerName: string; description?: string; hourlyRate: number; id: Id<Project>; name: string; storyTrackerId?: number}
 // class project.ProjectMember
-export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; projectId: Id<Project>; role: Role; updatedAt?: Instant; userId: Id<User>}
+export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; projectId: Id<Project>; role: Role; status: Status; updatedAt?: Instant; userId: Id<User>}
 // class project.ProjectMemberUser
 export interface ProjectMemberUser {id: Id<ProjectMember>; member: ProjectMember; role: Role; user: User}
 // class project.Role
 export enum Role {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT', INTERN = 'INTERN', CUSTOMER = 'CUSTOMER'}
+// class project.Status
+export enum Status {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class project.TimeEntry
 export interface TimeEntry {date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; projectId: Id<Project>; projectMemberId: Id<ProjectMember>; storyId?: number}
 // class users.AuthRole
