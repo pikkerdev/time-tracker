@@ -13,11 +13,15 @@ export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; proje
 export interface ProjectMemberUser {id: Id<ProjectMember>; member: ProjectMember; role: Role; user: User}
 // class project.Role
 export enum Role {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT', INTERN = 'INTERN', CUSTOMER = 'CUSTOMER'}
+// class project.TimeEntry
+export interface TimeEntry {date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; projectId: Id<Project>; projectMemberId: Id<ProjectMember>; storyId?: number}
 // class users.AuthRole
 export enum AuthRole {ADMIN = 'ADMIN', USER = 'USER', EXTERNAL = 'EXTERNAL'}
 // class users.User
 export interface User {authRole: AuthRole; avatarUrl?: URI; createdAt: Instant; email: Email; firstName: string; id: Id<User>; isAdmin: boolean; lastName: string; updatedAt?: Instant}
 
+// java.time.LocalDate
+export type LocalDate = `${number}-${number}-${number}`
 // java.time.Instant
 export type Instant = `${number}-${number}-${number}T${number}:${number}:${number}Z`
 // java.net.URI

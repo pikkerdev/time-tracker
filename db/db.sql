@@ -7,3 +7,4 @@
 --include customers.sql
 --include projects.sql
 --include project_member.sql
+--include time_entry.sql
