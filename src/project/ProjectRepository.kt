@@ -3,23 +3,31 @@ package project
 import customers.Customer
 import db.CrudRepository
 import db.Id
+import db.json
+import klite.i18n.Lang.jsonMapper
 import klite.jdbc.create
 import klite.jdbc.get
 import klite.jdbc.select
+import klite.json.parse
+import klite.toValues
 import users.User
+import java.math.BigDecimal
 import java.sql.ResultSet
 import javax.sql.DataSource
 
 class ProjectRepository(db: DataSource): CrudRepository<Project>(db, "projects") {
+  override fun Project.persister() = toValues(Project::hourlyRates to json(hourlyRates))
+  override fun ResultSet.mapper() = create(Project::hourlyRates to jsonMapper.parse<Map<Role, BigDecimal>>(getString("hourlyRates")))
+
   private fun ResultSet.projectDtoMapper(): ProjectDto {
-    val project = create<Project>()
+    val project = mapper()
     return ProjectDto(
       id = project.id,
       customerName = get<String>("c.name"),
       name = project.name,
       description = project.description,
       currency = project.currency,
-      hourlyRate = project.hourlyRate,
+      hourlyRates = project.hourlyRates,
       storyTrackerId = project.storyTrackerId
     )
   }

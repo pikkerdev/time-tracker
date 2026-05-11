@@ -11,6 +11,6 @@ data class Project(
   val name: String,
   val description: String? = null,
   val currency: String = "EUR",
-  val hourlyRate: BigDecimal,
+  val hourlyRates: Map<Role, BigDecimal>,
   val storyTrackerId: Int? = null,
 ): Entity<Project>

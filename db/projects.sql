@@ -17,3 +17,7 @@ alter table projects add column createdAt timestamptz not null default now();
 
 --changeset projects:unique_customer_project_name
 alter table projects add constraint projects_unique_customer_name unique (customerId, name);
+
+--changeset projects:hourlyRates
+alter table projects drop column hourlyRate;
+alter table projects add column hourlyRates jsonb not null default '{}'::jsonb;
