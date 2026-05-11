@@ -1,6 +1,6 @@
 package projects
 
-import ch.tutteli.atrium.api.fluent.en_GB.toBeEmpty
+import ch.tutteli.atrium.api.fluent.en_GB.notToContain
 import ch.tutteli.atrium.api.fluent.en_GB.toContain
 import ch.tutteli.atrium.api.verbs.expect
 import customers.CustomerRepository
@@ -35,7 +35,7 @@ class ProjectMemberRepositoryTest: DBTest() {
   @Test fun delete() {
     save()
     repository.delete(projectMember.id)
-    expect(repository.list(project.id)).toBeEmpty()
+    expect(repository.list()).notToContain(projectMember)
   }
 
   private fun save() {
