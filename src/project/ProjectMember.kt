@@ -35,7 +35,4 @@ data class ProjectMember(
 data class ProjectMemberUser(
   val member: ProjectMember,
   val user: User
-) {
-  val id get() = member.id
-  val role get() = member.role
-}
+)

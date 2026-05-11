@@ -6,11 +6,13 @@ import klite.ForbiddenException
 import klite.annotations.*
 import users.AuthRole.*
 import users.User
+import users.UserRepository
 import java.math.BigDecimal
 
 class ProjectRoutes(
   val projectRepository: ProjectRepository,
-  val projectMemberRepository: ProjectMemberRepository
+  val projectMemberRepository: ProjectMemberRepository,
+  val userRepository: UserRepository,
 ) {
 
   @GET("/:id") @Access(ADMIN, USER, EXTERNAL)
@@ -33,9 +35,19 @@ class ProjectRoutes(
   }
 
   @POST("/:id/members") @Access(ADMIN)
-  fun save(@PathParam id: Id<Project>, userId: Id<User>) {
-    println(userId.toString())
-    projectMemberRepository.save(ProjectMember(id, userId))
+  fun create(@PathParam id: Id<Project>, userId: Id<User>): ProjectMemberUser {
+    val projectMember = ProjectMember(id, userId)
+    projectMemberRepository.save(projectMember)
+    val user = userRepository.get(projectMember.userId)
+    return ProjectMemberUser(projectMember, user)
+  }
+
+  @POST("/:id/members/:memberId") @Access(ADMIN)
+  fun save(@PathParam id: Id<Project>, @PathParam memberId: Id<ProjectMember>, projectMember: ProjectMember): ProjectMemberUser {
+    require(memberId == projectMember.id ) { "Wrong id" }
+    projectMemberRepository.save(projectMember)
+    val user = userRepository.get(projectMember.userId)
+    return ProjectMemberUser(projectMember, user)
   }
 
   @GET @Access(ADMIN, USER, EXTERNAL)
@@ -58,6 +70,6 @@ data class ProjectDto(
   val name: String,
   val description: String? = null,
   val currency: String = "EUR",
-  val hourlyRate: BigDecimal,
+  val hourlyRates: Map<Role, BigDecimal>,
   val storyTrackerId: Int? = null,
 )
