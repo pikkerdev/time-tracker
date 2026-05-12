@@ -18,11 +18,12 @@
   const isNew = !project.id
 
   let hourlyRate: number | undefined
+  let role = Object.values(Role).filter(r => r !== Role.CUSTOMER)
 
   $: if (!project.hourlyRates) { project.hourlyRates = {} }
 
   $: if (isNew) {
-    Object.values(Role).filter(r => r !== Role.CUSTOMER).forEach(role => {
+   role.forEach(role => {
     project.hourlyRates[role] = hourlyRate})
   }
 
@@ -51,7 +52,7 @@
     {:else}
       <p class="text-sm text-black-500 mb-2">{t.projects.hourlyRate}</p>
       <div class="ml-4">
-        {#each Object.values(Role).filter(r => r !== Role.CUSTOMER) as role}
+        {#each role as role}
           <FormField label={role.toLowerCase()} bind:value={project.hourlyRates[role]}/>
         {/each}
       </div>
