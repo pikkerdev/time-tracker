@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type {Customer, Project} from 'src/api/types'
+  import {type Customer, type Project, Role} from 'src/api/types'
   import Modal from 'src/components/Modal.svelte'
   import {t} from 'i18n'
   import Button from 'src/components/Button.svelte'
@@ -15,9 +15,18 @@
   export let customers = {} as Customer
   export let label = t.projects.new
   export let show = false
+  const isNew = !project.id
+
+  let hourlyRate: number | undefined
+
+  $: if (!project.hourlyRates) { project.hourlyRates = {} }
+
+  $: if (isNew) {
+    Object.values(Role).filter(r => r !== Role.CUSTOMER).forEach(role => {
+    project.hourlyRates[role] = hourlyRate})
+  }
 
   async function submit() {
-    const isNew = !project.id
     if (isNew) { project = await api.post('projects', project) }
     else { project = await api.post(`projects/${project.id}`, project) }
     showToast(t.general.saved)
@@ -37,10 +46,19 @@
     <SelectField label={t.customers.customers} bind:value={project.customerId} options={Object.values(customers).map(c => [c.id, c.name]).toObject()} emptyOption=""/>
     <FormField label={t.projects.name} bind:value={project.name}/>
     <TextAreaField label={t.projects.description} bind:value={project.description} rows={3} required={false}/>
-    <FormField label={t.projects.hourlyRate} bind:value={project.hourlyRate}/>
+    {#if isNew}
+      <FormField label={t.projects.hourlyRate} bind:value={hourlyRate}/>
+    {:else}
+      <p class="text-sm text-black-500 mb-2">{t.projects.hourlyRate}</p>
+      <div class="ml-4">
+        {#each Object.values(Role).filter(r => r !== Role.CUSTOMER) as role}
+          <FormField label={role.toLowerCase()} bind:value={project.hourlyRates[role]}/>
+        {/each}
+      </div>
+    {/if}
     <FormField label={t.projects.storyTrackerId} bind:value={project.storyTrackerId} required={false}/>
     <div class="flex justify-end items-center pb-2 mt-4">
-      <Button type="submit" label={t.general.save} class="primary" />
+      <Button type="submit" label={t.general.save} class="primary"/>
     </div>
   </Form>
 </Modal>
