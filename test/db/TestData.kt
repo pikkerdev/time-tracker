@@ -21,5 +21,5 @@ object TestData {
   val project = Project(Id(1), customer.id, "Project1", currency = "EUR", hourlyRates = mapOf(Role.DEVELOPER to 88.toBigDecimal()))
   val projectMember = ProjectMember(project.id, user.id, Role.DEVELOPER, createdAt = now)
   val projectMemberUser = ProjectMemberUser(projectMember, user)
-  val projectDto = ProjectDto(project.id, customer.name, project.name, project.description, project.currency, project.hourlyRates, project.storyTrackerId)
+  val projectDto = ProjectDto(project.id, customer.id, customer.name, project.name, project.description, project.currency, project.hourlyRates, project.storyTrackerId)
 }

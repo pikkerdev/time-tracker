@@ -23,6 +23,7 @@ class ProjectRepository(db: DataSource): CrudRepository<Project>(db, "projects")
     val project = mapper()
     return ProjectDto(
       id = project.id,
+      customerId = project.customerId,
       customerName = get<String>("c.name"),
       name = project.name,
       description = project.description,

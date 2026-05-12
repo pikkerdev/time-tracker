@@ -1,6 +1,7 @@
 package project
 
 import auth.Access
+import customers.Customer
 import db.Id
 import klite.ForbiddenException
 import klite.annotations.*
@@ -66,6 +67,7 @@ class ProjectRoutes(
 
 data class ProjectDto(
   val id: Id<Project>,
+  val customerId: Id<Customer>,
   val customerName: String,
   val name: String,
   val description: String? = null,

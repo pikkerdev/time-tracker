@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {type Customer, type Project, Role} from 'src/api/types'
+  import {type Customer, type ProjectDto, Role} from 'src/api/types'
   import Modal from 'src/components/Modal.svelte'
   import {t} from 'i18n'
   import Button from 'src/components/Button.svelte'
@@ -11,19 +11,20 @@
   import SelectField from 'src/forms/SelectField.svelte'
   import {navigate} from 'src/router'
 
-  export let project = {} as Project
-  export let customers = {} as Customer
+  export let project = {} as ProjectDto
   export let label = t.projects.new
-  export let show = false
-  const isNew = !project.id
 
+  const isNew = !project.id
+  let customers = {} as Customer
   let hourlyRate: number | undefined
-  let role = Object.values(Role).filter(r => r !== Role.CUSTOMER)
+  let roles = Object.values(Role).filter(r => r !== Role.CUSTOMER)
+
+  let show = false
 
   $: if (!project.hourlyRates) { project.hourlyRates = {} }
 
   $: if (isNew) {
-   role.forEach(role => {
+   roles.forEach(role => {
     project.hourlyRates[role] = hourlyRate})
   }
 
@@ -31,8 +32,9 @@
     if (isNew) { project = await api.post('projects', project) }
     else { project = await api.post(`projects/${project.id}`, project) }
     showToast(t.general.saved)
-    setTimeout(() => navigate(`/projects/${project.id}`), 500)
     show = false
+    if (isNew) {setTimeout(() => navigate(`/projects/${project.id}`), 500)}
+    else {window.location.reload()}
   }
 
   async function onclick() {
@@ -52,7 +54,7 @@
     {:else}
       <p class="text-sm text-black-500 mb-2">{t.projects.hourlyRate}</p>
       <div class="ml-4">
-        {#each role as role}
+        {#each roles as role}
           <FormField label={role.toLowerCase()} bind:value={project.hourlyRates[role]}/>
         {/each}
       </div>

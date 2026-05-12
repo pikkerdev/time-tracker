@@ -6,11 +6,11 @@ export interface Customer {businessRegistryCode?: string; id: Id<Customer>; invo
 // class project.Project
 export interface Project {currency: string; customerId: Id<Customer>; description?: string; hourlyRates: Partial<Record<Role, number>>; id: Id<Project>; name: string; storyTrackerId?: number}
 // class project.ProjectDto
-export interface ProjectDto {currency: string; customerName: string; description?: string; hourlyRates: Partial<Record<Role, number>>; id: Id<Project>; name: string; storyTrackerId?: number}
+export interface ProjectDto {currency: string; customerId: Id<Customer>; customerName: string; description?: string; hourlyRates: Partial<Record<Role, number>>; id: Id<Project>; name: string; storyTrackerId?: number}
 // class project.ProjectMember
 export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; projectId: Id<Project>; role: Role; status: Status; updatedAt?: Instant; userId: Id<User>}
 // class project.ProjectMemberUser
-export interface ProjectMemberUser {id: Id<ProjectMember>; member: ProjectMember; role: Role; user: User}
+export interface ProjectMemberUser {member: ProjectMember; user: User}
 // class project.Role
 export enum Role {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT', INTERN = 'INTERN', CUSTOMER = 'CUSTOMER'}
 // class project.Status

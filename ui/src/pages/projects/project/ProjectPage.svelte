@@ -1,6 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import {type Id, type Project, type ProjectMemberUser} from 'src/api/types'
+  import {type Id, type Project, type ProjectDto, type ProjectMemberUser} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {t} from 'i18n'
@@ -13,7 +13,7 @@
   export let id: Id<Project>
 
   let projectContext: ProjectContext | undefined
-  let project = projectContext as unknown as Project
+  $: project = projectContext as unknown as ProjectDto
 
   onMount(async () => {
     projectContext = await api.get('projects/' + id)
@@ -43,7 +43,12 @@
       </div>
       <div>
         <p class="text-sm text-gray-500">{t.projects.hourlyRate}</p>
-        <p class="text-lg font-medium">{projectContext.hourlyRate}</p>
+        {#each Object.entries(projectContext.hourlyRates) as [role, rate]}
+          <div class="flex gap-8 justify-between max-w-40">
+            <span>{role}</span>
+            <span>{rate}</span>
+          </div>
+        {/each}
       </div>
       <div>
         <p class="text-sm text-gray-500">{t.projects.storyTrackerId}</p>
