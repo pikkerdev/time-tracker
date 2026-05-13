@@ -21,26 +21,12 @@ fun main() {
   if (!Config.isProd) Config.useEnvFile()
 
   Server(
-    sessionStore = CookieSessionStore(
-      cookie = Cookie(
-        "S",
-        "",
-        httpOnly = true,
-        secure = Config.isProd,
-        maxAge = 365.days
-      )
-    ),
+    sessionStore = CookieSessionStore(cookie = Cookie("S", "", httpOnly = true, secure = Config.isProd, maxAge = 365.days)),
     httpExchangeCreator = XForwardedHttpExchange::class.primaryConstructor!!
   ).apply {
     initDB()
 
-
-    var path: Path
-    if (!Config.isProd) {
-      path = Path.of("ui/build")
-    } else {
-      path = Path.of("ui/public")
-    }
+    val path = if (!Config.isProd) Path.of("ui/build") else Path.of("ui/public")
     assets("/", AssetsHandler(path, useIndexForUnknownPaths = true))
 
     context("/oauth") {
