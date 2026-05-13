@@ -11,6 +11,7 @@
     "save": "Save",
     "noItems": "No items",
     "edit": "Edit",
+    "delete": "Delete",
     "deleted": "Deleted",
     "deleteConfirm": "Are you sure?"
   },

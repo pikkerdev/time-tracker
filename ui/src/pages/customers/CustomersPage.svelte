@@ -61,8 +61,10 @@
       <td>{item.invoiceEmail}</td>
       <td>{item.phone}</td>
       <td>
-        <Button label={t.projects.title} onclick={() => navigate(`/customers/${item.id}/projects`)}/>
-        <Button label={t.general.edit} onclick={() => { customer = item; show = true;edit = true; title = t.customers.edit }}/>
+        <div class="flex gap-4 justify-end">
+          <Button label={t.projects.title} onclick={() => navigate(`/customers/${item.id}/projects`)}/>
+          <Button label={t.general.edit} onclick={() => { customer = item; show = true;edit = true; title = t.customers.edit }}/>
+        </div>
       </td>
     </tr>
   </SortableTable>
