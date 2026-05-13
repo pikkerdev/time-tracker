@@ -2,6 +2,7 @@ package projects
 
 import ch.tutteli.atrium.api.fluent.en_GB.notToContain
 import ch.tutteli.atrium.api.fluent.en_GB.toContain
+import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
 import customers.CustomerRepository
 import db.DBTest
@@ -13,6 +14,7 @@ import db.TestData.project
 import db.TestData.projectMember
 import db.TestData.user
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import project.ProjectMemberUser
 import users.UserRepository
 
@@ -22,27 +24,24 @@ class ProjectMemberRepositoryTest: DBTest() {
   val userRepository = UserRepository(db)
   val customerRepository = CustomerRepository(db)
 
-  @Test fun list() {
-    save()
-    val projectMemberUser = ProjectMemberUser(projectMember, user)
-    expect(repository.list(project.id)).toContain(projectMemberUser)
-  }
-
-  @Test fun isMember() {
-    save()
-    assertEquals(true, repository.isMember(project.id, user.id))  }
-
-  @Test fun delete() {
-    save()
-    repository.delete(projectMember.id)
-    expect(repository.list()).notToContain(projectMember)
-  }
-
-  private fun save() {
+  @BeforeEach fun before() {
     customerRepository.save(customer)
     projectRepository.save(project)
     userRepository.save(user)
     repository.save(projectMember)
   }
 
+  @Test fun list() {
+    val projectMemberUser = ProjectMemberUser(projectMember, user)
+    expect(repository.list(project.id)).toContain(projectMemberUser)
+  }
+
+  @Test fun isMember() {
+    expect(repository.isMember(project.id, user.id)).toEqual(true)
+  }
+
+  @Test fun delete() {
+    repository.delete(projectMember.id)
+    expect(repository.list()).notToContain(projectMember)
+  }
 }

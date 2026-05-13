@@ -4,57 +4,33 @@ import customers.Customer
 import db.CrudRepository
 import db.Id
 import db.json
+import klite.Decimal
 import klite.i18n.Lang.jsonMapper
 import klite.jdbc.create
+import klite.jdbc.eq
 import klite.jdbc.get
 import klite.jdbc.select
 import klite.json.parse
 import klite.toValues
 import users.User
+import java.lang.reflect.Member
 import java.math.BigDecimal
 import java.sql.ResultSet
 import javax.sql.DataSource
 
 class ProjectRepository(db: DataSource): CrudRepository<Project>(db, "projects") {
-  override fun Project.persister() = toValues(Project::hourlyRates to json(hourlyRates))
-  override fun ResultSet.mapper() = create(Project::hourlyRates to jsonMapper.parse<Map<Role, BigDecimal>>(getString("hourlyRates")))
+  override val selectFrom = "$table join customers c on customerId = c.id"
+  override val orderAsc = "order by $table.name"
+  override val defaultOrder get() = orderAsc
 
-  private fun ResultSet.projectDtoMapper(): ProjectDto {
-    val project = mapper()
-    return ProjectDto(
-      id = project.id,
-      customerId = project.customerId,
-      customerName = get<String>("c.name"),
-      name = project.name,
-      description = project.description,
-      currency = project.currency,
-      hourlyRates = project.hourlyRates,
-      storyTrackerId = project.storyTrackerId
-    )
-  }
+  override fun ResultSet.mapper() = create(
+    Project::hourlyRates to jsonMapper.parse<Map<ProjectMember.Role, Decimal>>(getString("hourlyRates")),
+    Project::customerName to getString("c.name")
+  )
+  override fun Project.persister() = toValues(Project::hourlyRates to json(hourlyRates), skip = listOf(Project::customerName))
 
-  fun getDto(id: Id<Project>): ProjectDto? =
-    db.select("$table p join customers c on p.customerId = c.id", "p.id" to id.value) {
-      projectDtoMapper()
-    }.firstOrNull()
+  fun forMember(userId: Id<User>): List<Project> =
+    db.select("$selectFrom join project_members pm on $table.id = pm.projectId", ProjectMember::userId eq userId) { mapper() }
 
-  fun dtoList(): List<ProjectDto> =
-    db.select("$table p join customers c on p.customerId = c.id") {
-      projectDtoMapper()
-    }
-
-  fun dtoListForMember(userId: Id<User>): List<ProjectDto> =
-    db.select(
-      "$table p join customers c on p.customerId = c.id join project_members pm on p.id = pm.projectId",
-      listOf("pm.userId" to userId.value)
-    ) {
-      projectDtoMapper()
-    }
-
-  fun dtoListByCustomer(customerId: Id<Customer>): List<ProjectDto> =
-    db.select(
-      "$table p join customers c on p.customerId = c.id", "p.customerId" to customerId.value
-    ) {
-      projectDtoMapper()
-    }
+  fun byCustomer(customerId: Id<Customer>): List<Project> = list(Project::customerId eq customerId)
 }

@@ -2,7 +2,6 @@ package db
 
 import customers.CustomerRepository
 import db.TestData.project
-import db.TestData.projectDto
 import db.TestData.user
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -53,7 +52,7 @@ abstract class BaseMocks {
 
     }
     projectRepository.apply {
-      every { getDto(project.id) } returns projectDto
+      every { get(project.id) } returns project
       every { list()} returns listOf(project)
     }
   }

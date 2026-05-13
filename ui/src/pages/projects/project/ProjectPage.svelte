@@ -1,6 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import {type Id, type Project, type ProjectDto, type ProjectMemberUser} from 'src/api/types'
+  import {type Id, type Project, type ProjectMemberUser} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {t} from 'i18n'

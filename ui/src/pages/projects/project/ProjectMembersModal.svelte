@@ -5,7 +5,7 @@
   import type {ProjectContext} from 'src/pages/projects/context'
   import SortableTable from 'src/components/SortableTable.svelte'
   import SelectField from 'src/forms/SelectField.svelte'
-  import {type Id, type ProjectMember, type ProjectMemberUser, Role, type User} from 'src/api/types'
+  import {type Id, type ProjectMember, ProjectMemberRole, type ProjectMemberUser, type User} from 'src/api/types'
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
   import Form from 'src/forms/Form.svelte'
@@ -66,7 +66,7 @@
       <tr>
         <td>{m.user.firstName + ' ' + m.user.lastName}</td>
         <td>{m.user.email}</td>
-        <td><SelectField bind:value={m.member.role} options={Role} onchange={() => changeMemberRole(m.member)}  /></td>
+        <td><SelectField bind:value={m.member.role} options={t.members.roles} onchange={() => changeMemberRole(m.member)}  /></td>
         <td> <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => deleteMember(m.member.id)}/>
         </td>
       </tr>

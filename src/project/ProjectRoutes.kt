@@ -18,7 +18,7 @@ class ProjectRoutes(
 
   @GET("/:id") @Access(ADMIN, USER, EXTERNAL)
   fun get(@PathParam id: Id<Project>, @AttrParam user: User) =
-    if (user.authRole == ADMIN || projectMemberRepository.isMember(id, user.id)) projectRepository.getDto(id)
+    if (user.authRole == ADMIN || projectMemberRepository.isMember(id, user.id)) projectRepository.get(id)
     else throw ForbiddenException()
 
   @POST @Access(ADMIN)
@@ -53,25 +53,14 @@ class ProjectRoutes(
 
   @GET @Access(ADMIN, USER, EXTERNAL)
   fun list(@AttrParam user: User, @QueryParam myProjects: Boolean? = false) =
-    if (myProjects == true || user.authRole != ADMIN) projectRepository.dtoListForMember(user.id)
-    else projectRepository.dtoList()
+    if (myProjects == true || user.authRole != ADMIN) projectRepository.forMember(user.id)
+    else projectRepository.list()
 
   @GET("/:id/members") @Access(ADMIN, USER, EXTERNAL)
   fun members(@PathParam id: Id<Project>): List<ProjectMemberUser> =
     projectMemberRepository.list(id)
 
   @DELETE("/member/:id") @Access(ADMIN)
-  fun deleteMember(@PathParam id: Id<ProjectMember>) {
-  projectMemberRepository.delete(id) }
+  fun deleteMember(@PathParam id: Id<ProjectMember>) =
+    projectMemberRepository.delete(id)
 }
-
-data class ProjectDto(
-  val id: Id<Project>,
-  val customerId: Id<Customer>,
-  val customerName: String,
-  val name: String,
-  val description: String? = null,
-  val currency: String = "EUR",
-  val hourlyRates: Map<Role, BigDecimal>,
-  val storyTrackerId: Int? = null,
-)

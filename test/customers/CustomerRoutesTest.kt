@@ -5,8 +5,7 @@ import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
 import db.BaseMocks
 import db.TestData.customer
-import db.TestData.projectDto
-import db.TestData.user
+import db.TestData.project
 import io.mockk.every
 import io.mockk.verify
 import org.junit.jupiter.api.Test
@@ -27,8 +26,7 @@ class ProjectRoutesTest: BaseMocks() {
   }
 
   @Test fun projects() {
-    every { projectRepository.dtoListByCustomer(customer.id) } returns listOf(projectDto)
-    expect(routes.projects(customer.id)).toContain(projectDto)
+    every { projectRepository.byCustomer(customer.id) } returns listOf(project)
+    expect(routes.projects(customer.id)).toContain(project)
   }
-
 }

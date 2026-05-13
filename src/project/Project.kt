@@ -3,6 +3,8 @@ package project
 import customers.Customer
 import db.Entity
 import db.Id
+import klite.Decimal
+import klite.json.JsonProperty
 import java.math.BigDecimal
 
 data class Project(
@@ -11,6 +13,7 @@ data class Project(
   val name: String,
   val description: String? = null,
   val currency: String = "EUR",
-  val hourlyRates: Map<Role, BigDecimal>,
+  val hourlyRates: Map<ProjectMember.Role, Decimal>,
   val storyTrackerId: Int? = null,
+  @JsonProperty(readOnly = true) val customerName: String? = null
 ): Entity<Project>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import ProjectFormModal from 'src/pages/projects/ProjectFormModal.svelte'
-  import type {Customer, Id, ProjectDto} from 'src/api/types'
+  import type {Customer, Id, Project} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {t} from 'i18n'
@@ -9,7 +9,7 @@
   import {user} from 'src/stores/auth'
   import Button from 'src/components/Button.svelte'
 
-  let projects: ProjectDto[] = []
+  let projects: Project[] = []
   export let customerId: Id<Customer>
 
   async function load(customerId?: Id<Customer>, myProjects = false) {
