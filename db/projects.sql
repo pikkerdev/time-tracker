@@ -21,3 +21,9 @@ alter table projects add constraint projects_unique_customer_name unique (custom
 --changeset projects:hourlyRates
 alter table projects drop column hourlyRate;
 alter table projects add column hourlyRates jsonb not null default '{}'::jsonb;
+
+--changeset projects_customers_idx
+create index on projects(customerId);
+
+--changeset projects:stortyTrackerId:bigint
+alter table projects alter column storyTrackerId type bigint using storyTrackerId::bigint;
