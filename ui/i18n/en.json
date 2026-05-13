@@ -46,6 +46,7 @@
   },
   "projects": {
     "title": "Projects",
+    "project": "Project",
     "new": "New project",
     "name": "Project Name",
     "description": "Description",
@@ -64,7 +65,7 @@
     "role": "Role"
   },
   "members": {
-    "members": "Members",
+    "title": "Members",
     "addMember": "Add member",
     "deleteMember": "Delete member",
     "roles": {
@@ -73,5 +74,12 @@
       "INTERN": "Intern",
       "CUSTOMER": "Customer"
     }
+  },
+  "timeEntries": {
+    "title": "Time entries",
+    "date": "Date",
+    "hours": "Hours",
+    "storyId": "Story Id",
+    "description": "Description"
   }
 }

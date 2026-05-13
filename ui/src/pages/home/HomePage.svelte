@@ -3,11 +3,13 @@
   import {t} from 'i18n'
   import {user} from 'src/stores/auth'
   import Avatar from 'src/layout/Avatar.svelte'
+  import TimeEntryForm from 'src/pages/home/TimeEntryForm.svelte'
 </script>
 
 <MainPageLayout class="flex flex-col items-center gap-4 lg:gap-8">
   {#if $user}
-    Insert Dashboard here :P
+    Add your time entry
+    <TimeEntryForm/>
   {:else}
     <div class="flex gap-2 items-center">
       <img src="/favicon.svg" class="size-14 sm:size-28 lg:size-40" title="Time Tracker Logo" alt="Logo">
