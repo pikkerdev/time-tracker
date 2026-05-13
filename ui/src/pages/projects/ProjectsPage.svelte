@@ -12,7 +12,7 @@
   let projects: ProjectDto[] = []
   export let customerId: Id<Customer>
 
-  async function getProjects(customerId: Id<Customer> | undefined = undefined, myProjects: boolean = false) {
+  async function load(customerId?: Id<Customer>, myProjects = false) {
     let url = 'projects'
     if (customerId) {
       url = `customers/${customerId}/projects`
@@ -24,14 +24,15 @@
   }
 
   onMount(async () => {
-    await getProjects(customerId)
+    await load(customerId)
   })
 </script>
 
 <MainPageLayout class="relative" title={t.projects.title}>
   <div slot="title" class="flex gap-4">
     {#if $user.isAdmin}
-      <Button label={t.projects.myProjects} onclick={() => getProjects(customerId, true)}/>
+      <!-- TODO: change to checkbox to be able to untoggle -->
+      <Button label={t.projects.myProjects} onclick={() => load(customerId, true)}/>
       <ProjectFormModal/>
     {/if}
   </div>
