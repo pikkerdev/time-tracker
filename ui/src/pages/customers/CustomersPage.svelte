@@ -5,40 +5,27 @@
   import api from 'src/api/api'
   import type {Customer} from 'src/api/types'
   import {t} from 'i18n'
-  import EditCustomerForm from 'src/pages/customers/EditCustomerForm.svelte'
   import Button from 'src/components/Button.svelte'
   import {navigate} from 'src/router'
-
+  import Modal from 'src/components/Modal.svelte'
+  import CustomerForm from 'src/pages/customers/CustomerForm.svelte'
 
   let customers: Customer[]
-  let customer = {} as Customer
-  let show = false
-  let title = ''
-  let edit = false
+  let edit: Customer | false = false
 
-  onMount(
-    async () => customers = await api.get('customers')
-  )
+  onMount(async () => {
+    customers = await api.get('customers')
+  })
 
-  function customerAdded(newCustomer: Customer) {
-    const existingCustomer = customers.find(c => c.id === newCustomer.id)
-    if(existingCustomer) { customers = customers.map(c => c.id === newCustomer.id ? newCustomer : c) }
-    else { customers = [newCustomer, ...customers] }
-  }
-
-  function resetCustomer() {
-    customer = {} as Customer
+  function onSaved(customer: Customer) {
+    customers = customers.replaceById(customer)
+    edit = false
   }
 </script>
 
 <MainPageLayout class="relative flex flex-col gap-4" title={t.customers.title}>
   <div slot="title">
-    <Button label={t.customers.add} onclick={() => {
-      show = true;
-      title = t.customers.add;
-      resetCustomer();
-      edit = false
-    }}/>
+    <Button label={t.customers.add} onclick={() => edit = {} as Customer}/>
   </div>
   <SortableTable columns={[
     [t.customers.name, 'name'],
@@ -49,22 +36,27 @@
     [t.customers.invoiceEmail, 'invoiceEmail'],
     [t.customers.phone, 'phone'],
     ['', '']
-  ]} items={customers} let:item>
+  ]} items={customers} let:item={c}>
     <tr>
-      <td>{item.name}</td>
-      <td>{item.legalName}</td>
-      <td>{item.businessRegistryCode}</td>
-      <td>{item.legalAddress}</td>
-      <td>{item.vatId}</td>
-      <td>{item.invoiceEmail}</td>
-      <td>{item.phone}</td>
+      <td>{c.name}</td>
+      <td>{c.legalName}</td>
+      <td>{c.businessRegistryCode}</td>
+      <td>{c.legalAddress}</td>
+      <td>{c.vatId}</td>
+      <td>{c.invoiceEmail}</td>
+      <td>{c.phone}</td>
       <td>
         <div class="flex gap-4 justify-end">
-          <Button label={t.projects.title} onclick={() => navigate(`/customers/${item.id}/projects`)}/>
-          <Button label={t.general.edit} onclick={() => { customer = item; show = true;edit = true; title = t.customers.edit }}/>
+          <Button label={t.projects.title} onclick={() => navigate(`/customers/${c.id}/projects`)}/>
+          <Button label={t.general.edit} onclick={() => edit = structuredClone(c)}/>
         </div>
       </td>
     </tr>
   </SortableTable>
-  <EditCustomerForm bind:show {customer} {title} {edit} onCreated={customerAdded}/>
 </MainPageLayout>
+
+<Modal title={t.customers.customer} bind:show={edit}>
+  {#if edit}
+    <CustomerForm customer={edit} {onSaved}/>
+  {/if}
+</Modal>
