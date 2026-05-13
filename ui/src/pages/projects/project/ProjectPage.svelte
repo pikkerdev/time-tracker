@@ -1,6 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import {type Id, type Project, type ProjectMemberUser} from 'src/api/types'
+  import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {t} from 'i18n'
@@ -43,7 +43,7 @@
         <p class="text-sm text-gray-500">{t.projects.hourlyRate}</p>
         {#each Object.entries(project.hourlyRates) as [role, rate]}
           <div class="flex gap-8 justify-between max-w-40">
-            <span>{t.members.roles[role]}</span>
+            <span>{t.members.roles[role as ProjectMemberRole]}</span>
             <span>{rate} €</span>
           </div>
         {/each}
