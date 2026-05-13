@@ -9,7 +9,7 @@ import java.time.LocalDate
 
 data class TimeEntry(
   val projectId: Id<Project>,
-  val userId: Id<User>,
+  val userId: Id<User> = Id(),
   val date: LocalDate = LocalDate.now(),
   val hours: Float,
   val storyId: BigInteger? = null,
