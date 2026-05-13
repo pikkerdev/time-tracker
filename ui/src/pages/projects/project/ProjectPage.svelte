@@ -41,11 +41,14 @@
       </div>
       <div>
         <p class="text-sm text-gray-500">{t.projects.hourlyRate}</p>
-        {#each Object.entries(project.hourlyRates) as [role, rate]}
-          <div class="flex gap-8 justify-between max-w-40">
-            <span>{t.members.roles[role as ProjectMemberRole]}</span>
-            <span>{rate} €</span>
-          </div>
+        {#each Object.values(ProjectMemberRole) as role}
+          {@const rate = project.hourlyRates[role]}
+          {#if rate}
+            <div class="flex gap-8 justify-between max-w-40">
+              <span>{t.members.roles[role]}</span>
+              <span>{rate} €</span>
+            </div>
+          {/if}
         {/each}
       </div>
       <div>
