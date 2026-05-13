@@ -63,10 +63,15 @@
     "email": "Email",
     "role": "Role"
   },
-
   "members": {
     "members": "Members",
     "addMember": "Add member",
-    "deleteMember": "Delete member"
+    "deleteMember": "Delete member",
+    "roles": {
+      "DEVELOPER": "Developer",
+      "ARCHITECT": "Architect",
+      "INTERN": "Intern",
+      "CUSTOMER": "Customer"
+    }
   }
 }

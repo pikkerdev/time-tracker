@@ -23,15 +23,14 @@
 </script>
 
 <MainPageLayout class="relative" title={project?.name}>
-  {#if project}
-    {#if $user.isAdmin}
-      <div class="flex justify-end">
-        <ProjectMembersModal {project}/>
-        <ProjectFormModal {project} label={t.projects.edit}/>
-      </div>
+  <div slot="title" class="flex justify-end gap-4">
+    {#if project && $user.isAdmin}
+      <ProjectMembersModal {project}/>
+      <ProjectFormModal {project} label={t.projects.edit}/>
     {/if}
-    <h2 class="text-2xl font-bold mb-4">{project?.name}</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  </div>
+  {#if project}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
       <div>
         <p class="text-sm text-gray-500">{t.customers.customer}</p>
         <p class="text-lg font-medium">{project.customerName}</p>
@@ -44,7 +43,7 @@
         <p class="text-sm text-gray-500">{t.projects.hourlyRate}</p>
         {#each Object.entries(project.hourlyRates) as [role, rate]}
           <div class="flex gap-8 justify-between max-w-40">
-            <span>{role}</span>
+            <span>{t.members.roles[role]}</span>
             <span>{rate} €</span>
           </div>
         {/each}

@@ -57,7 +57,7 @@
       <p class="text-sm text-black-500 mb-2">{t.projects.hourlyRate}</p>
       <div class="ml-4 spaced">
         {#each roles as role}
-          <NumberField label={role.toLowerCase()} bind:value={project.hourlyRates[role]} unit="€"/>
+          <NumberField label={t.members.roles[role]} bind:value={project.hourlyRates[role]} unit="€"/>
         {/each}
       </div>
     {/if}
