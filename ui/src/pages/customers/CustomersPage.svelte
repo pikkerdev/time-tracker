@@ -10,17 +10,6 @@
   import {navigate} from 'src/router'
 
 
-  const columns: [string, any][] = [
-    [t.customers.name, 'name'],
-    [t.customers.legalName, 'legalName'],
-    [t.customers.businessRegistryCode, 'businessRegistryCode'],
-    [t.customers.legalAddress, 'legalAddress'],
-    [t.customers.vatId, 'vatId'],
-    [t.customers.invoiceEmail, 'invoiceEmail'],
-    [t.customers.phone, 'phone'],
-    ['', '']
-  ]
-
   let customers: Customer[]
   let customer = {} as Customer
   let show = false
@@ -51,7 +40,16 @@
       edit = false
     }}/>
   </div>
-  <SortableTable {columns} items={customers} let:item>
+  <SortableTable columns={[
+    [t.customers.name, 'name'],
+    [t.customers.legalName, 'legalName'],
+    [t.customers.businessRegistryCode, 'businessRegistryCode'],
+    [t.customers.legalAddress, 'legalAddress'],
+    [t.customers.vatId, 'vatId'],
+    [t.customers.invoiceEmail, 'invoiceEmail'],
+    [t.customers.phone, 'phone'],
+    ['', '']
+  ]} items={customers} let:item>
     <tr>
       <td>{item.name}</td>
       <td>{item.legalName}</td>

@@ -13,13 +13,6 @@
   let users: User[] = []
   let authRoles = AuthRole
 
-  const columns: [string, any][] = [
-    [t.users.name, 'name'],
-    [t.users.email, 'email'],
-    [t.users.role, 'role'],
-    ['', '']
-  ]
-
   async function save(user: User) {
     try {
       const newUser: User = await api.post(`users/${user.id}`, user)
@@ -38,7 +31,12 @@
 </script>
 
 <MainPageLayout class="relative flex flex-col gap-4" title={t.users.title}>
-  <SortableTable {columns} items={users} let:item>
+  <SortableTable columns={[
+    [t.users.name, u => u.firstName + ' ' + u.lastName],
+    [t.users.email, 'email'],
+    [t.users.role, 'authRole'],
+    ['', '']
+  ]} items={users} let:item>
     {@const isCurrentUser = $user.id === item.id}
     <tr>
       <td>{item.firstName} {item.lastName}</td>
