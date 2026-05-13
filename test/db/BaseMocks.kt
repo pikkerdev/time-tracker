@@ -13,6 +13,7 @@ import klite.StatusCode.Companion.Found
 import klite.StatusCodeException
 import project.ProjectMemberRepository
 import project.ProjectRepository
+import project.TimeEntryRepository
 import users.UserRepository
 import java.net.URI
 
@@ -29,6 +30,7 @@ abstract class BaseMocks {
     val customerRepository = mock<CustomerRepository>(relaxed = true)
     val projectRepository = mock<ProjectRepository>(relaxed = true)
     val projectMemberRepository = mock<ProjectMemberRepository>(relaxed = true)
+    val timeEntryRepository = mock<TimeEntryRepository>(relaxed = true)
 
     inline fun <reified T: Any> create() = registry.create(T::class)
 
@@ -55,5 +57,6 @@ abstract class BaseMocks {
       every { get(project.id) } returns project
       every { list()} returns listOf(project)
     }
+
   }
 }

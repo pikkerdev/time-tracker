@@ -9,6 +9,7 @@ import db.BaseMocks
 import db.TestData.admin
 import db.TestData.project
 import db.TestData.projectMember
+import db.TestData.timeEntry
 import db.TestData.user
 import io.mockk.every
 import io.mockk.verify
@@ -75,5 +76,10 @@ class ProjectRoutesTest: BaseMocks() {
   @Test fun `delete member`() {
     routes.deleteMember(projectMember.id)
     verify { projectMemberRepository.delete(projectMember.id) }
+  }
+
+  @Test fun `add time entry`() {
+    routes.addTimeEntry(user, timeEntry)
+    verify { timeEntryRepository.save(timeEntry.copy(userId = user.id)) }
   }
   }

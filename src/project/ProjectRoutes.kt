@@ -14,6 +14,7 @@ class ProjectRoutes(
   val projectRepository: ProjectRepository,
   val projectMemberRepository: ProjectMemberRepository,
   val userRepository: UserRepository,
+  val timeEntryRepository: TimeEntryRepository
 ) {
 
   @GET("/:id") @Access(ADMIN, USER, EXTERNAL)
@@ -63,4 +64,12 @@ class ProjectRoutes(
   @DELETE("/member/:id") @Access(ADMIN)
   fun deleteMember(@PathParam id: Id<ProjectMember>) =
     projectMemberRepository.delete(id)
+
+  @POST("/time-entry") @Access(ADMIN, USER)
+  fun addTimeEntry (@AttrParam user: User, timeEntry: TimeEntry) : TimeEntry {
+    val newTimeEntry = timeEntry.copy(userId = user.id)
+    timeEntryRepository.save(newTimeEntry)
+    return newTimeEntry
+  }
+
 }
