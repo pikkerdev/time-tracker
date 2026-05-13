@@ -45,9 +45,6 @@
     {/if}
     <div class="flex justify-between">
       <Button type="submit" label={t.general.save} class="primary"/>
-      {#if customer.id}
-<!--        <Button type="button" icon="trash" class="danger" title={t.general.delete}/>-->
-      {/if}
     </div>
   </Form>
 </Modal>
