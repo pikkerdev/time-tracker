@@ -22,3 +22,11 @@ async function load() {
 
 export const lang = choosePreferredLang()
 export let t: typeof en = await load()
+
+export function formatCurrency(code: string) {
+  return !code || code === 'EUR' ? '€' : code
+}
+
+export function formatAmount(amount: number, currency: string) {
+  return `${amount.toFixed(2)}\u00A0${currency}`
+}

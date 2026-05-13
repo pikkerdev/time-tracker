@@ -1,7 +1,7 @@
 <script lang="ts">
   import {type Customer, type Project, ProjectMemberRole} from 'src/api/types'
   import Modal from 'src/components/Modal.svelte'
-  import {t} from 'i18n'
+  import {formatCurrency, t} from 'i18n'
   import Button from 'src/components/Button.svelte'
   import Form from 'src/forms/Form.svelte'
   import FormField from 'src/forms/FormField.svelte'
@@ -46,12 +46,12 @@
     <FormField label={t.projects.name} bind:value={project.name}/>
     <TextAreaField label={t.projects.description} bind:value={project.description} rows={3} required={false}/>
     {#if isNew}
-      <NumberField label={t.projects.hourlyRate} bind:value={hourlyRate} unit="€"/>
+      <NumberField label={t.projects.hourlyRate} bind:value={hourlyRate} unit={formatCurrency(project.currency)}/>
     {:else}
       <p class="text-sm text-black-500 mb-2">{t.projects.hourlyRate}</p>
       <div class="ml-4 spaced">
         {#each billedRoles as role}
-          <NumberField label={t.members.roles[role]} bind:value={project.hourlyRates[role]} unit="€"/>
+          <NumberField label={t.members.roles[role]} bind:value={project.hourlyRates[role]} unit={formatCurrency(project.currency)}/>
         {/each}
       </div>
     {/if}
