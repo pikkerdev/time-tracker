@@ -45,7 +45,7 @@
         {#each Object.entries(project.hourlyRates) as [role, rate]}
           <div class="flex gap-8 justify-between max-w-40">
             <span>{role}</span>
-            <span>{rate}</span>
+            <span>{rate} €</span>
           </div>
         {/each}
       </div>

@@ -10,6 +10,7 @@
   import {showToast} from 'src/stores/toasts'
   import SelectField from 'src/forms/SelectField.svelte'
   import {navigate} from 'src/router'
+  import NumberField from 'src/forms/NumberField.svelte'
 
   export let project = {} as ProjectDto
   export let label = t.projects.new
@@ -51,12 +52,12 @@
     <FormField label={t.projects.name} bind:value={project.name}/>
     <TextAreaField label={t.projects.description} bind:value={project.description} rows={3} required={false}/>
     {#if isNew}
-      <FormField label={t.projects.hourlyRate} bind:value={hourlyRate}/>
+      <NumberField label={t.projects.hourlyRate} bind:value={hourlyRate} unit="€"/>
     {:else}
       <p class="text-sm text-black-500 mb-2">{t.projects.hourlyRate}</p>
       <div class="ml-4">
         {#each roles as role}
-          <FormField label={role.toLowerCase()} bind:value={project.hourlyRates[role]}/>
+          <NumberField label={role.toLowerCase()} bind:value={project.hourlyRates[role]} unit="€"/>
         {/each}
       </div>
     {/if}
