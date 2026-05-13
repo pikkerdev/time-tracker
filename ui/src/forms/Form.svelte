@@ -13,6 +13,7 @@
 
 <style lang="postcss">
   @reference 'src/global.css';
+
   :global(.validated input:invalid, .validated select:invalid, .validated textarea:invalid, .validated .invalid ){
     @apply border-danger-500 ring-danger-500 focus:border-danger-500 focus:ring-danger-500;
   }

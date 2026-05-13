@@ -59,6 +59,10 @@
   table th, table td {
     @apply px-0 py-2;
   }
+
+  .spaced {
+    @apply space-y-4;
+  }
 }
 
 @theme {
