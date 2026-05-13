@@ -6,14 +6,17 @@ import db.Id
 import klite.Decimal
 import klite.json.JsonProperty
 import java.math.BigDecimal
+import java.util.Currency
+
+val EUR: Currency = Currency.getInstance("EUR")
 
 data class Project(
-  override val id: Id<Project> = Id(),
   val customerId: Id<Customer>,
   val name: String,
   val description: String? = null,
-  val currency: String = "EUR",
   val hourlyRates: Map<ProjectMember.Role, Decimal>,
+  val currency: Currency = EUR,
   val storyTrackerId: Int? = null,
-  @JsonProperty(readOnly = true) val customerName: String? = null
+  @JsonProperty(readOnly = true) val customerName: String? = null,
+  override val id: Id<Project> = Id()
 ): Entity<Project>
