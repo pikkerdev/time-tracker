@@ -11,14 +11,14 @@
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
 
-  export let timeEntry = {} as TimeEntry
+  export let timeEntry:  TimeEntry = {date: new Date().toISOString().slice(0, 10)} as TimeEntry
 
   let projects: Project[] = []
 
   async function submit() {
     timeEntry = await api.post('projects/time-entry', timeEntry)
     showToast(t.general.saved)
-    timeEntry = {} as TimeEntry
+    timeEntry = {date: new Date().toISOString().slice(0, 10)} as TimeEntry
   }
 
   onMount(
@@ -38,4 +38,3 @@
     <NumberField label={t.projects.hourlyRate} bind:value={timeEntry.hourlyRate}/>
     <Button type="submit" label={t.general.save} class="primary"/>
   </Form>
-
