@@ -61,7 +61,7 @@
       <td>{item.invoiceEmail}</td>
       <td>{item.phone}</td>
       <td>
-        <Button label={t.projects.projects} onclick={() => navigate(`/customers/${item.id}/projects`)}/>
+        <Button label={t.projects.title} onclick={() => navigate(`/customers/${item.id}/projects`)}/>
         <Button label={t.general.edit} onclick={() => { customer = item; show = true;edit = true; title = t.customers.editCustomer }}/>
       </td>
     </tr>
