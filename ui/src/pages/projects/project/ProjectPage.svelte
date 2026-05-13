@@ -3,7 +3,7 @@
   import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
-  import {t} from 'i18n'
+  import {formatAmount, t} from 'i18n'
   import ProjectFormModal from 'src/pages/projects/ProjectFormModal.svelte'
 
   import type {ProjectContext} from 'src/pages/projects/context'
@@ -46,7 +46,7 @@
           {#if rate}
             <div class="flex gap-8 justify-between max-w-40">
               <span>{t.members.roles[role]}</span>
-              <span>{rate} €</span>
+              <span>{formatAmount(rate, project.currency)}</span>
             </div>
           {/if}
         {/each}
