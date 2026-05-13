@@ -26,7 +26,7 @@
   <div slot="title" class="flex justify-end gap-4">
     {#if project && $user.isAdmin}
       <ProjectMembersModal {project}/>
-      <ProjectFormModal {project} label={t.projects.edit}/>
+      <ProjectFormModal bind:project label={t.projects.edit}/>
     {/if}
   </div>
   {#if project}
