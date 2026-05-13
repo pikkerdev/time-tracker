@@ -7,10 +7,10 @@
   "general": {
     "close": "Close",
     "optional": "Optional",
-    "saved": "saved",
-    "save": "save",
-    "noItems": "no items",
-    "edit": "edit",
+    "saved": "Saved",
+    "save": "Save",
+    "noItems": "No items",
+    "edit": "Edit",
     "deleted": "Deleted",
     "deleteConfirm": "Are you sure?"
   },

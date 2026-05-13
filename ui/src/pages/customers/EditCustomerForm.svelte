@@ -44,9 +44,9 @@
       </div>
     {/if}
     <div>
-      <Button type="submit" label={t.general.save}></Button>
+      <Button type="submit" label={t.general.save} class="primary"/>
       {#if customer.id}
-        <Button type="button" icon="trash" color="danger" />
+        <Button type="button" icon="trash" class="danger"/>
       {/if}
     </div>
   </Form>
