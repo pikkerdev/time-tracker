@@ -18,6 +18,7 @@
   async function submit() {
     timeEntry = await api.post('projects/time-entry', timeEntry)
     showToast(t.general.saved)
+    timeEntry = {} as TimeEntry
   }
 
   onMount(
