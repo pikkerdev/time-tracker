@@ -58,7 +58,7 @@
   }
 
   :global(.btn.icon-only) {
-    @apply px-2;
+    @apply px-2.5 py-2.5;
   }
 
   :global(.btn.icon-only.sm) {

@@ -44,9 +44,9 @@
 
 <MainPageLayout class="relative flex flex-col gap-4" title={t.customers.title}>
   <div slot="title">
-    <Button label={t.customers.addCustomer} onclick={() => {
+    <Button label={t.customers.add} onclick={() => {
       show = true;
-      title = t.customers.addCustomer;
+      title = t.customers.add;
       resetCustomer();
       edit = false
     }}/>
@@ -62,7 +62,7 @@
       <td>{item.phone}</td>
       <td>
         <Button label={t.projects.title} onclick={() => navigate(`/customers/${item.id}/projects`)}/>
-        <Button label={t.general.edit} onclick={() => { customer = item; show = true;edit = true; title = t.customers.editCustomer }}/>
+        <Button label={t.general.edit} onclick={() => { customer = item; show = true;edit = true; title = t.customers.edit }}/>
       </td>
     </tr>
   </SortableTable>

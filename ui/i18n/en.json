@@ -31,16 +31,17 @@
   "customers": {
     "title": "Customers",
     "customer": "Customer",
-    "addCustomer": "Add a Customer",
-    "editCustomer": "Edit customer",
-    "name": "Customer name",
-    "legalName": "Customer legal name",
+    "add": "Add a Customer",
+    "edit": "Edit customer",
+    "name": "Name",
+    "legalName": "Legal name",
     "businessRegistryCode": "Business registry code",
     "legalAddress": "Legal address",
     "vatId": "Vat id",
     "email": "Email",
     "invoiceEmail": "Invoice Email",
-    "phone": "Phone number"
+    "phone": "Phone number",
+    "details": "Show Details"
   },
   "projects": {
     "title": "Projects",

@@ -11,7 +11,7 @@
 
   export let customer = {} as Customer
   export let show = false
-  export let title = t.customers.addCustomer
+  export let title = t.customers.add
   export let edit = false
 
   let open = false
@@ -27,14 +27,14 @@
 
 <Modal bind:show title={title}>
   <Form class="flex flex-col gap-2" {submit}>
-    <div class="sm:flex flex-1 items-end gap-x-2 gap-y-0.5 py-2" >
+    <div class="sm:flex flex-1 items-end gap-x-2 gap-y-0.5 py-2">
       <FormField class="flex-1" label={t.customers.name} bind:value={customer.name}/>
       {#if !customer.id}
-        <Button  icon={open ? 'chevron-up' : 'chevron-down'} onclick={() => open = !open}/>
+        <Button icon={open ? 'chevron-up' : 'chevron-down'} onclick={() => open = !open} title={t.customers.details}/>
       {/if}
     </div>
     {#if open || edit}
-      <div transition:slide>
+      <div transition:slide class="spaced">
         <FormField required={false} label={t.customers.legalName} bind:value={customer.legalName}/>
         <FormField required={false} label={t.customers.businessRegistryCode} bind:value={customer.businessRegistryCode}/>
         <FormField required={false} label={t.customers.legalAddress} bind:value={customer.legalAddress}/>
