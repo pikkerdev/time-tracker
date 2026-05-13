@@ -33,7 +33,7 @@
 {#if show}
   <div bind:this={modal} class="modal transition-opacity fixed z-40 inset-0 overflow-y-auto" transition:fade={{duration: flyParams.duration}}>
     <div class="flex items-center justify-center min-h-screen p-4 md:pb-20 text-center">
-      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
 
       <div class="w-full {wide ? 'max-w-7xl': 'max-w-xl'} relative inline-block bg-white rounded-sm p-6 md:p-10 text-left overflow-hidden shadow-xl transform transition-all align-middle"
            role="dialog" transition:fly={flyParams}>
