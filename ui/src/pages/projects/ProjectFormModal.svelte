@@ -55,15 +55,13 @@
       <NumberField label={t.projects.hourlyRate} bind:value={hourlyRate} unit="€"/>
     {:else}
       <p class="text-sm text-black-500 mb-2">{t.projects.hourlyRate}</p>
-      <div class="ml-4">
+      <div class="ml-4 spaced">
         {#each roles as role}
           <NumberField label={role.toLowerCase()} bind:value={project.hourlyRates[role]} unit="€"/>
         {/each}
       </div>
     {/if}
     <FormField label={t.projects.storyTrackerId} bind:value={project.storyTrackerId} required={false}/>
-    <div class="flex justify-end items-center pb-2 mt-4">
-      <Button type="submit" label={t.general.save} class="primary"/>
-    </div>
+    <Button type="submit" label={t.general.save} class="primary"/>
   </Form>
 </Modal>
