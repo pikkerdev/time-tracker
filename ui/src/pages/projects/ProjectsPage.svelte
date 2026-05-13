@@ -28,14 +28,12 @@
   })
 </script>
 
-<MainPageLayout class="relative">
-  <div class="flex justify-end">
-    <div class="flex gap-4">
-      {#if $user.isAdmin}
-        <Button label={t.projects.myProjects} onclick={() => getProjects(customerId, true)}/>
-        <ProjectFormModal/>
-      {/if}
-    </div>
+<MainPageLayout class="relative" title={t.projects.title}>
+  <div slot="title" class="flex gap-4">
+    {#if $user.isAdmin}
+      <Button label={t.projects.myProjects} onclick={() => getProjects(customerId, true)}/>
+      <ProjectFormModal/>
+    {/if}
   </div>
   <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 my-3 text-lg">
     {#each projects ?? [] as project}

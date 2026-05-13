@@ -42,8 +42,8 @@
   }
 </script>
 
-<MainPageLayout class="relative flex flex-col gap-4">
-  <div class="flex justify-end">
+<MainPageLayout class="relative flex flex-col gap-4" title={t.customers.title}>
+  <div slot="title">
     <Button label={t.customers.addCustomer} onclick={() => {
       show = true;
       title = t.customers.addCustomer;

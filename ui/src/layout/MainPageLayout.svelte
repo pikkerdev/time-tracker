@@ -9,5 +9,9 @@
 </svelte:head>
 
 <main class="px-2 pt-6 sm:px-3 grow bg-stone-100 {$$restProps.class}">
+  <div class="flex justify-between items-center gap-4">
+    <h1>{title}</h1>
+    <slot name="title"/>
+  </div>
   <slot/>
 </main>

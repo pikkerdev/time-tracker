@@ -37,7 +37,7 @@
   )
 </script>
 
-<MainPageLayout class="relative flex flex-col gap-4">
+<MainPageLayout class="relative flex flex-col gap-4" title={t.users.title}>
   <SortableTable {columns} items={users} let:item>
     {@const isCurrentUser = $user.id === item.id}
     <tr>

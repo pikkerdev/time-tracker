@@ -12,38 +12,37 @@
 
   export let id: Id<Project>
 
-  let projectContext: ProjectContext | undefined
-  $: project = projectContext as unknown as ProjectDto
+  let project: ProjectContext | undefined
 
   onMount(async () => {
-    projectContext = await api.get('projects/' + id)
+    project = await api.get('projects/' + id)
     api.get<ProjectMemberUser[]>(`projects/${id}/members`).then(r => {
-      projectContext!.members = r.indexBy(m => m.user.id)
+      project!.members = r.indexBy(m => m.user.id)
     })
   })
 </script>
 
-<MainPageLayout class="relative">
-  {#if projectContext}
+<MainPageLayout class="relative" title={project?.name}>
+  {#if project}
     {#if $user.isAdmin}
       <div class="flex justify-end">
-        <ProjectMembersModal {projectContext}/>
-        <ProjectFormModal project={project} label={t.projects.edit}/>
+        <ProjectMembersModal {project}/>
+        <ProjectFormModal {project} label={t.projects.edit}/>
       </div>
     {/if}
-    <h2 class="text-2xl font-bold mb-4">{projectContext?.name}</h2>
+    <h2 class="text-2xl font-bold mb-4">{project?.name}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div>
         <p class="text-sm text-gray-500">{t.customers.customer}</p>
-        <p class="text-lg font-medium">{projectContext.customerName}</p>
+        <p class="text-lg font-medium">{project.customerName}</p>
       </div>
       <div>
         <p class="text-sm text-gray-500">{t.projects.description}</p>
-        <p class="text-lg font-medium">{projectContext.description}</p>
+        <p class="text-lg font-medium">{project.description}</p>
       </div>
       <div>
         <p class="text-sm text-gray-500">{t.projects.hourlyRate}</p>
-        {#each Object.entries(projectContext.hourlyRates) as [role, rate]}
+        {#each Object.entries(project.hourlyRates) as [role, rate]}
           <div class="flex gap-8 justify-between max-w-40">
             <span>{role}</span>
             <span>{rate}</span>
@@ -52,7 +51,7 @@
       </div>
       <div>
         <p class="text-sm text-gray-500">{t.projects.storyTrackerId}</p>
-        <p class="text-lg font-medium">{projectContext.storyTrackerId}</p>
+        <p class="text-lg font-medium">{project.storyTrackerId}</p>
       </div>
     </div>
   {/if}

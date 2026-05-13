@@ -10,7 +10,7 @@
   import {showToast} from 'src/stores/toasts'
   import Form from 'src/forms/Form.svelte'
 
-  export let projectContext: ProjectContext
+  export let project: ProjectContext
 
   let users: User[] = []
   let show = false
@@ -22,32 +22,32 @@
   }
 
   async function submit() {
-    const newMember:ProjectMemberUser = await api.post(`projects/${projectContext.id}/members`, newMemberId)
+    const newMember:ProjectMemberUser = await api.post(`projects/${project.id}/members`, newMemberId)
     showToast(t.general.saved)
     const UpdatedMembers: Record<Id<User>, ProjectMemberUser> = {
-      ...projectContext.members,
+      ...project.members,
       [newMember.user.id]: newMember
     };
-    projectContext.members = UpdatedMembers
+    project.members = UpdatedMembers
   }
 
   async function deleteMember(memberId: Id<ProjectMember>) {
     if (confirm(t.general.deleteConfirm)) {
       await api.delete(`projects/member/${memberId}`)
       const updatedMembers: Record<Id<User>, ProjectMemberUser> = {}
-      for (const userId in projectContext.members) {
-        if (projectContext.members[userId].member.id !== memberId) {
-          updatedMembers[userId] = projectContext.members[userId]
+      for (const userId in project.members) {
+        if (project.members[userId].member.id !== memberId) {
+          updatedMembers[userId] = project.members[userId]
         }
       }
-      projectContext.members = updatedMembers
+      project.members = updatedMembers
       showToast(t.general.deleted)
     }
   }
 
   async function changeMemberRole(m: ProjectMember) {
-    const updatedMember: ProjectMemberUser = await api.post(`projects/${projectContext.id}/members/${m.id}`, m)
-    projectContext.members[updatedMember.user.id] = updatedMember
+    const updatedMember: ProjectMemberUser = await api.post(`projects/${project.id}/members/${m.id}`, m)
+    project.members[updatedMember.user.id] = updatedMember
     showToast(t.general.saved);
   }
 </script>
@@ -62,7 +62,7 @@
       [t.users.role, m => m.member.role],
       ['', '']
       ]
-      } items={Object.values(projectContext.members)} let:item={m}>
+    } items={Object.values(project.members)} let:item={m}>
       <tr>
         <td>{m.user.firstName + ' ' + m.user.lastName}</td>
         <td>{m.user.email}</td>
@@ -73,7 +73,7 @@
     </SortableTable>
     <div class="sm:flex flex-1 items-end gap-x-2 gap-y-0.5 py-2">
       <SelectField label={t.members.addMember} bind:value={newMemberId}
-                   options={users.filter(u => !Object.keys(projectContext.members).includes(u.id)).map(c => [c.id, c.firstName + ' ' + c.lastName]).toObject()}
+                   options={users.filter(u => !Object.keys(project.members).includes(u.id)).map(c => [c.id, c.firstName + ' ' + c.lastName]).toObject()}
                    emptyOption=""/>
       <Button type="submit" label={t.members.addMember}/>
     </div>
