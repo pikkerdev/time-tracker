@@ -52,9 +52,9 @@
   }
 </script>
 
-<Button label={t.members.members} {onclick}/>
+<Button label={t.members.title} {onclick}/>
 
-<Modal bind:show title={t.members.members} wide>
+<Modal bind:show title={t.members.title} wide>
   <Form {submit}>
     <SortableTable labels={t.users} columns={[
       [t.users.name, m => m.user.firstName],
