@@ -54,7 +54,8 @@
     "storyTrackerId": "Story tracker id",
     "currency": "Currency",
     "edit": "Edit project",
-    "myProjects": "My projects"
+    "myProjects": "My projects",
+    "showMyProjects": "Show my projects"
   },
   "users": {
     "title": "Users",

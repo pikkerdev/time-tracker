@@ -7,9 +7,9 @@
   import {t} from 'i18n'
   import {Link} from 'src/router'
   import {user} from 'src/stores/auth'
-  import Button from 'src/components/Button.svelte'
 
   let projects: Project[] = []
+  let isMyProjects: boolean = false
   export let customerId: Id<Customer>
 
   async function load(customerId?: Id<Customer>, myProjects = false) {
@@ -26,13 +26,17 @@
   onMount(async () => {
     await load(customerId)
   })
+
+  $: {load(customerId, isMyProjects)}
 </script>
 
 <MainPageLayout class="relative" title={t.projects.title}>
-  <div slot="title" class="flex gap-4">
+  <div slot="title" class="flex items-center gap-4">
     {#if $user.isAdmin}
-      <!-- TODO: change to checkbox to be able to untoggle -->
-      <Button label={t.projects.myProjects} onclick={() => load(customerId, true)}/>
+      {#if !customerId}
+        {t.projects.showMyProjects}
+        <input type="checkbox" onchange={() => isMyProjects = !isMyProjects}/>
+      {/if}
       <ProjectFormModal/>
     {/if}
   </div>
