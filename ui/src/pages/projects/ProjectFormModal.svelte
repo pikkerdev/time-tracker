@@ -1,5 +1,9 @@
 <script lang="ts">
-  import {type Customer, type Project, ProjectMemberRole} from 'src/api/types'
+  import {
+    type Customer,
+    type Project,
+    ProjectMemberRole
+  } from 'src/api/types'
   import Modal from 'src/components/Modal.svelte'
   import {formatCurrency, t} from 'i18n'
   import Button from 'src/components/Button.svelte'
@@ -11,8 +15,9 @@
   import SelectField from 'src/forms/SelectField.svelte'
   import {navigate} from 'src/router'
   import NumberField from 'src/forms/NumberField.svelte'
+  import type {ProjectContext} from 'src/pages/projects/context'
 
-  export let project = {} as Project
+  export let project = {} as ProjectContext
   export let label = t.projects.new
 
   const isNew = !project.id
@@ -26,10 +31,10 @@
   $: if (isNew) billedRoles.forEach(role => project.hourlyRates[role] = hourlyRate)
 
   async function submit() {
-    project = await api.post('projects' + (isNew ? '' : '/' + project.id), project)
+    let newProject = await api.post('projects' + (isNew ? '' : '/' + project.id), project) as Project
     showToast(t.general.saved)
     show = false
-    if (isNew) setTimeout(() => navigate(`/projects/${project.id}`), 500)
+    if (isNew) setTimeout(() => navigate(`/projects/${newProject.id}`), 500)
   }
 
   async function onclick() {
