@@ -11,14 +11,15 @@
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
 
-  export let timeEntry:  TimeEntry = {date: new Date().toISOString().slice(0, 10)} as TimeEntry
-
+  let currentDate = new Date().toISOString().slice(0, 10)
   let projects: Project[] = []
+
+  export let timeEntry:  TimeEntry = {date: currentDate} as TimeEntry
 
   async function submit() {
     timeEntry = await api.post('projects/time-entry', timeEntry)
     showToast(t.general.saved)
-    timeEntry = {date: new Date().toISOString().slice(0, 10)} as TimeEntry
+    timeEntry = {date: currentDate} as TimeEntry
   }
 
   onMount(
