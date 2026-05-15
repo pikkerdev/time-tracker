@@ -13,7 +13,8 @@
     "edit": "Edit",
     "delete": "Delete",
     "deleted": "Deleted",
-    "deleteConfirm": "Are you sure?"
+    "deleteConfirm": "Are you sure?",
+    "notFound": "Not found"
   },
   "errors": {
     "technical": "Technical error, please try again",

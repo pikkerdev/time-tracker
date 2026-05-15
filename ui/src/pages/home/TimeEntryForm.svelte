@@ -35,6 +35,5 @@
     <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours}/>
     <FormField label={t.timeEntries.storyId} required={false} bind:value={timeEntry.storyId}/>
     <TextAreaField label={t.timeEntries.description} required={false} bind:value={timeEntry.description}/>
-    <NumberField label={t.projects.hourlyRate} bind:value={timeEntry.hourlyRate}/>
     <Button type="submit" label={t.general.save} class="primary"/>
   </Form>

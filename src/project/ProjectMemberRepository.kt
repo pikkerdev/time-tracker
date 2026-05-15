@@ -25,4 +25,8 @@ class ProjectMemberRepository(db: DataSource): CrudRepository<ProjectMember>(db,
 
   fun delete(id: Id<ProjectMember>) {
     db.update(table, mapOf(ProjectMember::status to DELETED), ProjectMember::id to id) }
+
+  fun find(projectId: Id<Project>, userId: Id<User>): ProjectMember? =
+    db.select(table, ProjectMember::projectId to projectId, ProjectMember::userId to userId, notDeleted)
+    { create<ProjectMember>()}.firstOrNull()
 }

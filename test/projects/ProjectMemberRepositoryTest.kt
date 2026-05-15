@@ -44,4 +44,8 @@ class ProjectMemberRepositoryTest: DBTest() {
     repository.delete(projectMember.id)
     expect(repository.list()).notToContain(projectMember)
   }
+
+  @Test fun find() {
+    expect(repository.find(project.id, user.id)).toEqual(projectMember)
+  }
 }

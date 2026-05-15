@@ -14,6 +14,6 @@ data class TimeEntry(
   val hours: Float,
   val storyId: BigInteger? = null,
   val description: String? = null,
-  val hourlyRate: Decimal,
+  val hourlyRate: Decimal = Decimal.ZERO,
   override val id: Id<TimeEntry> = Id()
 ): Entity<TimeEntry>

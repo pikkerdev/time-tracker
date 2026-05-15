@@ -79,7 +79,9 @@ class ProjectRoutesTest: BaseMocks() {
   }
 
   @Test fun `add time entry`() {
+    every { projectMemberRepository.find(project.id, user.id) } returns projectMember
+    val rate = project.hourlyRates.getValue(projectMember.role)
     routes.addTimeEntry(user, timeEntry)
-    verify { timeEntryRepository.save(timeEntry.copy(userId = user.id)) }
+    verify { timeEntryRepository.save(timeEntry.copy(userId = user.id, hourlyRate = rate)) }
   }
   }

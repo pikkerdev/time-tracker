@@ -1,14 +1,13 @@
 package project
 
 import auth.Access
-import customers.Customer
 import db.Id
 import klite.ForbiddenException
+import klite.NotFoundException
 import klite.annotations.*
 import users.AuthRole.*
 import users.User
 import users.UserRepository
-import java.math.BigDecimal
 
 class ProjectRoutes(
   val projectRepository: ProjectRepository,
@@ -67,7 +66,10 @@ class ProjectRoutes(
 
   @POST("/time-entry") @Access(ADMIN, USER)
   fun addTimeEntry (@AttrParam user: User, timeEntry: TimeEntry) : TimeEntry {
-    val newTimeEntry = timeEntry.copy(userId = user.id)
+    val project = projectRepository.get(timeEntry.projectId)
+    val member = projectMemberRepository.find(timeEntry.projectId, user.id) ?: throw NotFoundException("general.notFound")
+    val rate = project.hourlyRates[member.role] ?: throw NotFoundException("general.notFound")
+    val newTimeEntry = timeEntry.copy(userId = user.id, hourlyRate = rate)
     timeEntryRepository.save(newTimeEntry)
     return newTimeEntry
   }
