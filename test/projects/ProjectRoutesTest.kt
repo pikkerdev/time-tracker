@@ -90,6 +90,7 @@ class ProjectRoutesTest: BaseMocks() {
   @Test fun `list time entries`() {
     val timeEntries = listOf(timeEntry)
     every { timeEntryRepository.list() } returns listOf(timeEntry)
-    expect (routes.listTimeEntry() ).toEqual(timeEntries)
+    every { timeEntryRepository.forUser(user.id) } returns listOf(timeEntry)
+    expect (routes.listTimeEntry(user)).toEqual(timeEntries)
   }
   }
