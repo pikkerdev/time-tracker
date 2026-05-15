@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test
 import project.Project
 import project.ProjectMemberUser
 import project.ProjectRoutes
+import project.TimeEntry
+import java.sql.Time
 
 class ProjectRoutesTest: BaseMocks() {
   val routes = create<ProjectRoutes>()
@@ -83,5 +85,11 @@ class ProjectRoutesTest: BaseMocks() {
     val rate = project.hourlyRates.getValue(projectMember.role)
     routes.addTimeEntry(user, timeEntry)
     verify { timeEntryRepository.save(timeEntry.copy(userId = user.id, hourlyRate = rate)) }
+  }
+
+  @Test fun `list time entries`() {
+    val timeEntries = listOf(timeEntry)
+    every { timeEntryRepository.list() } returns listOf(timeEntry)
+    expect (routes.listTimeEntry() ).toEqual(timeEntries)
   }
   }

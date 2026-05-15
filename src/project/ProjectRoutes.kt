@@ -64,7 +64,7 @@ class ProjectRoutes(
   fun deleteMember(@PathParam id: Id<ProjectMember>) =
     projectMemberRepository.delete(id)
 
-  @POST("/time-entry") @Access(ADMIN, USER)
+  @POST("/timeentry") @Access(ADMIN, USER)
   fun addTimeEntry (@AttrParam user: User, timeEntry: TimeEntry) : TimeEntry {
     val project = projectRepository.get(timeEntry.projectId)
     val member = projectMemberRepository.find(timeEntry.projectId, user.id) ?: throw NotFoundException("general.notFound")
@@ -73,5 +73,9 @@ class ProjectRoutes(
     timeEntryRepository.save(newTimeEntry)
     return newTimeEntry
   }
+
+  @GET("/timeentries") @Access(ADMIN, USER)
+  fun listTimeEntry() = timeEntryRepository.list()
+
 
 }
