@@ -16,6 +16,7 @@ import db.TestData.user
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import project.ProjectMemberUser
+import project.Status
 import users.UserRepository
 
 class ProjectMemberRepositoryTest: DBTest() {
@@ -34,10 +35,14 @@ class ProjectMemberRepositoryTest: DBTest() {
   @Test fun list() {
     val projectMemberUser = ProjectMemberUser(projectMember, user)
     expect(repository.list(project.id)).toContain(projectMemberUser)
+    val deletedMember = projectMember.copy(status = Status.DELETED)
+    expect(repository.list(project.id)).notToContain(ProjectMemberUser(deletedMember, user))
   }
 
   @Test fun isMember() {
     expect(repository.isMember(project.id, user.id)).toEqual(true)
+    repository.delete(projectMember.id)
+    expect(repository.isMember(project.id, user.id)).toEqual(false)
   }
 
   @Test fun delete() {
@@ -48,4 +53,5 @@ class ProjectMemberRepositoryTest: DBTest() {
   @Test fun find() {
     expect(repository.find(project.id, user.id)).toEqual(projectMember)
   }
+
 }
