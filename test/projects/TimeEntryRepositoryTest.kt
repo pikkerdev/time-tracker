@@ -1,5 +1,6 @@
 package projects
 
+import ch.tutteli.atrium.api.fluent.en_GB.toContain
 import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
 import customers.CustomerRepository
@@ -25,5 +26,6 @@ class TimeEntryRepositoryTest: DBTest() {
     projectRepository.save(project)
     repository.save(timeEntry)
     expect(repository.get(timeEntry.id)).toEqual(timeEntry)
+    expect(repository.list()).toContain(timeEntry)
   }
 }

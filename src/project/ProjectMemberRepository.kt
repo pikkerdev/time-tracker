@@ -21,7 +21,7 @@ class ProjectMemberRepository(db: DataSource): CrudRepository<ProjectMember>(db,
     }
 
   fun isMember(projectId: Id<Project>, userId: Id<User>): Boolean =
-    db.count(table, listOf(ProjectMember::projectId to projectId, ProjectMember::userId to userId)) > 0
+    db.count(table, listOf(ProjectMember::projectId to projectId, ProjectMember::userId to userId, notDeleted)) > 0
 
   fun delete(id: Id<ProjectMember>) {
     db.update(table, mapOf(ProjectMember::status to DELETED), ProjectMember::id to id) }
