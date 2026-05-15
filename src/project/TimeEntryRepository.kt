@@ -12,4 +12,5 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   fun forUser(userId: Id<User>): List<TimeEntry> =
     list( TimeEntry::userId eq userId)
 
+
 }

@@ -75,7 +75,7 @@ class ProjectRoutes(
   }
 
   @GET("/timeentries") @Access(ADMIN, USER)
-  fun listTimeEntry() = timeEntryRepository.list()
-
-
+  fun listTimeEntry(@AttrParam user: User, @QueryParam myTimeEntries: Boolean? = false) =
+    if (myTimeEntries == true || user.authRole != ADMIN) timeEntryRepository.forUser(user.id)
+    else timeEntryRepository.list()
 }
