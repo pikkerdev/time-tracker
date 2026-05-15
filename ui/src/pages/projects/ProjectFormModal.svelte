@@ -21,7 +21,7 @@
   export let label = t.projects.new
 
   const isNew = !project.id
-  let customers = {} as Customer
+  let customers = [] as Customer[]
   let hourlyRate: number | undefined
   let billedRoles = Object.values(ProjectMemberRole).filter(r => r !== ProjectMemberRole.CUSTOMER)
 
@@ -32,6 +32,7 @@
 
   async function submit() {
     let newProject = await api.post('projects' + (isNew ? '' : '/' + project.id), project) as Project
+    project.customerName = customers.find(c => c.id === newProject.customerId)?.name
     showToast(t.general.saved)
     show = false
     if (isNew) setTimeout(() => navigate(`/projects/${newProject.id}`), 500)
