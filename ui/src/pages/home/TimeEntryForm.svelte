@@ -17,7 +17,7 @@
   export let timeEntry:  TimeEntry = {date: currentDate} as TimeEntry
 
   async function submit() {
-    timeEntry = await api.post('projects/time-entry', timeEntry)
+    timeEntry = await api.post('projects/timeentry', timeEntry)
     showToast(t.general.saved)
     timeEntry = {date: currentDate} as TimeEntry
   }
