@@ -31,7 +31,7 @@
 </script>
 
   <Form {submit}>
-    <SelectField label={t.projects.project} bind:value={timeEntry.projectId} options={Object.values(projects).map(p => [p.id, p.name]).toObject()}/>
+    <SelectField label={t.projects.project} bind:value={timeEntry.projectId} options={Object.values(projects).map(p => [p.id, p.customerName? `${p.name}  ${p.customerName}` : p.name]).toObject()}/>
     <FormField label={t.timeEntries.date} type="date" bind:value={timeEntry.date} />
     <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours}/>
     <FormField label={t.timeEntries.storyId} required={false} bind:value={timeEntry.storyId}/>

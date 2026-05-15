@@ -13,9 +13,7 @@
   let timeEntries: TimeEntry[]
 
   onMount(async () => {
-    console.log("aaaaaa")
     timeEntries = await api.get('projects/timeentries')
-    console.log(timeEntries)
   })
 </script>
 
