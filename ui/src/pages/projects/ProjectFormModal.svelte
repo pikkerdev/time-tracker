@@ -31,7 +31,8 @@
   $: if (isNew) billedRoles.forEach(role => project.hourlyRates[role] = hourlyRate)
 
   async function submit() {
-    let newProject = await api.post('projects' + (isNew ? '' : '/' + project.id), project) as Project
+    let newProject = project as Project
+    await api.post('projects' + (isNew ? '' : '/' + project.id), newProject) as Project
     project.customerName = customers.find(c => c.id === newProject.customerId)?.name
     showToast(t.general.saved)
     show = false

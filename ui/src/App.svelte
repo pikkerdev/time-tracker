@@ -8,6 +8,7 @@
   import ProjectPage from 'src/pages/projects/project/ProjectPage.svelte'
   import UsersPage from 'src/pages/users/UsersPage.svelte'
   import Header from 'src/layout/Header.svelte'
+  import TimeEntryPage from 'src/pages/entries/TimeEntryPage.svelte'
 </script>
 
 <svelte:head>
@@ -25,6 +26,7 @@
     <Route path="/customers" component={CustomersPage}/>
     <Route path="/projects" component={ProjectsPage}/>
     <Route path="/projects/:id" component={ProjectPage}/>
+    <Route path="/timeentries" component={TimeEntryPage}/>
     <Route path="/customers/:customerId/projects" component={ProjectsPage}/>
     <Route path="/users" component={UsersPage}/>
   </Router>

@@ -4,24 +4,14 @@
   import {user} from 'src/stores/auth'
   import Avatar from 'src/layout/Avatar.svelte'
   import TimeEntryForm from 'src/pages/home/TimeEntryForm.svelte'
-  import TimeEntryTable from 'src/pages/TimeEntryTable.svelte'
-  import type {ProjectContext} from 'src/pages/projects/context'
-  import {onMount} from 'svelte'
-  import api from 'src/api/api'
-  import type {ProjectMemberUser, TimeEntry} from 'src/api/types'
-
-  let timeEntries: TimeEntry[]
-
-  onMount(async () => {
-    timeEntries = await api.get('projects/timeentries')
-  })
+  import {Link} from 'src/router'
 </script>
 
 <MainPageLayout class="flex flex-col items-center gap-4 lg:gap-8">
   {#if $user}
     Add your time entry
     <TimeEntryForm/>
-    <TimeEntryTable bind:timeEntries/>
+    <Link to="/timeentries">{t.timeEntries.title}</Link>
   {:else}
     <div class="flex gap-2 items-center">
       <img src="/favicon.svg" class="size-14 sm:size-28 lg:size-40" title="Time Tracker Logo" alt="Logo">

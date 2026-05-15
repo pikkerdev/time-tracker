@@ -1,5 +1,4 @@
 <script lang="ts">
-
   import type {TimeEntry} from 'src/api/types'
   import {t} from 'i18n'
   import SortableTable from 'src/components/SortableTable.svelte'
