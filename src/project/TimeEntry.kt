@@ -11,7 +11,7 @@ data class TimeEntry(
   val projectId: Id<Project>,
   val userId: Id<User> = Id(),
   val date: LocalDate = LocalDate.now(),
-  val hours: Float,
+  val hours: Double,
   val storyId: BigInteger? = null,
   val description: String? = null,
   val hourlyRate: Decimal = Decimal.ZERO,
