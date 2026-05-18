@@ -8,9 +8,12 @@
   import api from 'src/api/api'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
 
+  const LAST_PROJECT_KEY = 'lastProjectId'
+
   let currentDate = new Date().toISOString().slice(0, 10)
+  let latestProjectId = localStorage.getItem(LAST_PROJECT_KEY) ?? undefined
   let timeEntries: TimeEntry[] = []
-  let timeEntry: TimeEntry = {date: currentDate} as TimeEntry
+  let timeEntry: TimeEntry = {date: currentDate, projectId: latestProjectId} as TimeEntry
 
   $: if(timeEntry.date) loadEntries(timeEntry.date)
 

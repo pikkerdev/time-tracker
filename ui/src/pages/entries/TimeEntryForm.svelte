@@ -11,6 +11,8 @@
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
 
+  const LAST_PROJECT_KEY = 'lastProjectId'
+
   let currentDate = new Date().toISOString().slice(0, 10)
   let projects: Project[] = []
 
@@ -18,8 +20,9 @@
 
   async function submit() {
     timeEntry = await api.post('projects/timeentry', timeEntry)
+    localStorage.setItem(LAST_PROJECT_KEY, timeEntry.projectId)
     showToast(t.general.saved)
-    timeEntry = {date: currentDate} as TimeEntry
+    timeEntry = {date: currentDate, projectId: timeEntry.projectId} as TimeEntry
   }
 
   onMount(
