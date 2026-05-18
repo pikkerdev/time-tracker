@@ -15,6 +15,8 @@ export interface ProjectMemberUser {member: ProjectMember; user: User}
 export enum Status {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class project.TimeEntry
 export interface TimeEntry {date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; projectId: Id<Project>; storyId?: number; userId: Id<User>}
+// class project.TimeEntryView
+export interface TimeEntryView {customerName: string; projectName: string; timeEntry: TimeEntry; userName: string}
 // class users.AuthRole
 export enum AuthRole {ADMIN = 'ADMIN', USER = 'USER', EXTERNAL = 'EXTERNAL'}
 // class users.User

@@ -17,3 +17,10 @@ data class TimeEntry(
   val hourlyRate: Decimal = Decimal.ZERO,
   override val id: Id<TimeEntry> = Id()
 ): Entity<TimeEntry>
+
+data class TimeEntryView(
+  val timeEntry: TimeEntry,
+  val projectName: String,
+  val userName: String,
+  val customerName: String
+)

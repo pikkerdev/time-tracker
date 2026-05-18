@@ -77,10 +77,10 @@ class ProjectRoutes(
 
   @GET("/timeentries") @Access(ADMIN, USER)
   fun listTimeEntry(@AttrParam user: User, @QueryParam myTimeEntries: Boolean? = false) =
-    if (myTimeEntries == true || user.authRole != ADMIN) timeEntryRepository.byUser(user.id)
-    else timeEntryRepository.list()
+    if (myTimeEntries == true || user.authRole != ADMIN) timeEntryRepository.listViewByUser(user.id)
+    else timeEntryRepository.listView()
 
   @GET("/timeentries/date") @Access(ADMIN, USER)
   fun listTimeEntryByDateAndUser(@AttrParam user: User, @QueryParam date: LocalDate) =
-    timeEntryRepository.byUserAndDate(user.id, date)
+    timeEntryRepository.listViewByUserAndDate(user.id, date)
 }

@@ -8,6 +8,7 @@ import db.DBTest
 import db.TestData.customer
 import db.TestData.project
 import db.TestData.timeEntry
+import db.TestData.timeEntryView
 import db.TestData.user
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -34,8 +35,8 @@ class TimeEntryRepositoryTest: DBTest() {
 
   @Test fun `list time entries`() {
     repository.save(timeEntry)
-    expect(repository.list()).toContainExactly(timeEntry)
-    expect(repository.byUser(user.id)).toContainExactly(timeEntry)
-    expect(repository.byUserAndDate(user.id, timeEntry.date)).toContainExactly(timeEntry)
+    expect(repository.listView()).toContainExactly(timeEntryView)
+    expect(repository.listViewByUser(user.id)).toContainExactly(timeEntryView)
+    expect(repository.listViewByUserAndDate(user.id, timeEntry.date)).toContainExactly(timeEntryView)
   }
 }
