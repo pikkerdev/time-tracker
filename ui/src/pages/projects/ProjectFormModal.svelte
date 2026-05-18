@@ -32,11 +32,11 @@
 
   async function submit() {
     let newProject = project as Project
-    await api.post('projects' + (isNew ? '' : '/' + project.id), newProject) as Project
+    const saved = await api.post('projects' + (isNew ? '' : '/' + project.id), newProject) as Project
     project.customerName = customers.find(c => c.id === newProject.customerId)?.name
     showToast(t.general.saved)
     show = false
-    if (isNew) setTimeout(() => navigate(`/projects/${newProject.id}`), 500)
+    if (isNew) setTimeout(() => navigate(`/projects/${saved.id}`), 500)
   }
 
   async function onclick() {
