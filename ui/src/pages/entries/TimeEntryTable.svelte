@@ -1,27 +1,29 @@
 <script lang="ts">
-  import type {TimeEntry} from 'src/api/types'
+  import type {TimeEntryView} from 'src/api/types'
   import {t} from 'i18n'
   import SortableTable from 'src/components/SortableTable.svelte'
 
-  export let timeEntries: TimeEntry[]
+  export let timeEntries: TimeEntryView[]
 
 </script>
 
 <SortableTable columns={[
-      [t.projects.project, e => e.projectId],
-      [t.users.name, e => e.userId],
-      [t.timeEntries.date, e => e.date],
-      [t.timeEntries.hours, e => e.hours],
-      [t.timeEntries.storyId, e => e.storyId]
+      [t.projects.project, e => e.customerName],
+      [t.projects.project, e => e.projectName],
+      [t.users.name, e => e.userName],
+      [t.timeEntries.date, e => e.timeEntry.date],
+      [t.timeEntries.hours, e => e.timeEntry.hours],
+      [t.timeEntries.storyId, e => e.timeEntry.storyId]
       ]
     }
   ]} items={timeEntries} let:item={e}>
   <tr>
-    <td>{e.projectId}</td>
-    <td>{e.userId}</td>
-    <td>{e.date}</td>
-    <td>{e.hours}</td>
-    <td>{e.storyId}</td>
+    <td>{e.customerName}</td>
+    <td>{e.projectName}</td>
+    <td>{e.userName}</td>
+    <td>{e.timeEntry.date}</td>
+    <td>{e.timeEntry.hours}</td>
+    <td>{e.timeEntry.storyId}</td>
   </tr>
 </SortableTable>
 
