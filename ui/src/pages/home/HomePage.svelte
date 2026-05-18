@@ -3,15 +3,31 @@
   import {t} from 'i18n'
   import {user} from 'src/stores/auth'
   import Avatar from 'src/layout/Avatar.svelte'
-  import TimeEntryForm from 'src/pages/home/TimeEntryForm.svelte'
-  import {Link} from 'src/router'
+  import TimeEntryForm from 'src/pages/entries/TimeEntryForm.svelte'
+  import type {TimeEntry} from 'src/api/types'
+  import api from 'src/api/api'
+  import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
+
+  let currentDate = new Date().toISOString().slice(0, 10)
+  let timeEntries: TimeEntry[] = []
+  let timeEntry: TimeEntry = {date: currentDate} as TimeEntry
+
+  $: if(timeEntry.date) loadEntries(timeEntry.date)
+
+  async function loadEntries(date: string) {
+    timeEntries = await api.get(`projects/timeentries/date?date=${date}`)
+  }
+
 </script>
 
 <MainPageLayout class="flex flex-col items-center gap-4 lg:gap-8">
   {#if $user}
     Add your time entry
-    <TimeEntryForm/>
-    <a href = "/timeentries" class="btn default">{t.timeEntries.title} </a>
+    <TimeEntryForm bind:timeEntry />
+    {#if timeEntries.length > 0}
+      <TimeEntryTable timeEntries={timeEntries}/>
+    {/if}
+      <a href = "/timeentries" class="btn default">{t.timeEntries.title} </a>
   {:else}
     <div class="flex gap-2 items-center">
       <img src="/favicon.svg" class="size-14 sm:size-28 lg:size-40" title="Time Tracker Logo" alt="Logo">
