@@ -28,12 +28,13 @@
   onMount(
     async function loadProjects()  {
       projects = await api.get('projects?myProjects=true')
+      projects.sort((a,b) => a.customerName!.localeCompare(b.customerName!) || a.name.localeCompare(b.name))
     })
 
 </script>
 
   <Form {submit}>
-    <SelectField label={t.projects.project} bind:value={timeEntry.projectId} options={Object.values(projects).map(p => [p.id, p.customerName? `${p.name} ${p.customerName}` : p.name]).toObject()}/>
+    <SelectField label={t.projects.project} bind:value={timeEntry.projectId} options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>
     <FormField label={t.timeEntries.date} type="date" bind:value={timeEntry.date} />
     <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours}/>
     <FormField label={t.timeEntries.storyId} required={false} bind:value={timeEntry.storyId}/>
