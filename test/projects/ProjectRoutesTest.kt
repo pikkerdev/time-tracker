@@ -1,12 +1,12 @@
 package projects
 
-import ch.tutteli.atrium.api.fluent.en_GB.toContain
 import ch.tutteli.atrium.api.fluent.en_GB.toContainExactly
 import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.fluent.en_GB.toThrow
 import ch.tutteli.atrium.api.verbs.expect
 import db.BaseMocks
 import db.TestData.admin
+import db.TestData.date
 import db.TestData.project
 import db.TestData.projectMember
 import db.TestData.timeEntry
@@ -15,11 +15,8 @@ import io.mockk.every
 import io.mockk.verify
 import klite.ForbiddenException
 import org.junit.jupiter.api.Test
-import project.Project
 import project.ProjectMemberUser
 import project.ProjectRoutes
-import project.TimeEntry
-import java.sql.Time
 
 class ProjectRoutesTest: BaseMocks() {
   val routes = create<ProjectRoutes>()
@@ -90,7 +87,15 @@ class ProjectRoutesTest: BaseMocks() {
   @Test fun `list time entries`() {
     val timeEntries = listOf(timeEntry)
     every { timeEntryRepository.list() } returns listOf(timeEntry)
-    every { timeEntryRepository.forUser(user.id) } returns listOf(timeEntry)
+    every { timeEntryRepository.byUser(user.id) } returns listOf(timeEntry)
     expect (routes.listTimeEntry(user)).toEqual(timeEntries)
   }
+
+  @Test fun `list time entries by user and date`() {
+    val timeEntries = listOf(timeEntry)
+    every { timeEntryRepository.byUserAndDate(user.id, date) } returns listOf(timeEntry)
+    expect(routes.listTimeEntryByDateAndUser(user, date)).toEqual(timeEntries)
+
+  }
+
   }

@@ -8,6 +8,7 @@ import klite.annotations.*
 import users.AuthRole.*
 import users.User
 import users.UserRepository
+import java.time.LocalDate
 
 class ProjectRoutes(
   val projectRepository: ProjectRepository,
@@ -76,6 +77,10 @@ class ProjectRoutes(
 
   @GET("/timeentries") @Access(ADMIN, USER)
   fun listTimeEntry(@AttrParam user: User, @QueryParam myTimeEntries: Boolean? = false) =
-    if (myTimeEntries == true || user.authRole != ADMIN) timeEntryRepository.forUser(user.id)
+    if (myTimeEntries == true || user.authRole != ADMIN) timeEntryRepository.byUser(user.id)
     else timeEntryRepository.list()
+
+  @GET("/timeentries/date") @Access(ADMIN, USER)
+  fun listTimeEntryByDateAndUser(@AttrParam user: User, @QueryParam date: LocalDate) =
+    timeEntryRepository.byUserAndDate(user.id, date)
 }

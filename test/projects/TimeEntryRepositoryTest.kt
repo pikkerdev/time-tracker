@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test
 import project.ProjectRepository
 import project.TimeEntryRepository
 import users.UserRepository
-import kotlin.math.exp
 
 class TimeEntryRepositoryTest: DBTest() {
   val repository = TimeEntryRepository(db)
@@ -36,6 +35,7 @@ class TimeEntryRepositoryTest: DBTest() {
   @Test fun `list time entries`() {
     repository.save(timeEntry)
     expect(repository.list()).toContainExactly(timeEntry)
-    expect(repository.forUser(user.id)).toContainExactly(timeEntry)
+    expect(repository.byUser(user.id)).toContainExactly(timeEntry)
+    expect(repository.byUserAndDate(user.id, timeEntry.date)).toContainExactly(timeEntry)
   }
 }
