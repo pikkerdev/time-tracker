@@ -9,7 +9,7 @@
 
 <SortableTable columns={[
       [t.projects.project, e => e.customerName],
-      [t.projects.project, e => e.projectName],
+      [t.customers.customer, e => e.projectName],
       [t.users.name, e => e.userName],
       [t.timeEntries.date, e => e.timeEntry.date],
       [t.timeEntries.hours, e => e.timeEntry.hours],
