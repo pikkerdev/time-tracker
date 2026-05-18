@@ -11,7 +11,7 @@
   {#if $user}
     Add your time entry
     <TimeEntryForm/>
-    <a href = "/timeentries" class="inline-flex items-center gap-2 px-6 py-3 hover:bg-gray-500 hover:text-white rounded-lg transition-colors duration-200">{t.timeEntries.title} </a>
+    <a href = "/timeentries" class="btn default">{t.timeEntries.title} </a>
   {:else}
     <div class="flex gap-2 items-center">
       <img src="/favicon.svg" class="size-14 sm:size-28 lg:size-40" title="Time Tracker Logo" alt="Logo">
