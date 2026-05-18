@@ -4,7 +4,7 @@
   import {user} from 'src/stores/auth'
   import Avatar from 'src/layout/Avatar.svelte'
   import TimeEntryForm from 'src/pages/entries/TimeEntryForm.svelte'
-  import type {TimeEntry} from 'src/api/types'
+  import type {TimeEntry, TimeEntryView} from 'src/api/types'
   import api from 'src/api/api'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
 
@@ -12,7 +12,7 @@
 
   let currentDate = new Date().toISOString().slice(0, 10)
   let latestProjectId = localStorage.getItem(LAST_PROJECT_KEY) ?? undefined
-  let timeEntries: TimeEntry[] = []
+  let timeEntries: TimeEntryView[] = []
   let timeEntry: TimeEntry = {date: currentDate, projectId: latestProjectId} as TimeEntry
 
   $: if(timeEntry.date) loadEntries(timeEntry.date)
