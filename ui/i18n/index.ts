@@ -11,7 +11,7 @@ export function resolve(key: string, from: Record<string, any> = t): any {
 }
 
 function choosePreferredLang() {
-  let lang = localStorage['lang'] ?? navigator.language.split('-')[0]
+  let lang = localStorage?.['lang'] ?? navigator.language.split('-')[0]
   return langs.includes(lang) ? lang : langs[0]
 }
 
