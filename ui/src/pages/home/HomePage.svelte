@@ -18,7 +18,7 @@
   $: if(timeEntry.date) loadEntries(timeEntry.date)
 
   async function loadEntries(date: string) {
-    timeEntries = await api.get(`projects/timeentries/date?date=${date}`)
+    timeEntries = await api.get(`projects/timeentries?date=${date}`)
   }
 
 </script>

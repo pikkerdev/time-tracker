@@ -32,14 +32,14 @@
 
 <MainPageLayout class="relative flex flex-col gap-4" title={t.users.title}>
   <SortableTable columns={[
-    [t.users.name, u => u.firstName + ' ' + u.lastName],
+    [t.users.name, u => u.name],
     [t.users.email, 'email'],
     [t.users.role, 'authRole'],
     ['', '']
   ]} items={users} let:item>
     {@const isCurrentUser = $user.id === item.id}
     <tr>
-      <td>{item.firstName} {item.lastName}</td>
+      <td>{item.name}</td>
       <td>{item.email}</td>
       <td>
         {#if !isCurrentUser}

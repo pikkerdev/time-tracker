@@ -19,8 +19,8 @@ data class TimeEntry(
 ): Entity<TimeEntry>
 
 data class TimeEntryView(
-  val timeEntry: TimeEntry,
+  val entry: TimeEntry,
+  val customerName: String,
   val projectName: String,
-  val userName: String,
-  val customerName: String
+  val userName: String
 )

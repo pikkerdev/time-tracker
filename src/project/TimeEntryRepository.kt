@@ -2,32 +2,24 @@ package project
 
 import db.CrudRepository
 import db.Id
-import klite.jdbc.create
 import klite.jdbc.eq
 import klite.jdbc.select
+import klite.notNullValues
 import users.User
 import java.sql.ResultSet
 import java.time.LocalDate
 import javax.sql.DataSource
 
 class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_entry") {
+  private val viewFrom = "$table join projects p on projectId = p.id join users u on userId = u.id join customers c on p.customerId = c.id"
 
-  private val viewFrom = "$table join projects p on $table.projectId = p.id join users u on $table.userId = u.id join customers c on p.customerId = c.id"
+  fun listView(userId: Id<User>? = null, date: LocalDate? = null): List<TimeEntryView> =
+    db.select(viewFrom, notNullValues(TimeEntry::userId eq userId, TimeEntry:: date eq date)) { viewMapper() }
 
-  fun listView(): List<TimeEntryView> =
-    db.select(viewFrom) { viewTo() }
-
-  fun listViewByUser(userId: Id<User>): List<TimeEntryView> =
-    db.select(viewFrom, TimeEntry::userId eq userId) { viewTo() }
-
-  fun listViewByUserAndDate(userId: Id<User>, date: LocalDate): List<TimeEntryView> =
-    db.select(viewFrom, TimeEntry::userId eq userId, TimeEntry:: date eq date) { viewTo() }
-
-  private fun ResultSet.viewTo() = TimeEntryView(
-    timeEntry = create(),
+  private fun ResultSet.viewMapper() = TimeEntryView(
+    entry = mapper(),
+    customerName = getString("c.name"),
     projectName = getString("p.name"),
-    userName = getString("u.firstName") + " " + getString("u.lastName"),
-    customerName = getString("c.name")
+    userName = getString("u.firstName") + " " + getString("u.lastName")
   )
-
 }

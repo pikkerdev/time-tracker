@@ -19,7 +19,7 @@
   export let timeEntry:  TimeEntry = {date: currentDate} as TimeEntry
 
   async function submit() {
-    timeEntry = await api.post('projects/timeentry', timeEntry)
+    timeEntry = await api.post('projects/timeentries', timeEntry)
     localStorage.setItem(LAST_PROJECT_KEY, timeEntry.projectId)
     showToast(t.general.saved)
     timeEntry = {date: currentDate, projectId: timeEntry.projectId} as TimeEntry

@@ -24,4 +24,5 @@ data class User(
   override val id: Id<User> = Id()
 ): Entity<User>, OAuthUser, UpdatableEntity {
   val isAdmin get() = authRole == AuthRole.ADMIN
+  val name get() = "$firstName $lastName"
 }

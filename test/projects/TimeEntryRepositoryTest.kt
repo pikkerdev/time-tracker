@@ -1,5 +1,6 @@
 package projects
 
+import ch.tutteli.atrium.api.fluent.en_GB.toBeEmpty
 import ch.tutteli.atrium.api.fluent.en_GB.toContainExactly
 import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
@@ -36,7 +37,8 @@ class TimeEntryRepositoryTest: DBTest() {
   @Test fun `list time entries`() {
     repository.save(timeEntry)
     expect(repository.listView()).toContainExactly(timeEntryView)
-    expect(repository.listViewByUser(user.id)).toContainExactly(timeEntryView)
-    expect(repository.listViewByUserAndDate(user.id, timeEntry.date)).toContainExactly(timeEntryView)
+    expect(repository.listView(user.id)).toContainExactly(timeEntryView)
+    expect(repository.listView(user.id, timeEntry.date)).toContainExactly(timeEntryView)
+    expect(repository.listView(user.id, timeEntry.date.plusDays(3))).toBeEmpty()
   }
 }

@@ -11,9 +11,9 @@
       [t.customers.customer, e => e.customerName],
       [t.projects.project, e => e.projectName],
       [t.users.name, e => e.userName],
-      [t.timeEntries.date, e => e.timeEntry.date],
-      [t.timeEntries.hours, e => e.timeEntry.hours],
-      [t.timeEntries.storyId, e => e.timeEntry.storyId]
+      [t.timeEntries.date, e => e.entry.date],
+      [t.timeEntries.hours, e => e.entry.hours],
+      [t.timeEntries.storyId, e => e.entry.storyId]
       ]
     }
   ]} items={timeEntries} let:item={e}>
@@ -21,9 +21,9 @@
     <td>{e.customerName}</td>
     <td>{e.projectName}</td>
     <td>{e.userName}</td>
-    <td>{e.timeEntry.date}</td>
-    <td>{e.timeEntry.hours}</td>
-    <td>{e.timeEntry.storyId}</td>
+    <td>{e.entry.date}</td>
+    <td>{e.entry.hours}</td>
+    <td>{e.entry.storyId}</td>
   </tr>
 </SortableTable>
 

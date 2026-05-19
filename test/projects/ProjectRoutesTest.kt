@@ -81,16 +81,15 @@ class ProjectRoutesTest: BaseMocks() {
   @Test fun `add time entry`() {
     every { projectMemberRepository.find(project.id, user.id) } returns projectMember
     val rate = project.hourlyRates.getValue(projectMember.role)
-    routes.addTimeEntry(user, timeEntry)
+    routes.saveTimeEntry(user, timeEntry)
     verify { timeEntryRepository.save(timeEntry.copy(userId = user.id, hourlyRate = rate)) }
   }
 
   @Test fun `list time entries`() {
     val timeEntries = listOf(timeEntryView)
     every { timeEntryRepository.listView() } returns listOf(timeEntryView)
-    every { timeEntryRepository.listViewByUser(user.id) } returns listOf(timeEntryView)
-    every { timeEntryRepository.listViewByUserAndDate(user.id, date) }  returns listOf(timeEntryView)
-    expect (routes.listTimeEntryByDateAndUser(user, date)).toEqual(timeEntries)
-    expect (routes.listTimeEntry(user)).toEqual(timeEntries)
+    every { timeEntryRepository.listView(user.id) } returns listOf(timeEntryView)
+    every { timeEntryRepository.listView(user.id, date) }  returns listOf(timeEntryView)
+    expect (routes.timeEntries(user, myTimeEntries = true, date)).toEqual(timeEntries)
   }
-  }
+}

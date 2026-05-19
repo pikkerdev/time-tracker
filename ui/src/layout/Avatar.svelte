@@ -11,7 +11,7 @@
   <Dropdown class="right-0 z-50!" bind:open={isDropDownOpen}>
     <Button class="gap-2 default">
       <img src={$user.avatarUrl} alt="" class="rounded-full w-8">
-      {$user.firstName + " " + $user.lastName}
+      {$user.name}
     </Button>
     <svelte:fragment slot="open">
       <div class="py-0.5 px-1">

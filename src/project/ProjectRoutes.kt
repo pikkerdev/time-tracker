@@ -47,6 +47,7 @@ class ProjectRoutes(
   @POST("/:id/members/:memberId") @Access(ADMIN)
   fun save(@PathParam id: Id<Project>, @PathParam memberId: Id<ProjectMember>, projectMember: ProjectMember): ProjectMemberUser {
     require(memberId == projectMember.id ) { "Wrong id" }
+    // TODO: check id
     projectMemberRepository.save(projectMember)
     val user = userRepository.get(projectMember.userId)
     return ProjectMemberUser(projectMember, user)
@@ -65,8 +66,8 @@ class ProjectRoutes(
   fun deleteMember(@PathParam id: Id<ProjectMember>) =
     projectMemberRepository.delete(id)
 
-  @POST("/timeentry") @Access(ADMIN, USER)
-  fun addTimeEntry (@AttrParam user: User, timeEntry: TimeEntry) : TimeEntry {
+  @POST("/timeentries") @Access(ADMIN, USER)
+  fun saveTimeEntry(@AttrParam user: User, timeEntry: TimeEntry): TimeEntry {
     val project = projectRepository.get(timeEntry.projectId)
     val member = projectMemberRepository.find(timeEntry.projectId, user.id) ?: throw NotFoundException("general.notFound")
     val rate = project.hourlyRates[member.role] ?: throw NotFoundException("general.notFound")
@@ -76,11 +77,7 @@ class ProjectRoutes(
   }
 
   @GET("/timeentries") @Access(ADMIN, USER)
-  fun listTimeEntry(@AttrParam user: User, @QueryParam myTimeEntries: Boolean? = false) =
-    if (myTimeEntries == true || user.authRole != ADMIN) timeEntryRepository.listViewByUser(user.id)
-    else timeEntryRepository.listView()
-
-  @GET("/timeentries/date") @Access(ADMIN, USER)
-  fun listTimeEntryByDateAndUser(@AttrParam user: User, @QueryParam date: LocalDate) =
-    timeEntryRepository.listViewByUserAndDate(user.id, date)
+  fun timeEntries(@AttrParam user: User, @QueryParam myTimeEntries: Boolean? = false, @QueryParam date: LocalDate? = null) =
+    if (myTimeEntries == true || user.authRole != ADMIN) timeEntryRepository.listView(user.id, date)
+    else timeEntryRepository.listView(date = date)
 }
