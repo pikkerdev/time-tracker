@@ -3,8 +3,8 @@ package project
 import db.Entity
 import db.Id
 import klite.Decimal
+import klite.Decimal.Companion.ZERO
 import users.User
-import java.math.BigInteger
 import java.time.LocalDate
 
 data class TimeEntry(
@@ -12,7 +12,7 @@ data class TimeEntry(
   val userId: Id<User> = Id(),
   val date: LocalDate = LocalDate.now(),
   val hours: Decimal,
-  val hourlyRate: Decimal,
+  val hourlyRate: Decimal = ZERO,
   val storyId: Long? = null,
   val description: String? = null,
   override val id: Id<TimeEntry> = Id()
