@@ -4,29 +4,28 @@
   import {user} from 'src/stores/auth'
   import Avatar from 'src/layout/Avatar.svelte'
   import TimeEntryForm from 'src/pages/entries/TimeEntryForm.svelte'
-  import type {TimeEntry, TimeEntryView} from 'src/api/types'
+  import type {LocalDate, TimeEntry, TimeEntryView} from 'src/api/types'
   import api from 'src/api/api'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
 
   const LAST_PROJECT_KEY = 'lastProjectId'
 
-  let currentDate = new Date().toISOString().slice(0, 10)
+  let date = new Date().toISOString().slice(0, 10) as LocalDate
   let latestProjectId = localStorage.getItem(LAST_PROJECT_KEY) ?? undefined
   let timeEntries: TimeEntryView[] = []
-  let timeEntry: TimeEntry = {date: currentDate, projectId: latestProjectId} as TimeEntry
+  let timeEntry: TimeEntry = {date, projectId: latestProjectId} as TimeEntry
 
-  $: if(timeEntry.date) loadEntries(timeEntry.date)
+  $: loadEntries(date)
 
   async function loadEntries(date: string) {
     timeEntries = await api.get(`projects/timeentries?date=${date}`)
   }
-
 </script>
 
 <MainPageLayout class="flex flex-col items-center gap-4 lg:gap-8">
   {#if $user}
     Add your time entry
-    <TimeEntryForm bind:timeEntry />
+    <TimeEntryForm bind:timeEntry bind:date/>
     {#if timeEntries.length > 0}
       <TimeEntryTable timeEntries={timeEntries}/>
     {/if}

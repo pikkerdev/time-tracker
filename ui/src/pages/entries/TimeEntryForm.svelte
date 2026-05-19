@@ -2,7 +2,7 @@
   import Form from 'src/forms/Form.svelte'
   import SelectField from 'src/forms/SelectField.svelte'
   import {t} from 'i18n'
-  import type {Project, TimeEntry} from 'src/api/types'
+  import type {LocalDate, Project, TimeEntry} from 'src/api/types'
   import {onMount} from 'svelte'
   import FormField from 'src/forms/FormField.svelte'
   import NumberField from 'src/forms/NumberField.svelte'
@@ -13,16 +13,18 @@
 
   const LAST_PROJECT_KEY = 'lastProjectId'
 
-  let currentDate = new Date().toISOString().slice(0, 10)
-  let projects: Project[] = []
+  export let date: LocalDate
+  export let timeEntry:  TimeEntry = {date} as TimeEntry
 
-  export let timeEntry:  TimeEntry = {date: currentDate} as TimeEntry
+  $: timeEntry.date = date
+
+  let projects: Project[] = []
 
   async function submit() {
     timeEntry = await api.post('projects/timeentries', timeEntry)
     localStorage.setItem(LAST_PROJECT_KEY, timeEntry.projectId)
     showToast(t.general.saved)
-    timeEntry = {date: currentDate, projectId: timeEntry.projectId} as TimeEntry
+    timeEntry = {date, projectId: timeEntry.projectId} as TimeEntry
   }
 
   onMount(
@@ -33,11 +35,11 @@
 
 </script>
 
-  <Form {submit}>
-    <SelectField label={t.projects.project} bind:value={timeEntry.projectId} options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>
-    <FormField label={t.timeEntries.date} type="date" bind:value={timeEntry.date} />
-    <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours}/>
-    <FormField label={t.timeEntries.storyId} required={false} bind:value={timeEntry.storyId}/>
-    <TextAreaField label={t.timeEntries.description} required={false} bind:value={timeEntry.description}/>
-    <Button type="submit" label={t.general.save} class="primary"/>
-  </Form>
+<Form {submit}>
+  <SelectField label={t.projects.project} bind:value={timeEntry.projectId} options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>
+  <FormField label={t.timeEntries.date} type="date" bind:value={date}/>
+  <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours}/>
+  <FormField label={t.timeEntries.storyId} required={false} bind:value={timeEntry.storyId}/>
+  <TextAreaField label={t.timeEntries.description} required={false} bind:value={timeEntry.description}/>
+  <Button type="submit" label={t.general.save} class="primary"/>
+</Form>
