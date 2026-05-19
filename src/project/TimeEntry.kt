@@ -12,7 +12,7 @@ data class TimeEntry(
   val userId: Id<User> = Id(),
   val date: LocalDate = LocalDate.now(),
   val hours: Double,
-  val storyId: BigInteger? = null,
+  val storyId: Long? = null,
   val description: String? = null,
   val hourlyRate: Decimal = Decimal.ZERO,
   override val id: Id<TimeEntry> = Id()

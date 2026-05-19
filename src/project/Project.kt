@@ -16,7 +16,7 @@ data class Project(
   val description: String? = null,
   val hourlyRates: Map<ProjectMember.Role, Decimal>,
   val currency: Currency = EUR,
-  val storyTrackerId: Int? = null,
+  val storyTrackerId: Long? = null,
   @JsonProperty(readOnly = true) val customerName: String? = null,
   override val id: Id<Project> = Id()
 ): Entity<Project>
