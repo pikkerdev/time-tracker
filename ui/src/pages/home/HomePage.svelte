@@ -29,7 +29,6 @@
     {#if timeEntries.length > 0}
       <TimeEntryTable timeEntries={timeEntries}/>
     {/if}
-      <a href = "/timeentries" class="btn default">{t.timeEntries.title} </a>
   {:else}
     <div class="flex gap-2 items-center">
       <img src="/favicon.svg" class="size-14 sm:size-28 lg:size-40" title="Time Tracker Logo" alt="Logo">

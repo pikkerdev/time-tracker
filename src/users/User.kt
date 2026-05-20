@@ -23,6 +23,7 @@ data class User(
   override var updatedAt: Instant? = null,
   override val id: Id<User> = Id()
 ): Entity<User>, OAuthUser, UpdatableEntity {
+  val isUser get() = authRole == AuthRole.USER
   val isAdmin get() = authRole == AuthRole.ADMIN
   val name get() = "$firstName $lastName"
 }
