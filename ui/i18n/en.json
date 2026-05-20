@@ -82,6 +82,7 @@
     "date": "Date",
     "hours": "Hours",
     "storyId": "Story Id",
-    "description": "Description"
+    "description": "Description",
+    "showMyTimeEntries": "Show my time entries"
   }
 }
