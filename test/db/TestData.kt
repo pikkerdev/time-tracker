@@ -22,6 +22,6 @@ object TestData {
   val customer = Customer("Customer1")
   val project = Project(customer.id, "Project1", hourlyRates = mapOf(DEVELOPER to 88.d), customerName = customer.name)
   val projectMember = ProjectMember(project.id, user.id, DEVELOPER, createdAt = now)
-  val timeEntry = TimeEntry(project.id, user.id, date, 7.5.d, hourlyRate = 88.d, id = Id())
+  val timeEntry = TimeEntry(project.id, user.id, date, 7.5.d, hourlyRate = 88.d)
   val timeEntryView = TimeEntryView(timeEntry, customer.name, project.name, user.name)
 }

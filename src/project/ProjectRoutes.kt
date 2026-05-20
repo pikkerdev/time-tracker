@@ -2,6 +2,7 @@ package project
 
 import auth.Access
 import db.Id
+import klite.Decimal
 import klite.ForbiddenException
 import klite.NotFoundException
 import klite.annotations.*
@@ -62,7 +63,7 @@ class ProjectRoutes(
   fun members(@PathParam id: Id<Project>): List<ProjectMemberUser> =
     projectMemberRepository.list(id)
 
-  @DELETE("/member/:id") @Access(ADMIN)
+  @DELETE("/member/:id") @Access(ADMIN) // TODO: memberS and projectId
   fun deleteMember(@PathParam id: Id<ProjectMember>) =
     projectMemberRepository.delete(id)
 
@@ -80,4 +81,8 @@ class ProjectRoutes(
   fun timeEntries(@AttrParam user: User, @QueryParam myTimeEntries: Boolean? = false, @QueryParam date: LocalDate? = null) =
     if (myTimeEntries == true || user.authRole != ADMIN) timeEntryRepository.listView(user.id, date)
     else timeEntryRepository.listView(date = date)
+
+  @GET("/timeentries/user") @Access(ADMIN, USER)
+  fun userTimes(@AttrParam user: User, @QueryParam from: LocalDate): Map<LocalDate, Decimal> =
+    timeEntryRepository.userTimes(user.id, from)
 }

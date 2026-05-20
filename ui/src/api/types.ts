@@ -20,7 +20,7 @@ export interface TimeEntryView {customerName: string; entry: TimeEntry; projectN
 // class users.AuthRole
 export enum AuthRole {ADMIN = 'ADMIN', USER = 'USER', EXTERNAL = 'EXTERNAL'}
 // class users.User
-export interface User {authRole: AuthRole; avatarUrl?: URI; createdAt: Instant; email: Email; firstName: string; id: Id<User>; isAdmin: boolean; lastName: string; name: string; updatedAt?: Instant}
+export interface User {authRole: AuthRole; avatarUrl?: URI; createdAt: Instant; email: Email; firstName: string; id: Id<User>; isAdmin: boolean; isUser: boolean; lastName: string; name: string; updatedAt?: Instant}
 
 // java.time.LocalDate
 export type LocalDate = `${number}-${number}-${number}`
