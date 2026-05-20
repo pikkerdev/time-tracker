@@ -23,10 +23,6 @@
     projects = await api.get(url)
   }
 
-  onMount(async () => {
-    await load(customerId)
-  })
-
   $: {load(customerId, isMyProjects)}
 </script>
 
