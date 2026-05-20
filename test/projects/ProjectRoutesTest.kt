@@ -24,44 +24,34 @@ class ProjectRoutesTest: BaseMocks() {
 
   @Test fun get() {
     expect(routes.get(project.id, admin)).toEqual(project)
-    every{ projectMemberRepository.isMember(project.id, user.id) } returns true
+    every { projectMemberRepository.isMember(project.id, user.id) } returns true
     expect(routes.get(project.id, user)).toEqual(project)
-  }
 
-  @Test fun `get access forbidden`(){
-    every{ projectMemberRepository.isMember(project.id, user.id) } returns false
+    every { projectMemberRepository.isMember(project.id, user.id) } returns false
     expect { routes.get(project.id, user) }.toThrow<ForbiddenException>()
   }
 
-  @Test fun create() {
+  @Test fun `create and save`() {
     val newProject = routes.create(user, project)
     expect(newProject).toEqual(project)
     verify {
       projectRepository.save(newProject)
-      projectMemberRepository.save(match {
-        it.projectId == project.id && it.userId == user.id
-      })
+      projectMemberRepository.save(match { it.projectId == project.id && it.userId == user.id })
     }
-  }
 
-  @Test fun save() {
-    val updatedProject = project.copy(name = "Updated name")
-    val newProject = routes.save(updatedProject, project.id)
-    expect(newProject).toEqual(updatedProject)
+    val project =(project.copy(name = "Updated name"))
+    val updatedProject = routes.save(project, project.id)
+    expect(updatedProject).toEqual(project)
     verify { projectRepository.save(updatedProject) }
   }
 
-  @Test fun `list for member`() {
+  @Test fun `list projects`() {
     every { projectRepository.forMember(user.id) } returns listOf(project)
     expect(routes.list(user)).toContainExactly(project)
-  }
 
-  @Test fun `list for admin`() {
     every { projectRepository.list() } returns listOf(project)
     expect(routes.list(admin)).toContainExactly(project)
-  }
 
-  @Test fun `list own projects for admin`() {
     every { projectRepository.forMember(admin.id) } returns listOf(project)
     expect(routes.list(admin, myProjects = true)).toContainExactly(project)
   }
@@ -71,9 +61,7 @@ class ProjectRoutesTest: BaseMocks() {
     val projectMembers = listOf(projectMemberUser)
     every { projectMemberRepository.list(project.id) } returns projectMembers
     expect(routes.members(project.id)).toEqual(projectMembers)
-  }
 
-  @Test fun `delete member`() {
     routes.deleteMember(projectMember.id)
     verify { projectMemberRepository.delete(projectMember.id) }
   }
