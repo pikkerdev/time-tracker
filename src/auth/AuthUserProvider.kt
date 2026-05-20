@@ -19,17 +19,18 @@ class AuthUserProvider(
   override fun provide(profile: UserProfile, tokenResponse: OAuthTokenResponse, exchange: HttpExchange): OAuthUser {
     val email = profile.email.toString()
 
-    val authRole = when {
-      admins.contains(email) -> AuthRole.ADMIN
-      email.endsWith("@$users") -> AuthRole.USER
-      else -> AuthRole.EXTERNAL
-    }
+
     var user = userRepository.by(User::email to profile.email)
     if (user == null) {
+      val authRole = when {
+        admins.contains(email) -> AuthRole.ADMIN
+        email.endsWith("@$users") -> AuthRole.USER
+        else -> AuthRole.EXTERNAL
+      }
       user = User(profile.firstName, profile.lastName, profile.email, authRole, profile.avatarUrl)
       userRepository.save(user)
     } else {
-      user = user.copy(authRole = authRole)
+      user = user.copy(authRole = user.authRole)
     }
     userRepository.save(user)
     return user
