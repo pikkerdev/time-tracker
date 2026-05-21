@@ -14,10 +14,12 @@ import db.TestData.timeEntryView
 import db.TestData.user
 import io.mockk.every
 import io.mockk.verify
+import klite.Decimal
 import klite.ForbiddenException
 import org.junit.jupiter.api.Test
 import project.ProjectMemberUser
 import project.ProjectRoutes
+import java.time.LocalDate
 
 class ProjectRoutesTest: BaseMocks() {
   val routes = create<ProjectRoutes>()
@@ -79,5 +81,17 @@ class ProjectRoutesTest: BaseMocks() {
     every { timeEntryRepository.listView(user.id) } returns listOf(timeEntryView)
     every { timeEntryRepository.listView(user.id, date) }  returns listOf(timeEntryView)
     expect (routes.timeEntries(user, myTimeEntries = true, date)).toEqual(timeEntries)
+  }
+
+  @Test fun `user times`() {
+    val userTimes = mapOf(LocalDate.now() to Decimal(7.0), LocalDate.now().minusDays(1) to Decimal(2.0))
+    val from = LocalDate.now().minusDays(1)
+    every { timeEntryRepository.userTimes(user.id, from) } returns userTimes
+    expect (routes.userTimes(user, from)).toEqual(userTimes)
+
+    val userTime = mapOf(LocalDate.now() to Decimal(7.0))
+    val singleDay = LocalDate.now()
+    every { timeEntryRepository.userTimes(user.id, singleDay) } returns userTime
+    expect(routes.userTimes(user, singleDay)).toEqual(userTime)
   }
 }
