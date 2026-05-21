@@ -7,6 +7,8 @@
   import type {LocalDate, TimeEntry, TimeEntryView} from 'src/api/types'
   import api from 'src/api/api'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
+  import SortableTable from 'src/components/SortableTable.svelte'
+  import TimeEntryCalander from 'src/pages/entries/TimeEntryCalander.svelte'
 
   const LAST_PROJECT_KEY = 'lastProjectId'
 
@@ -14,21 +16,33 @@
   let latestProjectId = localStorage.getItem(LAST_PROJECT_KEY) ?? undefined
   let timeEntries: TimeEntryView[] = []
   let timeEntry: TimeEntry = {date, projectId: latestProjectId} as TimeEntry
+  let timeEntryHours: Record<LocalDate, Number> = {}
+
+  let last30Days = Array.from({length: 30}, (_, i) => {
+    let d = new Date()
+    d.setDate(d.getDate() - i)
+    return d.toISOString().slice(0, 10) as LocalDate
+  })
 
   $: loadEntries(date)
 
   async function loadEntries(date: string) {
     timeEntries = await api.get(`projects/timeentries?myTimeEntries=true&date=${date}`)
+    timeEntryHours = await api.get(`projects/timeentries/user?from=${'2026-05-01'}`)
   }
 </script>
 
-<MainPageLayout class="flex flex-col items-center gap-4 lg:gap-8">
+<MainPageLayout class="flex flex-col gap-4 lg:gap-8">
   {#if $user}
-    Add your time entry
-    <TimeEntryForm bind:timeEntry bind:date/>
-    {#if timeEntries.length > 0}
-      <TimeEntryTable timeEntries={timeEntries}/>
-    {/if}
+    <div class="flex justify-between gap-8 w-full">
+      <div class="flex flex-col gap-4">
+        <TimeEntryCalander bind:chosenDate={date} dates={last30Days} {timeEntryHours}/>
+        {#if timeEntries.length > 0}
+          <TimeEntryTable timeEntries={timeEntries}/>
+        {/if}
+      </div>
+      <TimeEntryForm bind:timeEntry bind:date/>
+    </div>
   {:else}
     <div class="flex gap-2 items-center">
       <img src="/favicon.svg" class="size-14 sm:size-28 lg:size-40" title="Time Tracker Logo" alt="Logo">

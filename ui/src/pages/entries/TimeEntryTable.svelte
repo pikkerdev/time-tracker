@@ -15,8 +15,7 @@
       [t.timeEntries.hours, e => e.entry.hours],
       [t.timeEntries.storyId, e => e.entry.storyId]
       ]
-    }
-  ]} items={timeEntries} let:item={e}>
+    } items={timeEntries} let:item={e}>
   <tr>
     <td>{e.customerName}</td>
     <td>{e.projectName}</td>

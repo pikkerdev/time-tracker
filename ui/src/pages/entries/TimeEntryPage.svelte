@@ -27,7 +27,7 @@
   <div slot="title" class="flex items-center gap-4">
     {#if $user.isAdmin}
       {t.timeEntries.showMyTimeEntries}
-      <input type="checkbox" onchange={() => myTimeEntries = !myTimeEntries}/>
+      <input type="checkbox" class="border border-gray-300 rounded-lg" onchange={() => myTimeEntries = !myTimeEntries}/>
     {/if}
   </div>
   <TimeEntryTable {timeEntries}/>
