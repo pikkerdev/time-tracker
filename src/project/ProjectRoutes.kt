@@ -10,6 +10,7 @@ import users.AuthRole.*
 import users.User
 import users.UserRepository
 import java.time.LocalDate
+import kotlin.math.sin
 
 class ProjectRoutes(
   val projectRepository: ProjectRepository,
@@ -83,6 +84,6 @@ class ProjectRoutes(
     else timeEntryRepository.listView(date = date)
 
   @GET("/timeentries/user") @Access(ADMIN, USER)
-  fun userTimes(@AttrParam user: User, @QueryParam from: LocalDate): Map<LocalDate, Decimal> =
-    timeEntryRepository.userTimes(user.id, from)
+  fun userTimes(@AttrParam user: User, @QueryParam from: LocalDate? = null, @QueryParam singleDate: LocalDate? = null ): Map<LocalDate, Decimal> =
+    timeEntryRepository.userTimes(user.id, from, singleDate)
 }
