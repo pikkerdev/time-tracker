@@ -62,11 +62,7 @@ class TimeEntryRepositoryTest: DBTest() {
     expect(repository.userTimes(user.id, singleDay = yesterday)).toEqual(mapOf(yesterday to Decimal(7.0)))
     expect(repository.userTimes(user.id, singleDay = twoDaysAgo)).toEqual(mapOf(twoDaysAgo to Decimal(2.0)))
 
-    val userTimes: Map<LocalDate, Decimal> = mapOf(
-      yesterday to Decimal(7.0),
-      twoDaysAgo to Decimal(2.0)
-    )
-
-    expect(repository.userTimes(user.id, twoDaysAgo, today)).toEqual(userTimes)
+    val userTimes: Map<LocalDate, Decimal> = mapOf(yesterday to Decimal(7.0), twoDaysAgo to Decimal(2.0))
+    expect(repository.userTimes(user.id, from = twoDaysAgo)).toEqual(userTimes)
   }
 }
