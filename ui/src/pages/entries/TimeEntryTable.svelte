@@ -4,14 +4,16 @@
   import SortableTable from 'src/components/SortableTable.svelte'
 
   export let timeEntries: TimeEntryView[]
+  export let showUser = true
+  export let showDate = true
 
 </script>
 
 <SortableTable columns={[
       [t.customers.customer, e => e.customerName],
       [t.projects.project, e => e.projectName],
-      [t.users.name, e => e.userName],
-      [t.timeEntries.date, e => e.entry.date],
+      showUser && [t.users.name, e => e.userName],
+      showDate && [t.timeEntries.date, e => e.entry.date],
       [t.timeEntries.hours, e => e.entry.hours],
       [t.timeEntries.storyId, e => e.entry.storyId]
       ]
@@ -19,8 +21,12 @@
   <tr>
     <td>{e.customerName}</td>
     <td>{e.projectName}</td>
-    <td>{e.userName}</td>
-    <td>{e.entry.date}</td>
+    {#if showUser }
+      <td>{e.userName}</td>
+    {/if}
+    {#if showDate}
+      <td>{e.entry.date}</td>
+    {/if}
     <td>{e.entry.hours}</td>
     <td>{e.entry.storyId}</td>
   </tr>

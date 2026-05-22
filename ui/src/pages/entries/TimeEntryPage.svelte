@@ -31,6 +31,6 @@
   <div class="flex flex-col gap-4 items-center">
     <TimeEntryCalendar bind:date {dates} {timeEntryHours}/>
     <TimeEntryForm bind:timeEntry/>
-    <TimeEntryTable {timeEntries}/>
+    <TimeEntryTable {timeEntries} showUser = {false} showDate = {false}/>
   </div>
 </MainPageLayout>
