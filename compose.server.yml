@@ -1,6 +1,6 @@
 services:
   app:
-    image: time-tracker-app
+    image: ghcr.io/pikkerdev/time-tracker
     environment:
       - ENV=prod
       - NUM_WORKERS
