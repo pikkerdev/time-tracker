@@ -13,10 +13,7 @@
 
   const LAST_PROJECT_KEY = 'lastProjectId'
 
-  export let date: LocalDate
-  export let timeEntry:  TimeEntry = {date} as TimeEntry
-
-  $: timeEntry.date = date
+  export let timeEntry: TimeEntry
 
   let projects: Project[] = []
 
@@ -24,7 +21,7 @@
     timeEntry = await api.post('projects/timeentries', timeEntry)
     localStorage.setItem(LAST_PROJECT_KEY, timeEntry.projectId)
     showToast(t.general.saved)
-    timeEntry = {date, projectId: timeEntry.projectId} as TimeEntry
+    timeEntry = {date: timeEntry.date, projectId: timeEntry.projectId} as TimeEntry
   }
 
   onMount(
@@ -32,12 +29,10 @@
       projects = await api.get('projects?myProjects=true')
       projects.sort((a,b) => a.customerName!.localeCompare(b.customerName!) || a.name.localeCompare(b.name))
     })
-
 </script>
 
 <Form {submit} class="min-w-1/4 max-w-96 spaced">
   <SelectField label={t.projects.project} bind:value={timeEntry.projectId} options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>
-  <FormField label={t.timeEntries.date} type="date" bind:value={date}/>
   <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours}/>
   <FormField label={t.timeEntries.storyId} required={false} bind:value={timeEntry.storyId}/>
   <TextAreaField label={t.timeEntries.description} required={false} bind:value={timeEntry.description}/>

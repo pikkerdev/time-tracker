@@ -21,6 +21,7 @@
   let dates = Array.from({length: 28}, (_, i) =>
     toISODate(new Date(), d => d.setDate(d.getDate() - i))).toReversed()
 
+  $: timeEntry.date = date
   $: loadEntries(date)
 
   async function loadEntries(date: string) {
@@ -33,7 +34,7 @@
   {#if $user}
     <div class="flex flex-col gap-4 items-center">
       <TimeEntryCalander bind:date {dates} {timeEntryHours}/>
-      <TimeEntryForm bind:timeEntry bind:date/>
+      <TimeEntryForm bind:timeEntry/>
       <TimeEntryTable {timeEntries}/>
     </div>
   {:else}
