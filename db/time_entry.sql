@@ -19,3 +19,6 @@ create index on time_entry(projectId);
 
 --changeset time_entry_user_idx
 create index on time_entry(userId);
+
+--changeset time_entry.tags
+alter table time_entry add column tags text[] default '{}' not null;

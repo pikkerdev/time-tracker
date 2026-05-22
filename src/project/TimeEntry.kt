@@ -15,6 +15,7 @@ data class TimeEntry(
   val hourlyRate: Decimal = ZERO,
   val storyId: Long? = null,
   val description: String? = null,
+  val tags: List<String> = emptyList(),
   override val id: Id<TimeEntry> = Id()
 ): Entity<TimeEntry>
 
