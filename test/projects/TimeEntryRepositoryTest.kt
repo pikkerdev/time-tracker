@@ -11,8 +11,12 @@ import db.TestData.customer
 import db.TestData.project
 import db.TestData.timeEntry
 import db.TestData.timeEntryView
+import db.TestData.today
+import db.TestData.twoDaysAgo
 import db.TestData.user
+import db.TestData.yesterday
 import klite.Decimal
+import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import project.ProjectRepository
@@ -46,23 +50,19 @@ class TimeEntryRepositoryTest: DBTest() {
   }
 
   @Test fun `user times`() {
-    val today = LocalDate.now()
-    val yesterday = today.minusDays(1)
-    val twoDaysAgo = today.minusDays(2)
-
-    val entry = timeEntry.copy(date = yesterday, hours = Decimal(3.0), id = Id())
-    val entry2 = timeEntry.copy(date = yesterday, hours = Decimal(4.0), id = Id())
-    val entry3 = timeEntry.copy(date = twoDaysAgo, hours = Decimal(2.0), id = Id())
+    val entry = timeEntry.copy(date = yesterday, hours = 3.d, id = Id())
+    val entry2 = timeEntry.copy(date = yesterday, hours = 4.d, id = Id())
+    val entry3 = timeEntry.copy(date = twoDaysAgo, hours = 2.d, id = Id())
 
     repository.save(entry)
     repository.save(entry2)
     repository.save(entry3)
 
-    expect(repository.userTimes(user.id, singleDay = today)).toBeEmpty()
-    expect(repository.userTimes(user.id, singleDay = yesterday)).toEqual(mapOf(yesterday to Decimal(7.0)))
-    expect(repository.userTimes(user.id, singleDay = twoDaysAgo)).toEqual(mapOf(twoDaysAgo to Decimal(2.0)))
+    expect(repository.userTimes(user.id, from = today, until = today)).toBeEmpty()
+    expect(repository.userTimes(user.id, until = yesterday)).toEqual(mapOf(yesterday to 7.d))
+    expect(repository.userTimes(user.id, until = twoDaysAgo)).toEqual(mapOf(twoDaysAgo to 2.d))
 
-    val userTimes: Map<LocalDate, Decimal> = mapOf(yesterday to Decimal(7.0), twoDaysAgo to Decimal(2.0))
+    val userTimes = mapOf(yesterday to Decimal(7.0), twoDaysAgo to 2.d)
     expect(repository.userTimes(user.id, from = twoDaysAgo)).toEqual(userTimes)
   }
 }

@@ -13,6 +13,10 @@ import java.time.ZoneOffset.UTC
 
 /** Immutable domain object samples for unit tests */
 object TestData {
+  val today = LocalDate.now()
+  val yesterday = today.minusDays(1)
+  val twoDaysAgo = today.minusDays(2)
+
   val date = LocalDate.of(2026, 3, 3)
   val now = date.atStartOfDay().toInstant(UTC)
 

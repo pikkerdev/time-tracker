@@ -3,6 +3,7 @@ package project
 import db.CrudRepository
 import db.Id
 import klite.Decimal
+import klite.jdbc.Between
 import klite.jdbc.eq
 import klite.jdbc.getLocalDate
 import klite.jdbc.query
@@ -27,13 +28,10 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
     userName = getString("u.firstName") + " " + getString("u.lastName")
   )
 
-  fun userTimes(userId: Id<User>, from: LocalDate? = LocalDate.now().minusDays(30), singleDay: LocalDate? = null): Map<LocalDate, Decimal> {
-    val queryArgs = mutableListOf<Pair<Any, Any?>>(TimeEntry::userId to userId)
-    if (singleDay != null) queryArgs.add(TimeEntry::date to singleDay)
-    return db.query(
+  fun userTimes(userId: Id<User>, from: LocalDate = LocalDate.now().minusDays(30), until: LocalDate = LocalDate.now()): Map<LocalDate, Decimal> =
+    db.query(
       "select date, sum(hours) as total_hours from $table",
-      *queryArgs.toTypedArray(),
-      suffix = if (singleDay == null && from != null) "and date >= '$from' group by date" else "group by date")
+      TimeEntry::userId to userId, TimeEntry::date to Between(from, until),
+      suffix = "group by date")
     { getLocalDate("date") to Decimal(getString("total_hours")) }.toMap()
-  }
 }

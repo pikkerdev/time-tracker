@@ -1,22 +1,30 @@
 <script lang="ts">
   import type {LocalDate} from 'src/api/types'
   import Button from 'src/components/Button.svelte'
+  import {onMount} from 'svelte'
 
-  export let dates: LocalDate[] = []
-  export let timeEntryHours: Record<LocalDate, number> = {}
-  export let chosenDate = new Date().toISOString().slice(0, 10) as LocalDate
+  export let dates: LocalDate[]
+  export let timeEntryHours: Record<LocalDate, number>
+  export let date = new Date().toISOString().slice(0, 10) as LocalDate
 
+  function formatShortDate(date: LocalDate) {
+    return new Date(date).toLocaleDateString(undefined, {day: 'numeric', month: 'short', weekday: 'short'})
+  }
+
+  let container: HTMLElement
+  onMount(() => {
+    container.scrollTo({left: container.scrollWidth})
+  })
 </script>
 
-<div class="flex flex-wrap h-fit gap-1 my-3 text-lg">
-  {#each dates ?? [] as date}
-    {@const percentage = timeEntryHours[date] * 100 / 8}
-    <Button onclick={() => chosenDate = date}
-            class="border border-gray-300 rounded-lg px-4 py-3 bg-white hover:bg-stone-50 size-20 overflow-hidden"
+<div bind:this={container} class="overflow-x-scroll max-w-full flex gap-2 p-2">
+  {#each dates ?? [] as d}
+    {@const percentage = timeEntryHours[d] * 100 / 8}
+    <Button onclick={() => date = d}
+            class="default px-1.5! py-1! flex-col {d == date ? 'ring-2 ring-primary-500' : ''}"
             style="background: linear-gradient(to top, #3b82f6 0%, #3b82f6 {percentage}%, #ffffff {percentage}%, #ffffff 100%);">
-      {date}
-      {timeEntryHours[date]}
+      <div class="whitespace-pre-line text-xs!">{formatShortDate(d).replace(', ', '\n').replaceAll(' ', '\u00A0')}</div>
+      <div class="text-block">{timeEntryHours[d] ?? 0}h</div>
     </Button>
   {/each}
 </div>
-

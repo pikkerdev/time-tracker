@@ -1,6 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import {t} from 'i18n'
+  import {t, today, toISODate} from 'i18n'
   import {user} from 'src/stores/auth'
   import Avatar from 'src/layout/Avatar.svelte'
   import TimeEntryForm from 'src/pages/entries/TimeEntryForm.svelte'
@@ -12,36 +12,29 @@
 
   const LAST_PROJECT_KEY = 'lastProjectId'
 
-  let date = new Date().toISOString().slice(0, 10) as LocalDate
+  let date = today
   let latestProjectId = localStorage.getItem(LAST_PROJECT_KEY) ?? undefined
   let timeEntries: TimeEntryView[] = []
   let timeEntry: TimeEntry = {date, projectId: latestProjectId} as TimeEntry
-  let timeEntryHours: Record<LocalDate, Number> = {}
+  let timeEntryHours: Record<LocalDate, number> = {}
 
-  let last30Days = Array.from({length: 30}, (_, i) => {
-    let d = new Date()
-    d.setDate(d.getDate() - i)
-    return d.toISOString().slice(0, 10) as LocalDate
-  })
+  let dates = Array.from({length: 28}, (_, i) =>
+    toISODate(new Date(), d => d.setDate(d.getDate() - i))).toReversed()
 
   $: loadEntries(date)
 
   async function loadEntries(date: string) {
     timeEntries = await api.get(`projects/timeentries?myTimeEntries=true&date=${date}`)
-    timeEntryHours = await api.get(`projects/timeentries/user?from=${'2026-05-01'}`)
+    timeEntryHours = await api.get(`projects/timeentries/user?from=${dates[0]}`)
   }
 </script>
 
 <MainPageLayout class="flex flex-col gap-4 lg:gap-8">
   {#if $user}
-    <div class="flex justify-between gap-8 w-full">
-      <div class="flex flex-col gap-4">
-        <TimeEntryCalander bind:chosenDate={date} dates={last30Days} {timeEntryHours}/>
-        {#if timeEntries.length > 0}
-          <TimeEntryTable timeEntries={timeEntries}/>
-        {/if}
-      </div>
+    <div class="flex flex-col gap-4 items-center">
+      <TimeEntryCalander bind:date {dates} {timeEntryHours}/>
       <TimeEntryForm bind:timeEntry bind:date/>
+      <TimeEntryTable {timeEntries}/>
     </div>
   {:else}
     <div class="flex gap-2 items-center">

@@ -35,7 +35,7 @@
 
 </script>
 
-<Form {submit} class="min-w-1/4">
+<Form {submit} class="min-w-1/4 max-w-96 spaced">
   <SelectField label={t.projects.project} bind:value={timeEntry.projectId} options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>
   <FormField label={t.timeEntries.date} type="date" bind:value={date}/>
   <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours}/>

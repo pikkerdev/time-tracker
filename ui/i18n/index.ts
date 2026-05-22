@@ -1,5 +1,6 @@
 import type en from './en.json'
 import langs from './langs.json'
+import type {LocalDate} from 'src/api/types'
 
 export function changeLang(lang: typeof langs[number]) {
   localStorage['lang'] = lang
@@ -30,3 +31,11 @@ export function formatCurrency(code: string) {
 export function formatAmount(amount: number, currency: string) {
   return `${amount.toFixed(2)}\u00A0${currency}`
 }
+
+export function toISODate(date: Date | string, transform?: (d: Date) => void) {
+  const d = new Date(date)
+  transform?.(d)
+  return d.toLocaleDateString('lt') as LocalDate
+}
+
+export const today = toISODate(new Date())
