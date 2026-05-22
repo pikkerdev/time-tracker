@@ -14,6 +14,7 @@
   const LAST_PROJECT_KEY = 'lastProjectId'
 
   export let timeEntry: TimeEntry
+  export let onSaved: (timeEntry: TimeEntry) => void = () => {}
 
   let projects: Project[] = []
 
@@ -22,7 +23,7 @@
     localStorage.setItem(LAST_PROJECT_KEY, timeEntry.projectId)
     showToast(t.general.saved)
     timeEntry = {date: timeEntry.date, projectId: timeEntry.projectId} as TimeEntry
-  }
+    onSaved(timeEntry)  }
 
   onMount(
     async function loadProjects()  {
