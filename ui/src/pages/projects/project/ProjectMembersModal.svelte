@@ -9,7 +9,6 @@
     type Id,
     type ProjectMember,
     type ProjectMemberRequest,
-    ProjectMemberRole,
     type ProjectMemberUser,
     type User
   } from 'src/api/types'
@@ -80,7 +79,7 @@
   <div class="sm:flex flex-1 items-end gap-x-2 gap-y-0.5 py-2">
     <Form {submit}>
       <SelectField label={t.members.addMember} bind:value={userId}
-                   options={users.filter(u => !Object.keys(project.members).includes(u.id)).map(u => [u.id, u.name]).toObject()}
+                   options={users.filter(u => !project.members[u.id]).map(u => [u.id, u.name]).toObject()}
                    emptyOption=""/>
       <Button type="submit" label={t.members.addMember}/>
     </Form>
