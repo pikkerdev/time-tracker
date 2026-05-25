@@ -74,8 +74,8 @@ class ProjectRoutes(
   @POST("/timeentries") @Access(ADMIN, USER)
   fun saveTimeEntry(@AttrParam user: User, timeEntry: TimeEntry): TimeEntry {
     val project = projectRepository.get(timeEntry.projectId)
-    val member = projectMemberRepository.find(timeEntry.projectId, user.id) ?: throw NotFoundException("general.notFound")
-    val rate = project.hourlyRates[member.role] ?: throw NotFoundException("general.notFound")
+    val member = projectMemberRepository.find(timeEntry.projectId, user.id) ?: throw NoSuchElementException("member")
+    val rate = project.hourlyRates[member.role] ?: throw NoSuchElementException("hourlyRates")
     val newTimeEntry = timeEntry.copy(userId = user.id, hourlyRate = rate)
     timeEntryRepository.save(newTimeEntry)
     return newTimeEntry
