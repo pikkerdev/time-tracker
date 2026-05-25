@@ -41,7 +41,7 @@ class TimeEntryRepositoryTest: DBTest() {
     expect(repository.get(timeEntry.id)).toEqual(timeEntry)
   }
 
-  @Test fun `list time entries`() {
+  @Test fun listView() {
     repository.save(timeEntry)
     expect(repository.listView()).toContainExactly(timeEntryView)
     expect(repository.listView(user.id)).toContainExactly(timeEntryView)
@@ -49,7 +49,7 @@ class TimeEntryRepositoryTest: DBTest() {
     expect(repository.listView(user.id, timeEntry.date.plusDays(3))).toBeEmpty()
   }
 
-  @Test fun `user times`() {
+  @Test fun userTimes() {
     val entry = timeEntry.copy(date = yesterday, hours = 3.d, id = Id())
     val entry2 = timeEntry.copy(date = yesterday, hours = 4.d, id = Id())
     val entry3 = timeEntry.copy(date = twoDaysAgo, hours = 2.d, id = Id())

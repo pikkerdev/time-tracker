@@ -18,18 +18,16 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   private val viewFrom =
     "$table join projects p on projectId = p.id join users u on userId = u.id join customers c on p.customerId = c.id"
 
-  override val defaultOrder = "order by $table.date desc, $table.id desc"
+  override val defaultOrder = "order by date desc, $table.id desc"
 
   fun listView(userId: Id<User>? = null, date: LocalDate? = null): List<TimeEntryView> =
     db.select(viewFrom, notNullValues(TimeEntry::userId eq userId, TimeEntry::date eq date), suffix = defaultOrder) { viewMapper() }
 
-  private fun ResultSet.viewMapper() = 
+  private fun ResultSet.viewMapper() =
     TimeEntryView(mapper(), getString("c.name"), getString("p.name"), getString("u.firstName") + " " + getString("u.lastName"))
 
   fun userTimes(userId: Id<User>, from: LocalDate = LocalDate.now().minusDays(30), until: LocalDate = LocalDate.now()): Map<LocalDate, Decimal> =
-    db.query(
-      "select date, sum(hours) as total_hours from $table",
-      TimeEntry::userId to userId, TimeEntry::date to Between(from, until),
-      suffix = "group by date")
-    { getLocalDate("date") to Decimal(getString("total_hours")) }.toMap()
+    db.query("select date, sum(hours) as hours from $table",
+      TimeEntry::userId to userId, TimeEntry::date to Between(from, until), suffix = "group by date")
+      { getLocalDate("date") to Decimal(getString("hours")) }.toMap()
 }

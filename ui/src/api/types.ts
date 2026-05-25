@@ -7,12 +7,12 @@ export interface Customer {businessRegistryCode?: string; id: Id<Customer>; invo
 export interface Project {currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; storyTrackerId?: number}
 // class project.ProjectMember$Role
 export enum ProjectMemberRole {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT', INTERN = 'INTERN', CUSTOMER = 'CUSTOMER'}
+// class project.ProjectMember$Status
+export enum ProjectMemberStatus {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class project.ProjectMember
-export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; projectId: Id<Project>; role: ProjectMemberRole; status: Status; updatedAt?: Instant; userId: Id<User>}
+export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; projectId: Id<Project>; role: ProjectMemberRole; status: ProjectMemberStatus; updatedAt?: Instant; userId: Id<User>}
 // class project.ProjectMemberUser
 export interface ProjectMemberUser {member: ProjectMember; user: User}
-// class project.Status
-export enum Status {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class project.TimeEntry
 export interface TimeEntry {date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; projectId: Id<Project>; storyId?: number; tags: Array<string>; userId: Id<User>}
 // class project.TimeEntryView

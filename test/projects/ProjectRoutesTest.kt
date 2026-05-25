@@ -21,8 +21,7 @@ import org.junit.jupiter.api.Test
 import project.ProjectMemberUser
 import project.ProjectRoutes
 import java.time.LocalDate
-import project.Status.ACTIVE
-
+import project.ProjectMember.Status.ACTIVE
 
 class ProjectRoutesTest: BaseMocks() {
   val routes = create<ProjectRoutes>()
