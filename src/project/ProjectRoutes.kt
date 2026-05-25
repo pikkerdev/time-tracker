@@ -10,7 +10,8 @@ import users.AuthRole.*
 import users.User
 import users.UserRepository
 import java.time.LocalDate
-import kotlin.math.sin
+import project.Status.ACTIVE
+
 
 class ProjectRoutes(
   val projectRepository: ProjectRepository,
@@ -40,6 +41,8 @@ class ProjectRoutes(
 
   @POST("/:id/members") @Access(ADMIN)
   fun create(@PathParam id: Id<Project>, userId: Id<User>): ProjectMemberUser {
+    val existingMember = projectMemberRepository.find(id, userId, active = false)
+    if (existingMember != null) return save(id, existingMember.id, existingMember)
     val projectMember = ProjectMember(id, userId)
     projectMemberRepository.save(projectMember)
     val user = userRepository.get(projectMember.userId)
@@ -50,7 +53,7 @@ class ProjectRoutes(
   fun save(@PathParam id: Id<Project>, @PathParam memberId: Id<ProjectMember>, projectMember: ProjectMember): ProjectMemberUser {
     require(memberId == projectMember.id ) { "Wrong id" }
     // TODO: check id
-    projectMemberRepository.save(projectMember)
+    projectMemberRepository.save(projectMember.copy(status = ACTIVE))
     val user = userRepository.get(projectMember.userId)
     return ProjectMemberUser(projectMember, user)
   }
