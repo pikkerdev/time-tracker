@@ -18,9 +18,9 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   private val viewFrom =
     "$table join projects p on projectId = p.id join users u on userId = u.id join customers c on p.customerId = c.id"
 
-  override val defaultOrder = "order by $table.id desc"
+  override val defaultOrder = "order by $table.date desc, $table.id desc"
 
-  fun listView(userId: Id<User>? = null, date: LocalDate? = null, suffix: String = defaultOrder): List<TimeEntryView> =
+  fun listView(userId: Id<User>? = null, date: LocalDate? = null, suffix: String =  defaultOrder): List<TimeEntryView> =
     db.select(viewFrom, notNullValues(TimeEntry::userId eq userId, TimeEntry::date eq date), suffix = suffix) { viewMapper() }
 
   private fun ResultSet.viewMapper() = TimeEntryView(
