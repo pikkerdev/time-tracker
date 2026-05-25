@@ -78,9 +78,9 @@
   </SortableTable>
   <div class="sm:flex flex-1 items-end gap-x-2 gap-y-0.5 py-2">
     <Form {submit}>
-      <SelectField label={t.members.addMember} bind:value={userId}
-                   options={users.filter(u => !project.members[u.id]).map(u => [u.id, u.name]).toObject()}
-                   emptyOption=""/>
+      <SelectField label={t.members.addMember} bind:value={userId} emptyOption=""
+                   options={users.filter(u => !project.members[u.id]).indexBy(u => u.id, u => u.name)}/>
+      <!-- TODO: why not specify the desired role here? -->
       <Button type="submit" label={t.members.addMember}/>
     </Form>
   </div>
