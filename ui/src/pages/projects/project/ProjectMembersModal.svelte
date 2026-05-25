@@ -5,7 +5,14 @@
   import type {ProjectContext} from 'src/pages/projects/context'
   import SortableTable from 'src/components/SortableTable.svelte'
   import SelectField from 'src/forms/SelectField.svelte'
-  import {type Id, type ProjectMember, ProjectMemberRole, type ProjectMemberUser, type User} from 'src/api/types'
+  import {
+    type Id,
+    type ProjectMember,
+    type ProjectMemberRequest,
+    ProjectMemberRole,
+    type ProjectMemberUser,
+    type User
+  } from 'src/api/types'
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
   import Form from 'src/forms/Form.svelte'
@@ -22,13 +29,17 @@
   }
 
   async function submit() {
-    const newMember:ProjectMemberUser = await api.post(`projects/${project.id}/members`, newMemberId)
+    return save({userId: newMemberId})
+  }
+
+  async function changeMemberRole(m: ProjectMember) {
+    return save({userId: m.userId, role: m.role})
+  }
+
+  async function save(req: Partial<ProjectMemberRequest>) {
+    const member = await api.post<ProjectMemberUser>(`projects/${project.id}/members`, req)
+    project.members[member.user.id] = member
     showToast(t.general.saved)
-    const UpdatedMembers: Record<Id<User>, ProjectMemberUser> = {
-      ...project.members,
-      [newMember.user.id]: newMember
-    };
-    project.members = UpdatedMembers
   }
 
   async function deleteMember(memberId: Id<ProjectMember>) {
@@ -43,12 +54,6 @@
       project.members = updatedMembers
       showToast(t.general.deleted)
     }
-  }
-
-  async function changeMemberRole(m: ProjectMember) {
-    const updatedMember: ProjectMemberUser = await api.post(`projects/${project.id}/members/${m.id}`, m)
-    project.members[updatedMember.user.id] = updatedMember
-    showToast(t.general.saved);
   }
 </script>
 

@@ -11,6 +11,8 @@ export enum ProjectMemberRole {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT',
 export enum ProjectMemberStatus {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class project.ProjectMember
 export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; projectId: Id<Project>; role: ProjectMemberRole; status: ProjectMemberStatus; updatedAt?: Instant; userId: Id<User>}
+// class project.ProjectMemberRequest
+export interface ProjectMemberRequest {role: ProjectMemberRole; userId: Id<User>}
 // class project.ProjectMemberUser
 export interface ProjectMemberUser {member: ProjectMember; user: User}
 // class project.TimeEntry

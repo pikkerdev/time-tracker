@@ -5,6 +5,8 @@ import db.Id
 import klite.Decimal
 import klite.ForbiddenException
 import klite.annotations.*
+import project.ProjectMember.Role
+import project.ProjectMember.Role.DEVELOPER
 import project.ProjectMember.Status.ACTIVE
 import users.AuthRole.*
 import users.User
@@ -37,20 +39,11 @@ class ProjectRoutes(
   }
 
   @POST("/:id/members") @Access(ADMIN)
-  fun create(@PathParam id: Id<Project>, userId: Id<User>): ProjectMemberUser {
-    val existingMember = projectMemberRepository.find(id, userId, active = false)
-    if (existingMember != null) return save(id, existingMember.id, existingMember)
-    val projectMember = ProjectMember(id, userId)
+  fun saveMember(@PathParam id: Id<Project>, member: ProjectMemberRequest): ProjectMemberUser {
+    val projectMember = projectMemberRepository.find(id, member.userId, active = false)
+      ?.copy(role = member.role, status = ACTIVE)
+      ?: ProjectMember(id, member.userId, role = member.role)
     projectMemberRepository.save(projectMember)
-    val user = userRepository.get(projectMember.userId)
-    return ProjectMemberUser(projectMember, user)
-  }
-
-  @POST("/:id/members/:memberId") @Access(ADMIN)
-  fun save(@PathParam id: Id<Project>, @PathParam memberId: Id<ProjectMember>, projectMember: ProjectMember): ProjectMemberUser {
-    require(memberId == projectMember.id ) { "Wrong id" }
-    // TODO: check id
-    projectMemberRepository.save(projectMember.copy(status = ACTIVE))
     val user = userRepository.get(projectMember.userId)
     return ProjectMemberUser(projectMember, user)
   }
@@ -87,3 +80,5 @@ class ProjectRoutes(
   fun userTimes(@AttrParam user: User, @QueryParam from: LocalDate, @QueryParam until: LocalDate = LocalDate.now()): Map<LocalDate, Decimal> =
     timeEntryRepository.userTimes(user.id, from, until)
 }
+
+data class ProjectMemberRequest(val userId: Id<User>, val role: Role = DEVELOPER)

@@ -19,6 +19,7 @@ import klite.Decimal
 import klite.ForbiddenException
 import org.junit.jupiter.api.Test
 import project.ProjectMemberUser
+import project.ProjectMemberRequest
 import project.ProjectRoutes
 import java.time.LocalDate
 import project.ProjectMember.Status.ACTIVE
@@ -67,19 +68,19 @@ class ProjectRoutesTest: BaseMocks() {
     expect(routes.members(project.id)).toEqual(projectMembers)
   }
 
-    @Test fun `create member`() {
+    @Test fun `save member creates new`() {
       every { projectMemberRepository.find(project.id, user.id, active = false) } returns null
-      val result = routes.create(project.id, user.id)
+      val result = routes.saveMember(project.id, ProjectMemberRequest(user.id))
       expect(result.user).toEqual(user)
       expect(result.member.projectId).toEqual(project.id)
       expect(result.member.userId).toEqual(user.id)
-      verify { projectMemberRepository.save(match {it.projectId == project.id && it.userId == user.id}) }
+      verify { projectMemberRepository.save(match { it.projectId == project.id && it.userId == user.id }) }
     }
 
-   @Test fun `save member`() {
+   @Test fun `save member updates existing`() {
     every { projectMemberRepository.find(project.id, user.id, active = false) } returns projectMember
-    expect (routes.save(project.id, projectMember.id, projectMember)).toEqual(projectMemberUser)
-    verify {projectMemberRepository.save(projectMember.copy(status = ACTIVE))}
+    expect(routes.saveMember(project.id, ProjectMemberRequest(user.id, projectMember.role))).toEqual(projectMemberUser)
+    verify { projectMemberRepository.save(projectMember.copy(role = projectMember.role, status = ACTIVE)) }
    }
 
    @Test fun `delete member`() {
