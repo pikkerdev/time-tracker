@@ -23,12 +23,8 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   fun listView(userId: Id<User>? = null, date: LocalDate? = null): List<TimeEntryView> =
     db.select(viewFrom, notNullValues(TimeEntry::userId eq userId, TimeEntry::date eq date), suffix = defaultOrder) { viewMapper() }
 
-  private fun ResultSet.viewMapper() = TimeEntryView(
-    entry = mapper(),
-    customerName = getString("c.name"),
-    projectName = getString("p.name"),
-    userName = getString("u.firstName") + " " + getString("u.lastName")
-  )
+  private fun ResultSet.viewMapper() = 
+    TimeEntryView(mapper(), getString("c.name"), getString("p.name"), getString("u.firstName") + " " + getString("u.lastName"))
 
   fun userTimes(userId: Id<User>, from: LocalDate = LocalDate.now().minusDays(30), until: LocalDate = LocalDate.now()): Map<LocalDate, Decimal> =
     db.query(
