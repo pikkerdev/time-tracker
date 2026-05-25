@@ -16,7 +16,7 @@ import db.TestData.user
 import org.junit.jupiter.api.BeforeEach
 import project.ProjectMemberUser
 import users.UserRepository
-import project.Status.DELETED
+import project.ProjectMember.Status.DELETED
 
 
 class ProjectMemberRepositoryTest: DBTest() {

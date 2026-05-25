@@ -5,14 +5,9 @@ import db.Id
 import klite.jdbc.UpdatableEntity
 import klite.jdbc.nowSec
 import project.ProjectMember.Role.DEVELOPER
-import project.Status.ACTIVE
+import project.ProjectMember.Status.ACTIVE
 import users.User
 import java.time.Instant
-
-enum class Status {
-  ACTIVE,
-  DELETED
-}
 
 data class ProjectMember(
   val projectId: Id<Project>,
@@ -28,6 +23,11 @@ data class ProjectMember(
     ARCHITECT,
     INTERN,
     CUSTOMER
+  }
+
+  enum class Status {
+    ACTIVE,
+    DELETED
   }
 }
 

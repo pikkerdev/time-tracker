@@ -4,14 +4,12 @@ import auth.Access
 import db.Id
 import klite.Decimal
 import klite.ForbiddenException
-import klite.NotFoundException
 import klite.annotations.*
+import project.ProjectMember.Status.ACTIVE
 import users.AuthRole.*
 import users.User
 import users.UserRepository
 import java.time.LocalDate
-import project.Status.ACTIVE
-
 
 class ProjectRoutes(
   val projectRepository: ProjectRepository,
@@ -19,7 +17,6 @@ class ProjectRoutes(
   val userRepository: UserRepository,
   val timeEntryRepository: TimeEntryRepository
 ) {
-
   @GET("/:id") @Access(ADMIN, USER, EXTERNAL)
   fun get(@PathParam id: Id<Project>, @AttrParam user: User) =
     if (user.authRole == ADMIN || projectMemberRepository.isMember(id, user.id)) projectRepository.get(id)
