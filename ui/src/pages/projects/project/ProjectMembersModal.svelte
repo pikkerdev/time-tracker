@@ -21,7 +21,7 @@
 
   let users: User[] = []
   let show = false
-  let newMemberId: Id<User>
+  let userId: Id<User>
 
   async function onclick() {
     show = true
@@ -29,7 +29,7 @@
   }
 
   async function submit() {
-    return save({userId: newMemberId})
+    return save({userId})
   }
 
   async function changeMemberRole(m: ProjectMember) {
@@ -60,27 +60,29 @@
 <Button label={t.members.title} {onclick}/>
 
 <Modal bind:show title={t.members.title} wide>
-  <Form {submit}>
-    <SortableTable labels={t.users} columns={[
-      [t.users.name, m => m.user.name],
-      [t.users.email, m => m.user.email],
-      [t.users.role, m => m.member.role],
-      ['', '']
-      ]
-    } items={Object.values(project.members)} let:item={m}>
-      <tr>
-        <td>{m.user.name}</td>
-        <td>{m.user.email}</td>
-        <td><SelectField bind:value={m.member.role} options={t.members.roles} onchange={() => changeMemberRole(m.member)}  /></td>
-        <td> <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => deleteMember(m.member.id)}/>
-        </td>
-      </tr>
-    </SortableTable>
-    <div class="sm:flex flex-1 items-end gap-x-2 gap-y-0.5 py-2">
-      <SelectField label={t.members.addMember} bind:value={newMemberId}
+  <SortableTable labels={t.users} columns={[
+    [t.users.name, m => m.user.name],
+    [t.users.email, m => m.user.email],
+    [t.users.role, m => m.member.role],
+    ['', '']
+  ]} items={Object.values(project.members)} let:item={m}>
+    <tr>
+      <td>{m.user.name}</td>
+      <td>{m.user.email}</td>
+      <td>
+        <SelectField bind:value={m.member.role} options={t.members.roles} onchange={() => changeMemberRole(m.member)}/>
+      </td>
+      <td>
+        <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => deleteMember(m.member.id)}/>
+      </td>
+    </tr>
+  </SortableTable>
+  <div class="sm:flex flex-1 items-end gap-x-2 gap-y-0.5 py-2">
+    <Form {submit}>
+      <SelectField label={t.members.addMember} bind:value={userId}
                    options={users.filter(u => !Object.keys(project.members).includes(u.id)).map(u => [u.id, u.name]).toObject()}
                    emptyOption=""/>
       <Button type="submit" label={t.members.addMember}/>
-    </div>
-  </Form>
+    </Form>
+  </div>
 </Modal>
