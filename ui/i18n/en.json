@@ -14,7 +14,8 @@
     "delete": "Delete",
     "deleted": "Deleted",
     "deleteConfirm": "Are you sure?",
-    "notFound": "Not found"
+    "notFound": "Not found",
+    "add": "Add"
   },
   "errors": {
     "technical": "Technical error, please try again",
@@ -68,8 +69,10 @@
   },
   "members": {
     "title": "Members",
-    "addMember": "Add member",
+    "addMember": "Add a new member",
+    "chooseMember": "Choose member",
     "deleteMember": "Delete member",
+    "chooseRole": "Choose role",
     "roles": {
       "DEVELOPER": "Developer",
       "ARCHITECT": "Architect",

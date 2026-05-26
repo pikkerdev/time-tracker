@@ -8,7 +8,7 @@
   import {
     type Id,
     type ProjectMember,
-    type ProjectMemberRequest,
+    type ProjectMemberRequest, ProjectMemberRole,
     type ProjectMemberUser,
     type User
   } from 'src/api/types'
@@ -21,6 +21,7 @@
   let users: User[] = []
   let show = false
   let userId: Id<User>
+  let role: ProjectMemberRole
 
   async function onclick() {
     show = true
@@ -28,7 +29,7 @@
   }
 
   async function submit() {
-    return save({userId})
+    return save({userId, role})
   }
 
   async function changeMemberRole(m: ProjectMember) {
@@ -76,12 +77,13 @@
       </td>
     </tr>
   </SortableTable>
-  <div class="sm:flex flex-1 items-end gap-x-2 gap-y-0.5 py-2">
+  <div class="sm:flex flex-1 items-end gap-x-2 gap-y-0.5 py-2 ">
     <Form {submit}>
-      <SelectField label={t.members.addMember} bind:value={userId} emptyOption=""
+      <h6 class ="mb-4">{t.members.addMember}</h6>
+      <SelectField bind:value={userId} emptyOption={t.members.chooseMember}
                    options={users.filter(u => !project.members[u.id]).indexBy(u => u.id, u => u.name)}/>
-      <!-- TODO: why not specify the desired role here? -->
-      <Button type="submit" label={t.members.addMember}/>
+      <SelectField bind:value={role} emptyOption={t.members.chooseRole} options={t.members.roles}/>
+      <Button type="submit" label={t.general.add}/>
     </Form>
   </div>
 </Modal>
