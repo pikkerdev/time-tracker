@@ -24,7 +24,7 @@
 <FormField bind:id {label} {required} class={$$props.class}>
   <select {id} bind:this={select} class={$$props.selectClass ?? ''}
           bind:value {required} {disabled} {onchange}>
-    {#if emptyOption !== false}<option value="">{emptyOption}</option>{/if}
+    {#if emptyOption !== false}<option value="" disabled hidden>{emptyOption}</option>{/if}
     {#each Object.entries(options) as [v, l] (v)}
       {#if l}<option value={v} disabled={!v?.trim()}>{l}</option>{/if}
     {/each}
