@@ -15,7 +15,8 @@
     "deleted": "Deleted",
     "deleteConfirm": "Are you sure?",
     "notFound": "Not found",
-    "add": "Add"
+    "add": "Add",
+    "filter": "Filter"
   },
   "errors": {
     "technical": "Technical error, please try again",
@@ -86,6 +87,8 @@
     "hours": "Hours",
     "storyId": "Story Id",
     "description": "Description",
-    "showMyTimeEntries": "Show my time entries"
+    "showMyTimeEntries": "Show my time entries",
+    "fromDate": "From",
+    "toDate": "To"
   }
 }

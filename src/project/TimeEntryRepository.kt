@@ -6,6 +6,8 @@ import klite.Decimal
 import klite.jdbc.Between
 import klite.jdbc.eq
 import klite.jdbc.getLocalDate
+import klite.jdbc.gte
+import klite.jdbc.lte
 import klite.jdbc.query
 import klite.jdbc.select
 import klite.notNullValues
@@ -20,8 +22,13 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
 
   override val defaultOrder = "order by date desc, $table.id desc"
 
-  fun listView(userId: Id<User>? = null, date: LocalDate? = null): List<TimeEntryView> =
-    db.select(viewFrom, notNullValues(TimeEntry::userId eq userId, TimeEntry::date eq date), suffix = defaultOrder) { viewMapper() }
+  fun listView(userId: Id<User>? = null, from: LocalDate? = null, to: LocalDate? = null): List<TimeEntryView> {
+    val today = LocalDate.now()
+    val queryFrom = from ?: today.withDayOfMonth(1)
+    val queryTo = to ?: when {
+      from != null -> from
+      else -> today }
+    return db.select(viewFrom, notNullValues(TimeEntry::userId eq userId, TimeEntry::date gte queryFrom, TimeEntry::date lte queryTo), suffix = defaultOrder) { viewMapper() } }
 
   private fun ResultSet.viewMapper() =
     TimeEntryView(mapper(), getString("c.name"), getString("p.name"), getString("u.firstName") + " " + getString("u.lastName"))

@@ -1,6 +1,8 @@
 package projects
 
+import ch.tutteli.atrium.api.fluent.en_GB.notToContain
 import ch.tutteli.atrium.api.fluent.en_GB.toBeEmpty
+import ch.tutteli.atrium.api.fluent.en_GB.toContain
 import ch.tutteli.atrium.api.fluent.en_GB.toContainExactly
 import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
@@ -8,6 +10,7 @@ import customers.CustomerRepository
 import db.DBTest
 import db.Id
 import db.TestData.customer
+import db.TestData.date
 import db.TestData.project
 import db.TestData.timeEntry
 import db.TestData.timeEntryView
@@ -22,7 +25,6 @@ import org.junit.jupiter.api.Test
 import project.ProjectRepository
 import project.TimeEntryRepository
 import users.UserRepository
-import java.time.LocalDate
 
 class TimeEntryRepositoryTest: DBTest() {
   val repository = TimeEntryRepository(db)
@@ -43,10 +45,10 @@ class TimeEntryRepositoryTest: DBTest() {
 
   @Test fun listView() {
     repository.save(timeEntry)
-    expect(repository.listView()).toContainExactly(timeEntryView)
-    expect(repository.listView(user.id)).toContainExactly(timeEntryView)
-    expect(repository.listView(user.id, timeEntry.date)).toContainExactly(timeEntryView)
-    expect(repository.listView(user.id, timeEntry.date.plusDays(3))).toBeEmpty()
+    expect(repository.listView(from = date)).toContainExactly(timeEntryView)
+    expect(repository.listView(user.id, from = date)).toContainExactly(timeEntryView)
+    expect(repository.listView(user.id, from = date, to = today)).toContainExactly(timeEntryView)
+    expect(repository.listView(user.id, from = today.plusDays(3))).toBeEmpty()
   }
 
   @Test fun userTimes() {

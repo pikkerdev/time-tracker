@@ -12,6 +12,7 @@ import db.TestData.projectMember
 import db.TestData.projectMemberUser
 import db.TestData.timeEntry
 import db.TestData.timeEntryView
+import db.TestData.today
 import db.TestData.user
 import io.mockk.every
 import io.mockk.verify
@@ -100,7 +101,9 @@ class ProjectRoutesTest: BaseMocks() {
       every { timeEntryRepository.listView() } returns listOf(timeEntryView)
       every { timeEntryRepository.listView(user.id) } returns listOf(timeEntryView)
       every { timeEntryRepository.listView(user.id, date) } returns listOf(timeEntryView)
-      expect(routes.timeEntries(user, myTimeEntries = true, date)).toEqual(timeEntries)
+      every { timeEntryRepository.listView(user.id, date, today) } returns listOf(timeEntryView)
+      expect(routes.timeEntries(user, myTimeEntries = true, date, today)).toEqual(timeEntries)
+      expect(routes.timeEntries(user, myTimeEntries = false, from = date)).toEqual(timeEntries)
     }
 
     @Test fun `user times`() {
