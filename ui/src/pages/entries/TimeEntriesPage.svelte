@@ -3,7 +3,6 @@
   import {
     type TimeEntryView
   } from 'src/api/types'
-  import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {t} from 'i18n'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
@@ -12,58 +11,47 @@
 
   let timeEntries: TimeEntryView[]
   let myTimeEntries: boolean = false
+
+  const formatDate = (date: Date) => new Intl.DateTimeFormat('en-CA').format(date)
   const now = new Date()
   const today = formatDate(now)
-  const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
-  const firstDayOfMonth = formatDate(
-    new Date(now.getFullYear(), now.getMonth(), 1)
-  )
 
-  let selectedMonth: string
+  let firstDayOfMonth = formatDate(new Date(now.getFullYear(), now.getMonth(), 1))
+  let selectedMonth= ''
   let from = firstDayOfMonth
   let to = today
 
   $: if (selectedMonth) {
-    const selectedDate = new Date(selectedMonth)
-    from = formatDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1))
-    to = formatDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0))
+    const [year, month] = selectedMonth.split('-').map(Number)
+    from = formatDate(new Date(year, month - 1, 1))
+    to = formatDate(new Date(year, month, 0))
+  } else {
+    from = firstDayOfMonth
+    to = today }
+
+  function handleDateChange() {
+    selectedMonth = ''
   }
 
-  function formatDate(date: Date): string {
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day}`
-  }
-
-  async function loadEntries(myTimeEntries: boolean) {
+  async function loadEntries(from: string, to: string, myTimeEntries: boolean) {
     let url = `projects/timeentries?myTimeEntries=${myTimeEntries}`
     if (from) url += `&from=${from}`
     if (to) url += `&to=${to}`
     timeEntries = await api.get(url)
   }
 
-  onMount(async () => {
-    await loadEntries(myTimeEntries)
-  })
-
-  $: {
-    from
-    to
-    myTimeEntries
-    loadEntries(myTimeEntries)
-  }
+  $: loadEntries(from, to, myTimeEntries)
 </script>
 
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>
   <div slot="title" class="flex items-center gap-4">
     <span>{t.timeEntries.chooseMonth}</span>
-    <FormField title={t.timeEntries.chooseMonth} type="month" bind:value={selectedMonth} max={currentMonth}/>
-    <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} max={to || today}/> -
-    <FormField title={t.timeEntries.toDate} type="date" bind:value={to} min={from} max={today}/>
+    <FormField title={t.timeEntries.chooseMonth} type="month" bind:value={selectedMonth} max={today.slice(0, 7)}/>
+    <FormField title={t.timeEntries.fromDate} type="date" on:input={handleDateChange} bind:value={from} max={to || today}/> -
+    <FormField title={t.timeEntries.toDate} type="date" on:input={handleDateChange} bind:value={to} min={from} max={today}/>
     {#if $user.isAdmin}
       {t.timeEntries.showMyTimeEntries}
-      <input title={t.timeEntries.showMyTimeEntries} type="checkbox" onchange={() => myTimeEntries = !myTimeEntries}/>
+      <input title={t.timeEntries.showMyTimeEntries} type="checkbox" bind:checked={myTimeEntries}/>
     {/if}
   </div>
   <TimeEntryTable {timeEntries}/>
