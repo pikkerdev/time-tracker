@@ -13,12 +13,22 @@
   let timeEntries: TimeEntryView[]
   let myTimeEntries: boolean = false
 
-  const today = new Date()
+  function formatDate(date: Date): string {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
 
-  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
+  const now = new Date()
+  const today = formatDate(now)
 
-  let from = firstDayOfMonth.toISOString().split('T')[0]
-  let to = today.toISOString().split('T')[0]
+  const firstDayOfMonth = formatDate(
+    new Date(now.getFullYear(), now.getMonth(), 1)
+  )
+
+  let from = firstDayOfMonth
+  let to = today
 
   async function loadEntries(myTimeEntries: boolean) {
     let url = `projects/timeentries?myTimeEntries=${myTimeEntries}`
@@ -41,8 +51,8 @@
 
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>
   <div slot="title" class="flex items-center gap-4">
-    <FormField title={t.timeEntries.fromDate} type="date" bind:value={from}/> -
-    <FormField title={t.timeEntries.toDate} type="date" bind:value={to}/>
+    <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} max={to || today}/> -
+    <FormField title={t.timeEntries.toDate} type="date" bind:value={to} min={from} max={today}/>
     {#if $user.isAdmin}
       {t.timeEntries.showMyTimeEntries}
       <input title={t.timeEntries.showMyTimeEntries} type="checkbox" onchange={() => myTimeEntries = !myTimeEntries}/>
