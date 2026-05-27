@@ -23,11 +23,8 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   override val defaultOrder = "order by date desc, $table.id desc"
 
   fun listView(userId: Id<User>? = null, from: LocalDate? = null, to: LocalDate? = null): List<TimeEntryView> {
-    val today = LocalDate.now()
-    val queryFrom = from ?: today.withDayOfMonth(1)
-    val queryTo = to ?: when {
-      from != null -> from
-      else -> today }
+    val queryFrom = from ?: to
+    val queryTo = to ?: from
     return db.select(viewFrom, notNullValues(TimeEntry::userId eq userId, TimeEntry::date gte queryFrom, TimeEntry::date lte queryTo), suffix = defaultOrder) { viewMapper() } }
 
   private fun ResultSet.viewMapper() =
