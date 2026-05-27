@@ -32,13 +32,13 @@
 </script>
 
 <MainPageLayout class="relative" title={t.timeEntries.title}>
-  <div slot="title" class="flex items-end gap-4">
-    <FormField label={t.timeEntries.fromDate} type="date" bind:value={from} />
-    <FormField label={t.timeEntries.toDate} type="date" bind:value={to}/>
+  <div slot="title" class="flex items-center gap-4">
+    <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} />
+    <FormField title={t.timeEntries.toDate} type="date" bind:value={to}/>
     <Button label={t.general.filter} onclick={() => loadEntries(myTimeEntries)} />
     {#if $user.isAdmin}
       {t.timeEntries.showMyTimeEntries}
-      <input type="checkbox" onchange={() => myTimeEntries = !myTimeEntries}/>
+      <input title={t.timeEntries.showMyTimeEntries} type="checkbox" onchange={() => myTimeEntries = !myTimeEntries}/>
     {/if}
   </div>
   <TimeEntryTable {timeEntries}/>

@@ -31,7 +31,7 @@
     {#if $user.isAdmin}
       {#if !customerId}
         {t.projects.showMyProjects}
-        <input type="checkbox" onchange={() => isMyProjects = !isMyProjects}/>
+        <input title={t.projects.showMyProjects} type="checkbox" onchange={() => isMyProjects = !isMyProjects}/>
       {/if}
       <ProjectFormModal/>
     {/if}

@@ -70,7 +70,7 @@
       <td>{m.user.name}</td>
       <td>{m.user.email}</td>
       <td>
-        <SelectField bind:value={m.member.role} options={t.members.roles} onchange={() => changeMemberRole(m.member)}/>
+        <SelectField title={t.members.roles} bind:value={m.member.role} options={t.members.roles} onchange={() => changeMemberRole(m.member)}/>
       </td>
       <td>
         <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => deleteMember(m.member.id)}/>
@@ -80,9 +80,9 @@
   <div class="sm:flex flex-1 items-end gap-x-2 gap-y-0.5 py-2 ">
     <Form {submit}>
       <h6 class ="mb-4">{t.members.addMember}</h6>
-      <SelectField bind:value={userId} emptyOption={t.members.chooseMember}
+      <SelectField title={t.members.chooseMember} bind:value={userId} emptyOption={t.members.chooseMember}
                    options={users.filter(u => !project.members[u.id]).indexBy(u => u.id, u => u.name)}/>
-      <SelectField bind:value={role} emptyOption={t.members.chooseRole} options={t.members.roles}/>
+      <SelectField title={t.members.roles} bind:value={role} emptyOption={t.members.chooseRole} options={t.members.roles}/>
       <Button type="submit" label={t.general.add}/>
     </Form>
   </div>
