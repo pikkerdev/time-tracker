@@ -89,6 +89,7 @@
     "description": "Description",
     "showMyTimeEntries": "Show my time entries",
     "fromDate": "From",
-    "toDate": "To"
+    "toDate": "To",
+    "chooseMonth": "Choose month"
   }
 }
