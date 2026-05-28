@@ -61,6 +61,7 @@
   <div slot="title" class="flex items-center gap-4">
     <SelectField title ={t.projects.chooseProject} bind:value={projectId} emptyOption={t.projects.chooseProject} options={projects.map(p => [p.id,`${p.name}`]).toObject()}/>
     <span>{t.timeEntries.chooseMonth}</span>
+    <!-- TODO: fix UI design-->
     <FormField title={t.timeEntries.chooseMonth} type="month" bind:value={selectedMonth} max={today.slice(0, 7)}/>
     <FormField title={t.timeEntries.fromDate} type="date" on:input={handleDateChange} bind:value={from} max={to || today}/> -
     <FormField title={t.timeEntries.toDate} type="date" on:input={handleDateChange} bind:value={to} min={from} max={today}/>
