@@ -107,8 +107,8 @@ class ProjectRoutesTest: BaseMocks() {
       expect(routes.timeEntries(user)).toContainExactly(timeEntryView)
       expect(routes.timeEntries(user, myTimeEntries = true)).toEqual(timeEntries)
       expect(routes.timeEntries(user, myTimeEntries = true, to = today)).toEqual(timeEntries)
-      expect(routes.timeEntries(user, project.id, myTimeEntries = false, from = date, to = today)).toEqual(timeEntries)
-      expect(routes.timeEntries(admin, project.id, myTimeEntries = false, from = date, to = today)).toEqual(timeEntries)
+      expect(routes.timeEntries(user, myTimeEntries = false, project.id, from = date, to = today)).toEqual(timeEntries)
+      expect(routes.timeEntries(admin, myTimeEntries = false, project.id, from = date, to = today)).toEqual(timeEntries)
     }
 
     @Test fun `user times`() {
