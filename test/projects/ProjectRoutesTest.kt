@@ -100,10 +100,15 @@ class ProjectRoutesTest: BaseMocks() {
       val timeEntries = listOf(timeEntryView)
       every { timeEntryRepository.listView() } returns listOf(timeEntryView)
       every { timeEntryRepository.listView(user.id) } returns listOf(timeEntryView)
-      every { timeEntryRepository.listView(user.id, date) } returns listOf(timeEntryView)
-      every { timeEntryRepository.listView(user.id, date, today) } returns listOf(timeEntryView)
-      expect(routes.timeEntries(user, myTimeEntries = true, date, today)).toEqual(timeEntries)
-      expect(routes.timeEntries(user, myTimeEntries = false, from = date)).toEqual(timeEntries)
+      every { timeEntryRepository.listView(user.id, to = today) } returns listOf(timeEntryView)
+      every { timeEntryRepository.listView(user.id, project.id, date, today) } returns listOf(timeEntryView)
+      every { timeEntryRepository.listView(projectId = project.id, from = date, to = today) } returns listOf(timeEntryView)
+
+      expect(routes.timeEntries(user)).toContainExactly(timeEntryView)
+      expect(routes.timeEntries(user, myTimeEntries = true)).toEqual(timeEntries)
+      expect(routes.timeEntries(user, myTimeEntries = true, to = today)).toEqual(timeEntries)
+      expect(routes.timeEntries(user, project.id, myTimeEntries = false, from = date, to = today)).toEqual(timeEntries)
+      expect(routes.timeEntries(admin, project.id, myTimeEntries = false, from = date, to = today)).toEqual(timeEntries)
     }
 
     @Test fun `user times`() {

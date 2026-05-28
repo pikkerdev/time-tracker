@@ -47,7 +47,7 @@ class TimeEntryRepositoryTest: DBTest() {
     repository.save(timeEntry)
     expect(repository.listView(from = date)).toContainExactly(timeEntryView)
     expect(repository.listView(user.id, from = date)).toContainExactly(timeEntryView)
-    expect(repository.listView(user.id, from = date, to = today)).toContainExactly(timeEntryView)
+    expect(repository.listView(user.id, project.id, from = date, to = today)).toContainExactly(timeEntryView)
     expect(repository.listView(user.id, from = today.plusDays(3))).toBeEmpty()
   }
 

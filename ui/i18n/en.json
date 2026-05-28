@@ -58,7 +58,8 @@
     "currency": "Currency",
     "edit": "Edit project",
     "myProjects": "My projects",
-    "showMyProjects": "Show my projects"
+    "showMyProjects": "Show my projects",
+    "chooseProject": "Choose project"
   },
   "users": {
     "title": "Users",

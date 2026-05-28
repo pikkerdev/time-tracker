@@ -72,9 +72,9 @@ class ProjectRoutes(
   }
 
   @GET("/timeentries") @Access(ADMIN, USER)
-  fun timeEntries(@AttrParam user: User, @QueryParam myTimeEntries: Boolean? = false, @QueryParam from: LocalDate? = null, @QueryParam to: LocalDate? = null) =
-    if (myTimeEntries == true || user.authRole != ADMIN) timeEntryRepository.listView(user.id, from, to)
-    else timeEntryRepository.listView(from = from, to = to)
+  fun timeEntries(@AttrParam user: User, @QueryParam myTimeEntries: Boolean? = false, @QueryParam projectId: Id<Project>? = null, @QueryParam from: LocalDate? = null, @QueryParam to: LocalDate? = null) =
+    if (myTimeEntries == true || user.authRole != ADMIN) timeEntryRepository.listView(user.id, projectId, from, to)
+    else timeEntryRepository.listView(projectId = projectId, from = from, to = to)
 
   @GET("/timeentries/user") @Access(ADMIN, USER)
   fun userTimes(@AttrParam user: User, @QueryParam from: LocalDate, @QueryParam until: LocalDate = LocalDate.now()): Map<LocalDate, Decimal> =
