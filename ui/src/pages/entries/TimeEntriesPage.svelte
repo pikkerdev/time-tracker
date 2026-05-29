@@ -12,6 +12,7 @@
   import FormField from 'src/forms/FormField.svelte'
   import {onMount} from 'svelte'
   import SelectField from 'src/forms/SelectField.svelte'
+  import MonthSelectField from 'src/forms/MonthSelectField.svelte'
 
   let timeEntries: TimeEntryView[]
   let myTimeEntries: boolean = false
@@ -50,7 +51,7 @@
   $: loadEntries(projectId, from, to, myTimeEntries)
 
   onMount(
-    async function loadProjects(){
+    async function loadProjects() {
       if ($user.isAdmin) { projects = projects = await api.get('projects?myProjects=false')
       } else { projects = await api.get('projects?myProjects=true') }
     })
@@ -60,9 +61,7 @@
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>
   <div slot="title" class="flex items-center gap-4">
     <SelectField title ={t.projects.chooseProject} bind:value={projectId} emptyOption={t.projects.chooseProject} options={projects.map(p => [p.id,`${p.name}`]).toObject()}/>
-    <span>{t.timeEntries.chooseMonth}</span>
-    <!-- TODO: fix UI design-->
-    <FormField title={t.timeEntries.chooseMonth} type="month" bind:value={selectedMonth} max={today.slice(0, 7)}/>
+    <MonthSelectField bind:value={selectedMonth} max={today.slice(0, 7)}/>
     <FormField title={t.timeEntries.fromDate} type="date" on:input={handleDateChange} bind:value={from} max={to || today}/> -
     <FormField title={t.timeEntries.toDate} type="date" on:input={handleDateChange} bind:value={to} min={from} max={today}/>
     <!-- TODO:  You should be able to clear the date filter and only filter according to project and vice versa-->
