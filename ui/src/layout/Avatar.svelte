@@ -15,7 +15,7 @@
     </Button>
     <svelte:fragment slot="open">
       <div class="py-0.5 px-1">
-        <Button label={t.login.logout} size="sm" icon="logout" onclick={logout}/>
+        <Button class="" label={t.login.logout} size="sm" icon="logout" onclick={logout}/>
       </div>
     </svelte:fragment>
   </Dropdown>
