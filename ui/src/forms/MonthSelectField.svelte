@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { t } from 'i18n';
-  import SelectField from './SelectField.svelte';
+  import { t } from 'i18n'
+  import SelectField from './SelectField.svelte'
 
   export let value = ''
   export let numberOfMonths = 12
