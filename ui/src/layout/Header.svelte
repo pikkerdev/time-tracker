@@ -1,20 +1,45 @@
 <script lang="ts">
   import Avatar from 'src/layout/Avatar.svelte'
-
   import {t} from 'i18n'
-  import Navigation from 'src/layout/Navigation.svelte'
   import {Link} from 'src/router'
   import {user} from 'src/stores/auth'
+  import Button from 'src/components/Button.svelte'
+
+  let menuOpen = window.innerWidth >= 1024
+
+  function toggleMenu() {
+    menuOpen = !menuOpen
+  }
 
 </script>
 
-<header class="bg-stone-50 border-b border-gray-300 px-2 sm:px-3 py-3 flex flex-wrap gap-3 justify-between items-center">
-  <div class="flex items-center gap-8">
-    <Link to={$user ? '/entry' : '/'} class="flex gap-2 items-center">
-      <img src="/favicon.svg" class="size-10" title="Time Tracker Logo" alt="Logo">
-      <h1 class="font-bold text-2xl">{t.title}</h1>
-    </Link>
-    <Navigation/>
-  </div>
-  <Avatar/>
+<header
+  class="bg-stone-50 border-b border-gray-300 px-2 sm:px-3 py-3 flex flex-wrap gap-3 justify-between items-center relative z-10">
+  <Link to={$user ? '/entry' : '/'} class="flex gap-2 items-center">
+    <img src="/favicon.svg" class="size-10" title="Time Tracker Logo" alt="Logo">
+    <h1 class="font-bold text-2xl">{t.title}</h1>
+  </Link>
+  {#if menuOpen}
+    <div
+      class="top-full right-0 left-0 flex flex-col lg:flex-row grow lg:items-center lg:justify-between gap-2 lg:gap-8 z-10 max-lg:bg-stone-50 max-lg:absolute p-2">
+      <div class="text-lg flex lg:items-center gap-2 lg:gap-6 max-lg:flex-col max-lg:order-2">
+        {#if $user}
+          <Link to="/projects">Projects</Link>
+          {#if $user.isAdmin}
+            <Link to="/customers">Customers</Link>
+            <Link to="/users">Users</Link>
+          {/if}
+          {#if $user.isUser || $user.isAdmin}
+            <Link to="/timeentries">{t.timeEntries.title}</Link>
+          {/if}
+        {/if}
+      </div>
+      <Avatar/>
+    </div>
+  {/if}
+  <Button icon="burger" class="default lg:hidden!" onclick={toggleMenu}/>
 </header>
+
+{#if menuOpen}
+  <Button class="absolute inset-0 z-9 cursor-default!" onclick={() => menuOpen = false}/>
+{/if}
