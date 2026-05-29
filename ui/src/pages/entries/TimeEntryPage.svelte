@@ -6,6 +6,7 @@
   import api from 'src/api/api'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
   import TimeEntryCalendar from 'src/pages/entries/TimeEntryCalendar.svelte'
+  import {onMount} from 'svelte'
 
   const LAST_PROJECT_KEY = 'lastProjectId'
 
@@ -23,8 +24,11 @@
 
   async function loadEntries(date: string) {
     timeEntries = await api.get(`projects/timeentries?myTimeEntries=true&from=${date}`)
-    timeEntryHours = await api.get(`projects/timeentries/user?from=${dates[0]}`)
   }
+
+  onMount(async () => {
+    timeEntryHours = await api.get(`projects/timeentries/user?from=${dates[0]}`)
+  })
 </script>
 
 <MainPageLayout class="flex flex-col gap-4 lg:gap-8">
