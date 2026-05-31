@@ -52,16 +52,17 @@
 
   onMount(
     async function loadProjects() {
-      if ($user.isAdmin) { projects = projects = await api.get('projects?myProjects=false')
-      } else { projects = await api.get('projects?myProjects=true') }
+      if ($user.isAdmin) projects = projects = await api.get('projects?myProjects=false')
+      else projects = await api.get('projects?myProjects=true')
     })
-
 </script>
 
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>
   <div slot="title" class="flex items-center gap-4">
-    <SelectField title ={t.projects.chooseProject} bind:value={projectId} emptyOption={t.projects.chooseProject} options={projects.map(p => [p.id,`${p.name}`]).toObject()}/>
-    <MonthSelectField bind:value={selectedMonth} max={today.slice(0, 7)}/>
+    <SelectField title ={t.projects.chooseProject} bind:value={projectId} emptyOption={t.projects.chooseProject}
+                 options={projects.map(p => [p.id,`${p.name}`]).toObject()} emptyOptionAsClear={true} emptyOptionOnOpen={t.general.clearFilter}/>
+    <MonthSelectField title={t.timeEntries.chooseMonth} bind:value={selectedMonth} emptyOption={t.timeEntries.chooseMonth}
+                      emptyOptionAsClear={true} emptyOptionOnOpen={t.general.clearFilter}/>
     <FormField title={t.timeEntries.fromDate} type="date" on:input={handleDateChange} bind:value={from} max={to || today}/> -
     <FormField title={t.timeEntries.toDate} type="date" on:input={handleDateChange} bind:value={to} min={from} max={today}/>
     <!-- TODO:  You should be able to clear the date filter and only filter according to project and vice versa-->

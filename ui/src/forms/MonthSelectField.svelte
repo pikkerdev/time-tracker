@@ -4,6 +4,9 @@
 
   export let value = ''
   export let numberOfMonths = 12
+  export let emptyOption: string|false = false
+  export let emptyOptionAsClear = false
+  export let emptyOptionOnOpen: string|undefined = undefined
 
   $: monthOptions = Object.fromEntries(
     Array.from({ length: numberOfMonths })
@@ -20,7 +23,9 @@
 <SelectField
   title={t.timeEntries.chooseMonth}
   bind:value
-  emptyOption={t.timeEntries.chooseMonth}
+  {emptyOption}
+  {emptyOptionAsClear}
+  {emptyOptionOnOpen}
   options={monthOptions}
   {...$$restProps}
 />

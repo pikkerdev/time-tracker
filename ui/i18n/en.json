@@ -16,7 +16,7 @@
     "deleteConfirm": "Are you sure?",
     "notFound": "Not found",
     "add": "Add",
-    "filter": "Filter"
+    "clearFilter": "Clear filter"
   },
   "errors": {
     "technical": "Technical error, please try again",
