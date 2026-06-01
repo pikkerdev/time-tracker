@@ -5,7 +5,6 @@ import db.Entity
 import db.Id
 import klite.Decimal
 import klite.json.JsonProperty
-import java.math.BigDecimal
 import java.util.Currency
 
 val EUR: Currency = Currency.getInstance("EUR")

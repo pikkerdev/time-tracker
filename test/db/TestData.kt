@@ -1,6 +1,9 @@
 package db
 
+import project.TimeEntry
+import project.TimeEntryView
 import customers.Customer
+import invoice.Invoice
 import klite.Email
 import klite.d
 import project.*
@@ -29,4 +32,5 @@ object TestData {
   val projectMemberUser = ProjectMemberUser(projectMember, user)
   val timeEntry = TimeEntry(project.id, user.id, date, 7.5.d, hourlyRate = 88.d)
   val timeEntryView = TimeEntryView(timeEntry, customer.name, project.name, user.name)
+  val invoice = Invoice(project.id, customer.id, listOf(timeEntry.id), "2026060101", 760.d, 240.d, 1000.d, today)
 }
