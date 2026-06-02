@@ -38,7 +38,7 @@
 
 <Form {submit} class="min-w-1/4 max-w-96 spaced">
   <SelectField label={t.projects.project} bind:value={timeEntry.projectId} options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>
-  <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours}/>
+  <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours} step={0.1}/>
   {#if !isNew}
     <FormField label={t.timeEntries.date} type="date" bind:value={timeEntry.date} max={today}/>
   {/if}
