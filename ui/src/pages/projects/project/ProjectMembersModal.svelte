@@ -43,17 +43,16 @@
   }
 
   async function deleteMember(memberId: Id<ProjectMember>) {
-    if (confirm(t.general.deleteConfirm)) {
-      await api.delete(`projects/member/${memberId}`)
-      const updatedMembers: Record<Id<User>, ProjectMemberUser> = {}
-      for (const userId in project.members) {
-        if (project.members[userId].member.id !== memberId) {
-          updatedMembers[userId] = project.members[userId]
-        }
+    if (!confirm(t.general.deleteConfirm)) return
+    await api.delete(`projects/member/${memberId}`)
+    const updatedMembers: Record<Id<User>, ProjectMemberUser> = {}
+    for (const userId in project.members) {
+      if (project.members[userId].member.id !== memberId) {
+        updatedMembers[userId] = project.members[userId]
       }
-      project.members = updatedMembers
-      showToast(t.general.deleted)
     }
+    project.members = updatedMembers
+    showToast(t.general.deleted)
   }
 </script>
 
@@ -77,12 +76,12 @@
       </td>
     </tr>
   </SortableTable>
-  <div class="sm:flex flex-1 items-end gap-x-2 gap-y-0.5 py-2 ">
-    <Form {submit}>
-      <h6 class ="mb-4">{t.members.addMember}</h6>
-      <SelectField title={t.members.chooseMember} bind:value={userId} emptyOption={t.members.chooseMember}
+  <div class="">
+    <h6 class ="mb-4">{t.members.addMember}</h6>
+    <Form {submit} class="flex gap-4">
+      <SelectField bind:value={userId} placeholder={t.members.chooseMember}
                    options={users.filter(u => !project.members[u.id]).indexBy(u => u.id, u => u.name)}/>
-      <SelectField title={t.members.roles} bind:value={role} emptyOption={t.members.chooseRole} options={t.members.roles}/>
+      <SelectField bind:value={role} placeholder={t.members.chooseRole} options={t.members.roles}/>
       <Button type="submit" label={t.general.add}/>
     </Form>
   </div>

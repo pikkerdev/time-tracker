@@ -19,6 +19,7 @@
   })
 </script>
 
+<!--TODO: graph needs to show added entry immediately -->
 <div bind:this={container} class="overflow-x-scroll max-w-full flex gap-2 items-center p-2 pb-4">
   <FormField type="date" bind:value={date} max={today}/>
   {#each dates ?? [] as d}

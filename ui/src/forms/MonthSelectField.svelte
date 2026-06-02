@@ -1,12 +1,9 @@
 <script lang="ts">
-  import { t } from 'i18n'
+  import {lang, t} from 'i18n'
   import SelectField from './SelectField.svelte'
 
   export let value = ''
   export let numberOfMonths = 12
-  export let emptyOption: string|false = false
-  export let emptyOptionAsClear = false
-  export let emptyOptionOnOpen: string|undefined = undefined
 
   $: monthOptions = Object.fromEntries(
     Array.from({ length: numberOfMonths })
@@ -14,7 +11,7 @@
         const d = new Date()
         d.setMonth(d.getMonth() - i)
         const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
-        const label = d.toLocaleString('en-ET', { month: 'long', year: 'numeric' })
+        const label = d.toLocaleString(lang, {month: 'long', year: 'numeric'})
         return [key, label]
       })
   )
@@ -23,9 +20,6 @@
 <SelectField
   title={t.timeEntries.chooseMonth}
   bind:value
-  {emptyOption}
-  {emptyOptionAsClear}
-  {emptyOptionOnOpen}
   options={monthOptions}
   {...$$restProps}
 />

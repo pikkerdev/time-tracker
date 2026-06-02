@@ -40,17 +40,17 @@
         <p class="text-lg font-medium">{project.description}</p>
       </div>
       <div>
-        <p class="text-sm text-gray-500">{t.projects.hourlyRate}</p>
+        <p class="text-sm text-gray-500 w-20 text-right">{t.projects.hourlyRate}</p>
         {#each Object.values(ProjectMemberRole) as role}
-          {@const rate = project.hourlyRates[role]}
-          {#if rate}
-            <div class="flex gap-8 justify-between max-w-40">
-              <span>{t.members.roles[role]}</span>
-              <span>{formatAmount(rate, project.currency)}</span>
-            </div>
-          {/if}
-        {/each}
-      </div>
+        {@const rate = project.hourlyRates[role]}
+        {#if rate}
+          <div class="flex gap-8 justify-end max-w-40">
+            <span class="justify-start">{t.members.roles[role]}</span>
+            <span>{formatAmount(rate, project.currency)}</span>
+          </div>
+        {/if}
+      {/each}
+    </div>
       <div>
         <p class="text-sm text-gray-500">{t.projects.storyTrackerId}</p>
         <p class="text-lg font-medium">{project.storyTrackerId}</p>
