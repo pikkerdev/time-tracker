@@ -1,8 +1,6 @@
 package projects
 
-import ch.tutteli.atrium.api.fluent.en_GB.notToContain
 import ch.tutteli.atrium.api.fluent.en_GB.toBeEmpty
-import ch.tutteli.atrium.api.fluent.en_GB.toContain
 import ch.tutteli.atrium.api.fluent.en_GB.toContainExactly
 import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
@@ -18,6 +16,8 @@ import db.TestData.today
 import db.TestData.twoDaysAgo
 import db.TestData.user
 import db.TestData.yesterday
+import db.TestData.invoice
+import invoice.InvoiceRepository
 import klite.Decimal
 import klite.d
 import org.junit.jupiter.api.BeforeEach
@@ -31,11 +31,13 @@ class TimeEntryRepositoryTest: DBTest() {
   val projectRepository = ProjectRepository(db)
   val userRepository = UserRepository(db)
   val customerRepository = CustomerRepository(db)
+  val invoiceRepository = InvoiceRepository(db)
 
   @BeforeEach fun before() {
     userRepository.save(user)
     customerRepository.save(customer)
     projectRepository.save(project)
+    invoiceRepository.save(invoice)
   }
 
   @Test fun `get time entry`() {
