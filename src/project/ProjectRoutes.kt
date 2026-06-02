@@ -11,6 +11,7 @@ import project.ProjectMember.Status.ACTIVE
 import users.AuthRole.*
 import users.User
 import users.UserRepository
+import java.sql.Time
 import java.time.LocalDate
 
 class ProjectRoutes(
@@ -69,6 +70,13 @@ class ProjectRoutes(
     val newTimeEntry = timeEntry.copy(userId = user.id, hourlyRate = rate)
     timeEntryRepository.save(newTimeEntry)
     return newTimeEntry
+  }
+
+  @POST("/timeentries/:id") @Access(ADMIN, USER)
+  fun editTimeEntry( @PathParam id: Id<TimeEntry>, timeEntry: TimeEntry): TimeEntry {
+    require(id == timeEntry.id) { "Wrong id" }
+    timeEntryRepository.save(timeEntry)
+    return timeEntry
   }
 
   @GET("/timeentries") @Access(ADMIN, USER)

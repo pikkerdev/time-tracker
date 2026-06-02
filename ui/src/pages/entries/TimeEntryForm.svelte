@@ -1,7 +1,7 @@
 <script lang="ts">
   import Form from 'src/forms/Form.svelte'
   import SelectField from 'src/forms/SelectField.svelte'
-  import {t} from 'i18n'
+  import {t, today} from 'i18n'
   import type {LocalDate, Project, TimeEntry} from 'src/api/types'
   import {onMount} from 'svelte'
   import FormField from 'src/forms/FormField.svelte'
@@ -15,15 +15,18 @@
 
   export let timeEntry: TimeEntry
   export let onSaved: () => void = () => {}
-
+  export let show = false
+  let isNew = !timeEntry.id
   let projects: Project[] = []
 
+
   async function submit() {
-    timeEntry = await api.post('projects/timeentries', timeEntry)
+    timeEntry = await api.post('projects/timeentries' + (isNew ? '' : '/' + timeEntry.id), timeEntry)
     localStorage.setItem(LAST_PROJECT_KEY, timeEntry.projectId)
     showToast(t.general.saved)
     timeEntry = {date: timeEntry.date, projectId: timeEntry.projectId} as TimeEntry
     onSaved()
+    show = false
   }
 
   onMount(
@@ -36,6 +39,9 @@
 <Form {submit} class="min-w-1/4 max-w-96 spaced">
   <SelectField label={t.projects.project} bind:value={timeEntry.projectId} options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>
   <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours}/>
+  {#if !isNew}
+    <FormField label={t.timeEntries.date} type="date" bind:value={timeEntry.date} max={today}/>
+  {/if}
   <FormField label={t.timeEntries.storyId} required={false} bind:value={timeEntry.storyId}/>
   <TextAreaField label={t.timeEntries.description} required={false} bind:value={timeEntry.description}/>
   <Button type="submit" label={t.general.save} class="primary"/>

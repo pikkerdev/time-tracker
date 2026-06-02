@@ -54,5 +54,5 @@
       <input title={t.timeEntries.showMyTimeEntries} type="checkbox" bind:checked={myTimeEntries}/>
     {/if}
   </div>
-  <TimeEntryTable {timeEntries}/>
+  <TimeEntryTable {timeEntries} onSaved={() => loadEntries(projectId, from, to, myTimeEntries)}/>
 </MainPageLayout>
