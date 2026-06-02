@@ -6,7 +6,7 @@
     type TimeEntryView
   } from 'src/api/types'
   import api from 'src/api/api'
-  import {t} from 'i18n'
+  import {t, today} from 'i18n'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
   import {user} from 'src/stores/auth'
   import FormField from 'src/forms/FormField.svelte'
@@ -18,28 +18,8 @@
   let myTimeEntries: boolean = false
   let projects: Project[] = []
   let projectId: Id<Project>
-
-  const formatDate = (date: Date) => new Intl.DateTimeFormat('en-CA').format(date)
-  const now = new Date()
-  const today = formatDate(now)
-
-  let firstDayOfMonth = formatDate(new Date(now.getFullYear(), now.getMonth(), 1))
-  let selectedMonth= ''
-  let from = firstDayOfMonth
-  let to = today
-
-  $: if (selectedMonth) {
-    const [year, month] = selectedMonth.split('-').map(Number)
-    from = formatDate(new Date(year, month - 1, 1))
-    to = formatDate(new Date(year, month, 0))
-  } else {
-    from = firstDayOfMonth
-    to = today
-  }
-
-  function handleDateChange() {
-    selectedMonth = ''
-  }
+  let from: string
+  let to: string
 
   async function loadEntries(projectId: Id<Project>, from: string, to: string, myTimeEntries: boolean) {
     let url = `projects/timeentries?myTimeEntries=${myTimeEntries}`
@@ -61,10 +41,9 @@
   <div slot="title" class="flex items-center gap-4">
     <SelectField bind:value={projectId} emptyOption={t.projects.all}
                  options={projects.map(p => [p.id,`${p.name}`]).toObject()}/>
-    <MonthSelectField bind:value={selectedMonth} emptyOption={t.timeEntries.chooseMonth}/>
-    <FormField title={t.timeEntries.fromDate} type="date" on:input={handleDateChange} bind:value={from} max={to || today}/> -
-    <FormField title={t.timeEntries.toDate} type="date" on:input={handleDateChange} bind:value={to} min={from} max={today}/>
-    <!-- TODO:  You should be able to clear the date filter and only filter according to project and vice versa-->
+    <MonthSelectField bind:from bind:to/>
+    <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} max={[to, today].min()}/> -
+    <FormField title={t.timeEntries.toDate} type="date" bind:value={to} min={from} max={today}/>
     {#if $user.isAdmin}
       {t.timeEntries.showMyTimeEntries}
       <input title={t.timeEntries.showMyTimeEntries} type="checkbox" bind:checked={myTimeEntries}/>

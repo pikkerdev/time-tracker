@@ -1,6 +1,6 @@
 <script lang="ts">
   import type {TimeEntryView} from 'src/api/types'
-  import {t} from 'i18n'
+  import {formatDate, t} from 'i18n'
   import SortableTable from 'src/components/SortableTable.svelte'
 
   export let timeEntries: TimeEntryView[]
@@ -21,11 +21,11 @@
   <tr>
     <td>{e.customerName}</td>
     <td>{e.projectName}</td>
-    {#if showUser }
+    {#if showUser}
       <td>{e.userName}</td>
     {/if}
     {#if showDate}
-      <td>{e.entry.date}</td>
+      <td>{formatDate(e.entry.date)}</td>
     {/if}
     <td>{e.entry.hours}</td>
     <td>{e.entry.storyId}</td>

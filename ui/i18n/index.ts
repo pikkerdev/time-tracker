@@ -32,6 +32,10 @@ export function formatAmount(amount: number, currency: string) {
   return `${amount.toFixed(2)}\u00A0${currency}`
 }
 
+export function formatDate(date: Date | string) {
+  return new Date(date).toLocaleDateString(lang)
+}
+
 export function toISODate(date: Date | string, transform?: (d: Date) => void) {
   const d = new Date(date)
   transform?.(d)
