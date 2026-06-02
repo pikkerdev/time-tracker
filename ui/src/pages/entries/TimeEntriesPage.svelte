@@ -32,8 +32,8 @@
   $: loadEntries(projectId, from, to, myTimeEntries)
 
   $: {
-    if (!from && to) from = to
-    else if (!to && from) to = from
+    if (!from || !to) from = from || to
+    to = to || from
   }
 
   onMount(async () => {
