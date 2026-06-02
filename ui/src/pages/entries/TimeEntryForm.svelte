@@ -19,7 +19,6 @@
   let isNew = !timeEntry.id
   let projects: Project[] = []
 
-
   async function submit() {
     timeEntry = await api.post('projects/timeentries' + (isNew ? '' : '/' + timeEntry.id), timeEntry)
     localStorage.setItem(LAST_PROJECT_KEY, timeEntry.projectId)
@@ -29,11 +28,10 @@
     show = false
   }
 
-  onMount(
-    async function loadProjects()  {
-      projects = await api.get('projects?myProjects=true')
-      projects.sort((a,b) => a.customerName!.localeCompare(b.customerName!) || a.name.localeCompare(b.name))
-    })
+  onMount(async () => {
+    projects = await api.get('projects?myProjects=true')
+    projects.sort((a,b) => a.customerName!.localeCompare(b.customerName!) || a.name.localeCompare(b.name))
+  })
 </script>
 
 <Form {submit} class="min-w-1/4 max-w-96 spaced">
