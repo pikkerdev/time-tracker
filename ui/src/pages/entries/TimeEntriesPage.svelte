@@ -31,6 +31,11 @@
 
   $: loadEntries(projectId, from, to, myTimeEntries)
 
+  $: {
+    if (!from && to) from = to
+    else if (!to && from) to = from
+  }
+
   onMount(async () => {
     if ($user.isAdmin) projects = projects = await api.get('projects?myProjects=false')
     else projects = await api.get('projects?myProjects=true')
