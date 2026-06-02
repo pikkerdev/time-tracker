@@ -16,6 +16,7 @@
   export let timeEntry: TimeEntry
   export let onSaved: () => void = () => {}
   export let show = false
+
   let isNew = !timeEntry.id
   let projects: Project[] = []
 

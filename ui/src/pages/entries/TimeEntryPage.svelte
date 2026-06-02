@@ -24,11 +24,8 @@
 
   async function loadEntries(date: string) {
     timeEntries = await api.get(`projects/timeentries?myTimeEntries=true&from=${date}`)
-  }
-
-  onMount(async () => {
     timeEntryHours = await api.get(`projects/timeentries/user?from=${dates[0]}`)
-  })
+  }
 </script>
 
 <MainPageLayout class="flex flex-col gap-4 lg:gap-8">
