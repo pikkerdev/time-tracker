@@ -11,11 +11,11 @@ import java.time.LocalDate
 data class Invoice(
   val projectId: Id<Project>,
   val customerId: Id<Customer>,
-  val timeEntryIds: List<Id<TimeEntry>>,
   val number: String,
   val amount: Decimal,
-  val vatAMount: Decimal,
-  val totalAmount: Decimal,
+  val vatAmount: Decimal,
   val createdAt: LocalDate = LocalDate.now(),
   override val id: Id<Invoice> = Id()
-): Entity<Invoice>
+) :Entity<Invoice> {
+  val totalAmount: Decimal get() = amount + vatAmount
+}

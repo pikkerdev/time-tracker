@@ -1,3 +1,4 @@
+--changeset invoices
 create table invoices(
   ${id},
   customerId bigint not null references customers(id) on delete cascade,
@@ -9,3 +10,7 @@ create table invoices(
   totalAmount decimal not null,
   createdAt date not null default now()::date
 )
+
+--changeset invoices.audit
+alter table invoices drop column timeEntryIds;
+alter table invoices drop column totalAmount;

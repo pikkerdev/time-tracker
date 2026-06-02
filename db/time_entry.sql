@@ -22,3 +22,5 @@ create index on time_entry(userId);
 
 --changeset time_entry.tags
 alter table time_entry add column tags text[] default '{}' not null;
+
+alter table time_entry add column invoiceId bigint references invoices(id);
