@@ -3,7 +3,8 @@ package db
 import project.TimeEntry
 import project.TimeEntryView
 import customers.Customer
-import invoice.Invoice
+import invoices.Invoice
+import invoices.InvoiceId
 import klite.Email
 import klite.d
 import project.*
@@ -30,7 +31,7 @@ object TestData {
   val project = Project(customer.id, "Project1", hourlyRates = mapOf(DEVELOPER to 88.d), customerName = customer.name)
   val projectMember = ProjectMember(project.id, user.id, DEVELOPER, createdAt = now)
   val projectMemberUser = ProjectMemberUser(projectMember, user)
-  val invoice = Invoice(project.id, customer.id, "2026060101", 760.d, 240.d, today)
+  val invoice = Invoice(InvoiceId(2026060101), project.id, LocalDate.of(2026, 6, 1), 760.d, 240.d)
   val timeEntry = TimeEntry(project.id, user.id, invoice.id, date, 7.5.d, hourlyRate = 88.d)
   val timeEntryView = TimeEntryView(timeEntry, customer.name, project.name, user.name)
 }

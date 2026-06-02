@@ -17,7 +17,7 @@ import db.TestData.twoDaysAgo
 import db.TestData.user
 import db.TestData.yesterday
 import db.TestData.invoice
-import invoice.InvoiceRepository
+import invoices.InvoiceRepository
 import klite.Decimal
 import klite.d
 import org.junit.jupiter.api.BeforeEach

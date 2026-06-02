@@ -2,7 +2,7 @@ package project
 
 import db.Entity
 import db.Id
-import invoice.Invoice
+import invoices.InvoiceId
 import klite.Decimal
 import klite.Decimal.Companion.ZERO
 import users.User
@@ -11,7 +11,7 @@ import java.time.LocalDate
 data class TimeEntry(
   val projectId: Id<Project>,
   val userId: Id<User> = Id(),
-  val invoiceId: Id<Invoice>? = null,
+  val invoiceId: InvoiceId? = null,
   val date: LocalDate = LocalDate.now(),
   val hours: Decimal,
   val hourlyRate: Decimal = ZERO,

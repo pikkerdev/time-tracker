@@ -14,3 +14,16 @@ create table invoices(
 --changeset invoices.audit
 alter table invoices drop column timeEntryIds;
 alter table invoices drop column totalAmount;
+
+--changeset invoices.alter
+alter table invoices drop column number,
+  drop column createdAt,
+  add column date date not null default current_date,
+  add column createdAt timestamptz not null default now(),
+  add column createdBy bigint default get_app_user();
+
+--changeset invoices.customerId:drop
+alter table invoices drop column customerId;
+
+--changeset invoices_project_idx
+create index on invoices(projectId);
