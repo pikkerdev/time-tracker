@@ -1,15 +1,14 @@
 <script lang="ts">
   import Form from 'src/forms/Form.svelte'
-  import SelectField from 'src/forms/SelectField.svelte'
   import {t, today} from 'i18n'
-  import type {LocalDate, Project, TimeEntry} from 'src/api/types'
-  import {onMount} from 'svelte'
+  import type {TimeEntry} from 'src/api/types'
   import FormField from 'src/forms/FormField.svelte'
   import NumberField from 'src/forms/NumberField.svelte'
   import Button from 'src/components/Button.svelte'
   import TextAreaField from 'src/forms/TextAreaField.svelte'
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
+  import ProjectSelect from 'src/pages/projects/ProjectSelect.svelte'
 
   const LAST_PROJECT_KEY = 'lastProjectId'
 
@@ -18,7 +17,6 @@
   export let show = false
 
   let isNew = !timeEntry.id
-  let projects: Project[] = []
 
   async function submit() {
     timeEntry = await api.post('projects/timeentries' + (isNew ? '' : '/' + timeEntry.id), timeEntry)
@@ -29,14 +27,10 @@
     show = false
   }
 
-  onMount(async () => {
-    projects = await api.get('projects?myProjects=true')
-    projects.sort((a,b) => a.customerName!.localeCompare(b.customerName!) || a.name.localeCompare(b.name))
-  })
 </script>
 
 <Form {submit} class="min-w-1/4 max-w-96 spaced">
-  <SelectField label={t.projects.project} bind:value={timeEntry.projectId} options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>
+  <ProjectSelect bind:projectId={timeEntry.projectId} isForm={true}/>
   <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours} step={0.1}/>
   {#if !isNew}
     <FormField label={t.timeEntries.date} type="date" bind:value={timeEntry.date} max={today}/>
