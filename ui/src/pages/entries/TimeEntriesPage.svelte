@@ -21,7 +21,7 @@
 
   async function loadEntries(projectId: Id<Project>, from: string, to: string, myTimeEntries: boolean) {
     const params = new URLSearchParams({from, to, myTimeEntries: myTimeEntries.toString()})
-    if (projectId) params.append(projectId, projectId)
+    if (projectId) params.append("projectId", projectId)
     timeEntries = await api.get(`projects/timeentries?${params}`)
   }
 
