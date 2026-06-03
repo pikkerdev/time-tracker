@@ -2,14 +2,18 @@ package project
 
 import db.CrudRepository
 import db.Id
+import invoices.InvoiceId
 import klite.Decimal
 import klite.jdbc.Between
+import klite.jdbc.In
+import klite.jdbc.colName
 import klite.jdbc.eq
 import klite.jdbc.getLocalDate
 import klite.jdbc.gte
 import klite.jdbc.lte
 import klite.jdbc.query
 import klite.jdbc.select
+import klite.jdbc.update
 import klite.notNullValues
 import users.User
 import java.sql.ResultSet
@@ -34,4 +38,11 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
     db.query("select date, sum(hours) as hours from $table",
       TimeEntry::userId to userId, TimeEntry::date to Between(from, until), suffix = "group by date")
       { getLocalDate("date") to Decimal(getString("hours")) }.toMap()
+
+  fun listByIds(ids: List<Id<TimeEntry>>): List<TimeEntry> =
+    list(TimeEntry::id to ids)
+
+  fun updateInvoiceId(ids: List<Id<TimeEntry>>, invoiceId: InvoiceId) {
+    db.update(table, mapOf(TimeEntry::invoiceId.colName to invoiceId), TimeEntry::id.colName to In(ids))
+  }
 }

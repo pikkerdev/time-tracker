@@ -3,6 +3,7 @@ import auth.AuthUserProvider
 import auth.Public
 import customers.CustomerRoutes
 import db.initDB
+import invoices.InvoiceRoutes
 import klite.*
 import klite.annotations.annotated
 import klite.http.httpClient
@@ -46,6 +47,7 @@ fun main() {
       annotated<ProjectRoutes>("/projects")
       annotated<CustomerRoutes>("/customers")
       annotated<UserRoutes>("/users")
+      annotated<InvoiceRoutes>("/invoices")
       annotated<AuthRoutes>(annotations = listOf(Public()))
     }
     start()

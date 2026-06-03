@@ -69,4 +69,15 @@ class TimeEntryRepositoryTest: DBTest() {
     val userTimes = mapOf(yesterday to Decimal(7.0), twoDaysAgo to 2.d)
     expect(repository.userTimes(user.id, from = twoDaysAgo)).toEqual(userTimes)
   }
+
+  @Test fun `list by ids`() {
+    repository.save(timeEntry)
+    expect(repository.listByIds(listOf(timeEntry.id))).toContainExactly(timeEntry)
+  }
+
+  @Test fun `update invoice id`() {
+    repository.save(timeEntry)
+    repository.updateInvoiceId(listOf(timeEntry.id), invoice.id)
+    expect(repository.get(timeEntry.id).invoiceId).toEqual(invoice.id)
+  }
 }

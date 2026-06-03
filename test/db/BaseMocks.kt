@@ -1,8 +1,11 @@
 package db
 
 import customers.CustomerRepository
+import db.TestData.date
+import db.TestData.invoice
 import db.TestData.project
 import db.TestData.user
+import invoices.InvoiceRepository
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -31,6 +34,7 @@ abstract class BaseMocks {
     val projectRepository = mock<ProjectRepository>(relaxed = true)
     val projectMemberRepository = mock<ProjectMemberRepository>(relaxed = true)
     val timeEntryRepository = mock<TimeEntryRepository>(relaxed = true)
+    val invoiceRepository = mock<InvoiceRepository>(relaxed = true)
 
     inline fun <reified T: Any> create() = registry.create(T::class)
 
@@ -58,7 +62,9 @@ abstract class BaseMocks {
       every { list()} returns listOf(project)
     }
 
-
+    invoiceRepository.apply {
+      every {nextId(invoice.date)} returns invoice.id
+    }
 
   }
 }
