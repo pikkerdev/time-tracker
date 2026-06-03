@@ -3,8 +3,8 @@
   import SelectField from './SelectField.svelte'
 
   export let numberOfMonths = 12
-  export let from: string
-  export let to: string
+  export let from: string | undefined
+  export let to: string | undefined
 
   const d = new Date()
   d.setDate(1)

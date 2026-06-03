@@ -1,12 +1,12 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import {
-    type Id,
+    type Id, type LocalDate,
     type Project,
     type TimeEntryView
   } from 'src/api/types'
   import api from 'src/api/api'
-  import {t, today} from 'i18n'
+  import {t, today, toISODate} from 'i18n'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
   import {user} from 'src/stores/auth'
   import FormField from 'src/forms/FormField.svelte'
@@ -14,20 +14,18 @@
   import ProjectSelect from 'src/pages/projects/ProjectSelect.svelte'
 
   let timeEntries: TimeEntryView[]
-  let myTimeEntries: boolean = false
-  let projectId: Id<Project>
-  let from: string
-  let to: string
+  let myTimeEntries = false
+  let projectId: Id<Project> = ''
+  let from : string | undefined
+  let to : string | undefined
 
   async function loadEntries(projectId: Id<Project>, from: string, to: string, myTimeEntries: boolean) {
-    let url = `projects/timeentries?myTimeEntries=${myTimeEntries}`
-    if (projectId) url += `&projectId=${projectId}`
-    if (from) url += `&from=${from}`
-    if (to) url += `&to=${to}`
-    timeEntries = await api.get(url)
+    const params = new URLSearchParams({from, to, myTimeEntries: myTimeEntries.toString()})
+    if (projectId) params.append(projectId, projectId)
+    timeEntries = await api.get(`projects/timeentries?${params}`)
   }
 
-  $: loadEntries(projectId, from, to, myTimeEntries)
+  $: if (from && to)loadEntries(projectId, from, to, myTimeEntries)
 
   $: {
     if (!from || !to) from = from || to
@@ -47,5 +45,5 @@
       <input title={t.timeEntries.showMyTimeEntries} type="checkbox" bind:checked={myTimeEntries}/>
     {/if}
   </div>
-  <TimeEntryTable {timeEntries} onSaved={() => loadEntries(projectId, from, to, myTimeEntries)}/>
+  <TimeEntryTable {timeEntries} onSaved={() => from && to && loadEntries(projectId, from, to, myTimeEntries)}/>
 </MainPageLayout>
