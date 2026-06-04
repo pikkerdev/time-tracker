@@ -53,13 +53,14 @@ class ProjectRoutesTest: BaseMocks() {
   }
 
   @Test fun `list projects`() {
-    every { projectRepository.forMember(user.id) } returns listOf(project)
+    every { projectRepository.forMember(user.id, false) } returns listOf(project)
+    every { projectRepository.forMember(user.id, true) } returns listOf(project)
     expect(routes.list(user)).toContainExactly(project)
 
     every { projectRepository.list() } returns listOf(project)
     expect(routes.list(admin)).toContainExactly(project)
 
-    every { projectRepository.forMember(admin.id) } returns listOf(project)
+    every { projectRepository.forMember(admin.id, false) } returns listOf(project)
     expect(routes.list(admin, myProjects = true)).toContainExactly(project)
   }
 
@@ -97,13 +98,13 @@ class ProjectRoutesTest: BaseMocks() {
       verify { timeEntryRepository.save(timeEntry.copy(userId = user.id, hourlyRate = rate)) }
     }
 
-  @Test fun `edit time entry`() {
-    every { projectMemberRepository.find(project.id, user.id) } returns projectMember
-    val rate = project.hourlyRates.getValue(projectMember.role)
-    val timeEntry =(timeEntry.copy( hours = 3.5.d))
-    routes.editTimeEntry(timeEntry.id, timeEntry)
-    verify { timeEntryRepository.save(timeEntry.copy(userId = user.id, hourlyRate = rate)) }
-  }
+    @Test fun `edit time entry`() {
+      every { projectMemberRepository.find(project.id, user.id) } returns projectMember
+      val rate = project.hourlyRates.getValue(projectMember.role)
+      val timeEntry =(timeEntry.copy( hours = 3.5.d))
+      routes.editTimeEntry(timeEntry.id, timeEntry)
+      verify { timeEntryRepository.save(timeEntry.copy(userId = user.id, hourlyRate = rate)) }
+    }
 
     @Test fun `list time entries`() {
       val timeEntries = listOf(timeEntryView)

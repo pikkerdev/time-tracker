@@ -50,8 +50,8 @@ class ProjectRoutes(
   }
 
   @GET @Access(ADMIN, USER, EXTERNAL)
-  fun list(@AttrParam user: User, @QueryParam myProjects: Boolean? = false) =
-    if (myProjects == true || user.authRole != ADMIN) projectRepository.forMember(user.id)
+  fun list(@AttrParam user: User, @QueryParam myProjects: Boolean? = false, @QueryParam noCustomer: Boolean = false) =
+    if (myProjects == true || user.authRole != ADMIN) projectRepository.forMember(user.id, noCustomer)
     else projectRepository.list()
 
   @GET("/:id/members") @Access(ADMIN, USER, EXTERNAL)

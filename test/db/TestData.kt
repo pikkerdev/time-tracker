@@ -30,6 +30,7 @@ object TestData {
 
   val customer = Customer("Customer1")
   val project = Project(customer.id, "Project1", hourlyRates = mapOf(DEVELOPER to 88.d), customerName = customer.name)
+  val project2 = Project(customer.id, "Project2", hourlyRates = mapOf(DEVELOPER to 44.d), customerName = customer.name)
   val projectMember = ProjectMember(project.id, user.id, DEVELOPER, createdAt = now)
   val projectMemberUser = ProjectMemberUser(projectMember, user)
   val invoice = Invoice(InvoiceId(2026060101), project.id, LocalDate.of(2026, 6, 1), 760.d, 240.d)

@@ -1,18 +1,21 @@
 package projects
 
 import ch.tutteli.atrium.api.fluent.en_GB.toContain
+import ch.tutteli.atrium.api.fluent.en_GB.toContainExactly
 import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
 import customers.CustomerRepository
 import db.DBTest
 import db.TestData.customer
 import db.TestData.project
+import db.TestData.project2
 import db.TestData.user
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import project.ProjectMember
 import project.ProjectMemberRepository
 import project.ProjectRepository
+import project.ProjectMember.Role.CUSTOMER
 import users.UserRepository
 
 class ProjectRepositoryTest: DBTest() {
@@ -31,8 +34,11 @@ class ProjectRepositoryTest: DBTest() {
 
   @Test fun `get lists`() {
     repository.save(project)
+    repository.save(project2)
     memberRepository.save(ProjectMember(project.id, user.id))
-    expect(repository.forMember(user.id)).toContain(project)
+    memberRepository.save(ProjectMember(project2.id,user.id, CUSTOMER))
+    expect(repository.forMember(user.id, false)).toContainExactly(project, project2)
+    expect(repository.forMember(user.id, true)).toContainExactly(project)
     expect(repository.byCustomer(customer.id)).toContain(project)
     expect(repository.list()).toContain(project)
   }

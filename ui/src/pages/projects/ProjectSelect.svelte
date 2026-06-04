@@ -12,13 +12,12 @@
   let projects: Project[] = []
 
   onMount(async () => {
-    if (!$user.isAdmin || isForm) projects = await api.get('projects?myProjects=true')
+    if (!$user.isAdmin || isForm) projects = await api.get('projects?myProjects=true&noCustomer=true')
     else projects = await api.get('projects?myProjects=false')
     projects.sort((a,b) => a.customerName!.localeCompare(b.customerName!) || a.name.localeCompare(b.name))
   })
 
 </script>
-<SelectField bind:value={projectId}
-             label={isForm? t.projects.project : undefined}
+<SelectField bind:value={projectId} label={isForm? t.projects.project : undefined}
              emptyOption={!isForm? t.projects.all : undefined}
              options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>

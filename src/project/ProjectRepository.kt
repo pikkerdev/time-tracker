@@ -30,9 +30,9 @@ class ProjectRepository(db: DataSource): CrudRepository<Project>(db, "projects")
   )
   override fun Project.persister() = toValues(Project::hourlyRates to json(hourlyRates), skip = listOf(Project::customerName))
 
-  fun forMember(userId: Id<User>): List<Project> =
+  fun forMember(userId: Id<User>, noCustomer: Boolean): List<Project> =
     db.select("$selectFrom join project_members pm on $table.id = pm.projectId",
-      ProjectMember::userId eq userId, notDeleted, suffix = defaultOrder) { mapper() }
+      ProjectMember::userId eq userId, notDeleted, if (noCustomer) ProjectMember:: role neq ProjectMember.Role.CUSTOMER else null, suffix = defaultOrder) { mapper() }
 
   fun byCustomer(customerId: Id<Customer>): List<Project> = list(Project::customerId eq customerId)
 }
