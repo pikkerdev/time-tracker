@@ -1,7 +1,7 @@
 package app
 
-import java.math.BigDecimal
 import klite.Config
+import klite.d
 
-val vatRate: BigDecimal = Config.optional("VAT_RATE", "0.24").toBigDecimal()
+val vatRate = Config.optional("VAT_RATE", "0.24").d
 

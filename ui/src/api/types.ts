@@ -8,7 +8,7 @@ export interface Invoice {amount: number; date: LocalDate; id: InvoiceId; projec
 // class invoices.InvoiceId
 export type InvoiceId = number
 // class invoices.InvoiceRoutes$InvoiceCreateRequest
-export interface InvoiceRoutesInvoiceCreateRequest {invoice: Invoice; timeEntryIds: Array<Id<TimeEntry>>}
+export interface InvoiceRoutesInvoiceCreateRequest {date: LocalDate; timeEntryIds: Array<Id<TimeEntry>>}
 // class project.Project
 export interface Project {currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; storyTrackerId?: number}
 // class project.ProjectMember$Role

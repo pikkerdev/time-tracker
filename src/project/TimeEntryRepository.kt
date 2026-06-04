@@ -43,6 +43,6 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
     list(TimeEntry::id to ids)
 
   fun updateInvoiceId(ids: List<Id<TimeEntry>>, invoiceId: InvoiceId) {
-    db.update(table, mapOf(TimeEntry::invoiceId.colName to invoiceId), TimeEntry::id.colName to In(ids))
+    db.update(table, mapOf(TimeEntry::invoiceId to invoiceId), TimeEntry::id to ids)
   }
 }

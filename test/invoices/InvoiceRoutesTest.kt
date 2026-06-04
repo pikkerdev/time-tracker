@@ -21,15 +21,12 @@ class InvoiceRoutesTest: BaseMocks() {
     val timeEntryIds = listOf(timeEntry.id, timeEntry2.id)
     val amount = (timeEntry.hours * timeEntry.hourlyRate) + (timeEntry2.hours * timeEntry2.hourlyRate)
     val vat = (amount * Decimal(app.vatRate.toString()))
-    val invoiceToSave = invoice.copy( amount = amount, vatAmount = vat)
+    val invoiceToSave = invoice.copy(amount = amount, vatAmount = vat)
 
     every { timeEntryRepository.listByIds(timeEntryIds) } returns listOf(timeEntry, timeEntry2)
 
-    val result = routes.create(project.id, timeEntryIds, invoice)
-
-    expect(result.invoice).toEqual(invoiceToSave)
-    expect(result.timeEntryIds).toEqual(timeEntryIds)
-    expect(result).toEqual(invoiceCreateRequest.copy(invoice = invoiceToSave))
+    val result = routes.create(project.id, invoiceCreateRequest)
+    expect(result).toEqual(invoiceToSave)
 
     verify {
       timeEntryRepository.listByIds(timeEntryIds)

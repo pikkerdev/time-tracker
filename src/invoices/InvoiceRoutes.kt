@@ -3,33 +3,31 @@ package invoices
 import app.vatRate
 import auth.Access
 import db.Id
-import klite.Decimal
+import klite.sumOf
 import klite.annotations.POST
 import klite.annotations.PathParam
 import project.Project
 import project.TimeEntry
 import project.TimeEntryRepository
-import users.AuthRole
+import users.AuthRole.ADMIN
+import java.time.LocalDate
 
 class InvoiceRoutes(
   val repository: InvoiceRepository,
-  val timeEntryRepository: TimeEntryRepository,
+  val timeEntryRepository: TimeEntryRepository
 ) {
 
- @POST @Access(AuthRole.ADMIN)
-  fun create(@PathParam projectId: Id<Project>, timeEntryIds: List<Id<TimeEntry>>, invoice: Invoice) : InvoiceCreateRequest {
-   val timeEntries = timeEntryRepository.listByIds(timeEntryIds)
-   var netAmount = Decimal.ZERO
-   for (timeEntry in timeEntries) { netAmount += timeEntry.hours * timeEntry.hourlyRate }
-   val vatAmount = netAmount * Decimal(vatRate.toString())
+ @POST @Access(ADMIN)
+ fun create(@PathParam projectId: Id<Project>, req: InvoiceCreateRequest): Invoice {
+   val timeEntries = timeEntryRepository.listByIds(req.timeEntryIds)
+   val netAmount = timeEntries.sumOf { it.hours * it.hourlyRate }
+   val vatAmount = netAmount * vatRate
 
-   val newInvoiceId = repository.nextId(invoice.date)
-   val invoiceToSave = invoice.copy(newInvoiceId, projectId, amount = netAmount, vatAmount = vatAmount)
-   repository.save(invoiceToSave)
-   timeEntryRepository.updateInvoiceId(timeEntryIds, newInvoiceId)
-   return InvoiceCreateRequest(invoiceToSave, timeEntryIds)
+   val invoice = Invoice(repository.nextId(req.date), projectId, req.date, netAmount, vatAmount)
+   repository.save(invoice)
+   timeEntryRepository.updateInvoiceId(req.timeEntryIds, invoice.id)
+   return invoice
  }
 
-  data class InvoiceCreateRequest(val invoice: Invoice, val timeEntryIds: List<Id<TimeEntry>>)
-
+  data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>)
 }
