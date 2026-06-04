@@ -7,6 +7,7 @@ import db.TestData.invoice
 import db.TestData.project
 import db.TestData.timeEntry
 import db.TestData.timeEntry2
+import db.TestData.invoiceCreateRequest
 import io.mockk.every
 import io.mockk.verify
 import klite.Decimal
@@ -28,6 +29,7 @@ class InvoiceRoutesTest: BaseMocks() {
 
     expect(result.invoice).toEqual(invoiceToSave)
     expect(result.timeEntryIds).toEqual(timeEntryIds)
+    expect(result).toEqual(invoiceCreateRequest.copy(invoice = invoiceToSave))
 
     verify {
       timeEntryRepository.listByIds(timeEntryIds)
