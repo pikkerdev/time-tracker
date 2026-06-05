@@ -16,7 +16,8 @@
     "deleteConfirm": "Are you sure?",
     "notFound": "Not found",
     "add": "Add",
-    "clearFilter": "Clear filter"
+    "choose": "Choose"
+
   },
   "errors": {
     "technical": "Technical error, please try again",
@@ -90,6 +91,8 @@
     "description": "Description",
     "showMyTimeEntries": "Show my time entries",
     "fromDate": "From",
-    "toDate": "To"
+    "toDate": "To",
+    "createInvoice": "Create an invoice",
+    "timeEntriesMustBelongToSameProject": "All time entries must belong to the same project"
   }
 }

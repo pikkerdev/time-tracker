@@ -1,10 +1,10 @@
 package invoices
 
 import ch.tutteli.atrium.api.fluent.en_GB.toEqual
+import ch.tutteli.atrium.api.fluent.en_GB.toThrow
 import ch.tutteli.atrium.api.verbs.expect
 import db.BaseMocks
 import db.TestData.invoice
-import db.TestData.project
 import db.TestData.timeEntry
 import db.TestData.timeEntry2
 import db.TestData.invoiceCreateRequest
@@ -12,6 +12,9 @@ import io.mockk.every
 import io.mockk.verify
 import klite.Decimal
 import org.junit.jupiter.api.Test
+import db.Id
+import kotlin.IllegalArgumentException
+
 
 class InvoiceRoutesTest: BaseMocks() {
   val routes = create<InvoiceRoutes>()
@@ -25,8 +28,12 @@ class InvoiceRoutesTest: BaseMocks() {
 
     every { timeEntryRepository.listByIds(timeEntryIds) } returns listOf(timeEntry, timeEntry2)
 
-    val result = routes.create(project.id, invoiceCreateRequest)
+    val result = routes.create(invoiceCreateRequest)
     expect(result).toEqual(invoiceToSave)
+
+    val differentProjectIdEntry = (timeEntry.copy(projectId = Id()))
+    every { timeEntryRepository.listByIds(timeEntryIds) } returns listOf(timeEntry2, differentProjectIdEntry)
+    expect { routes.create(invoiceCreateRequest.copy(timeEntryIds = listOf(differentProjectIdEntry.id, timeEntry2.id))) }.toThrow<IllegalArgumentException>()
 
     verify {
       timeEntryRepository.listByIds(timeEntryIds)
