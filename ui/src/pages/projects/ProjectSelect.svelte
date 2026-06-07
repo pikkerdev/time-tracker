@@ -8,6 +8,7 @@
 
   export let projectId: Id<Project>
   export let isForm: boolean = false
+  export let emptyOption: string | undefined = undefined
 
   let projects: Project[] = []
 
@@ -17,7 +18,9 @@
     projects.sort((a,b) => a.customerName!.localeCompare(b.customerName!) || a.name.localeCompare(b.name))
   })
 
+  $: if (emptyOption === undefined) {
+    emptyOption = !isForm ? t.projects.all : undefined
+  }
 </script>
-<SelectField bind:value={projectId} label={isForm? t.projects.project : undefined}
-             emptyOption={!isForm? t.projects.all : undefined}
+<SelectField bind:value={projectId} label={isForm? t.projects.project : undefined} emptyOption={t.projects.all}
              options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>

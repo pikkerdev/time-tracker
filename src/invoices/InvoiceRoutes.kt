@@ -3,7 +3,6 @@ package invoices
 import app.vatRate
 import auth.Access
 import db.Id
-import klite.BadRequestException
 import klite.sumOf
 import klite.annotations.POST
 import project.TimeEntry
