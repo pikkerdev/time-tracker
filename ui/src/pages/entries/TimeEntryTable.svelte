@@ -32,9 +32,13 @@
       ]
     } items={timeEntries} let:item={e}>
   <tr>
-    {#if isInvoicePage}
-      <td><input type="checkbox" bind:group={selectedEntryIds} value={e.entry.id}></td>
-    {/if}
+    <td>
+      {#if e.entry.invoiceId}
+        {t.invoices.invoiced}
+      {:else}
+        <input type="checkbox" bind:group={selectedEntryIds} value={e.entry.id}>
+      {/if}
+    </td>
     {#if !isInvoicePage}
       <td>{e.customerName}</td>
       <td>{e.projectName}</td>

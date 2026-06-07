@@ -31,10 +31,11 @@
 
   $: if (projectId && from && to) loadEntries(projectId, from, to)
 
-  $: sum = timeEntries?.filter(entry => selectedEntryIds.includes(entry.entry.id))
+  $: sum = timeEntries?.filter(entry => selectedEntryIds.includes(entry.entry.id) && !entry.entry.invoiceId)
     .reduce((sum, entry) => sum +(entry.entry.hourlyRate), 0)
-
 </script>
+
+<!-- todo preview for an invoice -->
 
 <MainPageLayout class="relative spaced" title={t.invoices.title}>
   <div class="justify-items-start flex items-center gap-4">
@@ -51,7 +52,6 @@
     <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} max={[to, today].min()}/> -
     <FormField title={t.timeEntries.toDate} type="date" bind:value={to} min={from} max={today}/>
     <MonthSelectField bind:from bind:to/>
-
   </div>
   {#if projectId}
     <TimeEntryTable {timeEntries} isInvoicePage={true} bind:selectedEntryIds={selectedEntryIds}/>
