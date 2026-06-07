@@ -6,7 +6,6 @@
   import api from 'src/api/api'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
   import TimeEntryCalendar from 'src/pages/entries/TimeEntryCalendar.svelte'
-  import {onMount} from 'svelte'
 
   const LAST_PROJECT_KEY = 'lastProjectId'
 
@@ -32,6 +31,6 @@
   <div class="flex flex-col gap-4 items-center">
     <TimeEntryCalendar bind:date {dates} {timeEntryHours}/>
     <TimeEntryForm bind:timeEntry onSaved={() => loadEntries(date)}/>
-    <TimeEntryTable {timeEntries} showUser={false} showDate={false} onSaved={() => loadEntries(date)}/>
+    <TimeEntryTable {timeEntries} isTimeEntryPage={false} onSaved={() => loadEntries(date)}/>
   </div>
 </MainPageLayout>
