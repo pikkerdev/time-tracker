@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type {Id, Project, TimeEntryView} from 'src/api/types'
+  import type {TimeEntryView} from 'src/api/types'
   import {formatDate, t} from 'i18n'
   import SortableTable from 'src/components/SortableTable.svelte'
   import TimeEntryForm from 'src/pages/entries/TimeEntryForm.svelte'
