@@ -5,10 +5,10 @@ export type Entity<T extends Entity<T>> = {id: Id<T>}
 export interface Customer {businessRegistryCode?: string; id: Id<Customer>; invoiceEmail?: Email; legalAddress?: string; legalName?: string; name: string; phone?: Phone; vatId?: string}
 // class invoices.Invoice
 export interface Invoice {amount: number; date: LocalDate; id: InvoiceId; projectId: Id<Project>; totalAmount: number; vatAmount: number}
+// class invoices.InvoiceCreateRequest
+export interface InvoiceCreateRequest {date: LocalDate; timeEntryIds: Array<Id<TimeEntry>>}
 // class invoices.InvoiceId
 export type InvoiceId = number
-// class invoices.InvoiceRoutes$InvoiceCreateRequest
-export interface InvoiceRoutesInvoiceCreateRequest {date: LocalDate; timeEntryIds: Array<Id<TimeEntry>>}
 // class project.Project
 export interface Project {currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; storyTrackerId?: number}
 // class project.ProjectMember$Role

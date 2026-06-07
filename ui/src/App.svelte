@@ -12,6 +12,7 @@
   import TimeEntryPage from 'src/pages/entries/TimeEntryPage.svelte'
   import {onMount} from 'svelte'
   import {user} from 'src/stores/auth'
+  import InvoicePage from 'src/pages/invoices/InvoicePage.svelte'
 
   onMount(() => {
     if ($user && location.pathname == '/')
@@ -38,5 +39,6 @@
     <Route path="/timeentries" component={TimeEntriesPage}/>
     <Route path="/customers/:customerId/projects" component={ProjectsPage}/>
     <Route path="/users" component={UsersPage}/>
+    <Route path="/invoices" component={InvoicePage}/>
   </Router>
 </div>

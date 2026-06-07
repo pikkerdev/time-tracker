@@ -25,12 +25,13 @@
       <div class="text-lg flex lg:items-center gap-2 lg:gap-6 max-lg:flex-col max-lg:order-2">
         {#if $user}
           <Link to="/projects">Projects</Link>
+          {#if $user.isUser || $user.isAdmin}
+            <Link to="/timeentries">{t.timeEntries.title}</Link>
+          {/if}
           {#if $user.isAdmin}
             <Link to="/customers">Customers</Link>
             <Link to="/users">Users</Link>
-          {/if}
-          {#if $user.isUser || $user.isAdmin}
-            <Link to="/timeentries">{t.timeEntries.title}</Link>
+            <Link to="/invoices">Invoices</Link>
           {/if}
         {/if}
       </div>

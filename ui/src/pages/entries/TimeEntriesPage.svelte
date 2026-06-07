@@ -1,12 +1,12 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import {
-    type Id, type LocalDate,
+    type Id,
     type Project,
     type TimeEntryView
   } from 'src/api/types'
   import api from 'src/api/api'
-  import {t, today, toISODate} from 'i18n'
+  import {t, today,} from 'i18n'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
   import {user} from 'src/stores/auth'
   import FormField from 'src/forms/FormField.svelte'
@@ -25,7 +25,7 @@
     timeEntries = await api.get(`projects/timeentries?${params}`)
   }
 
-  $: if (from && to)loadEntries(projectId, from, to, myTimeEntries)
+  $: if (from && to) loadEntries(projectId, from, to, myTimeEntries)
 
   $: {
     if (!from || !to) from = from || to

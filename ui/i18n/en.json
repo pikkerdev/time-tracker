@@ -60,8 +60,10 @@
     "edit": "Edit project",
     "myProjects": "My projects",
     "showMyProjects": "Show my projects",
-    "all": "All projects"
+    "all": "All projects",
+    "chooseProject": "Choose project"
   },
+
   "users": {
     "title": "Users",
     "name": "Name",
@@ -92,7 +94,15 @@
     "showMyTimeEntries": "Show my time entries",
     "fromDate": "From",
     "toDate": "To",
+    "selected": "Selected"
+  },
+
+  "invoices": {
+    "title": "Invoices",
+    "invoice": "Invoice",
     "createInvoice": "Create an invoice",
-    "timeEntriesMustBelongToSameProject": "All time entries must belong to the same project"
+    "timeEntriesMustBelongToSameProject": "All time entries must belong to the same project to create an invoice",
+    "chooseProject": "Choose a project to create an invoice"
+
   }
 }
