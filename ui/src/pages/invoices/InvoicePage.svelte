@@ -31,20 +31,27 @@
 
   $: if (projectId && from && to) loadEntries(projectId, from, to)
 
+  $: sum = timeEntries?.filter(entry => selectedEntryIds.includes(entry.entry.id))
+    .reduce((sum, entry) => sum +(entry.entry.hourlyRate), 0)
+
 </script>
 
 <MainPageLayout class="relative spaced" title={t.invoices.title}>
+  <div class="justify-items-start flex items-center gap-4">
+    {#if projectId}
+      <Button class="primary" label={t.invoices.createInvoice} onclick={createInvoice}/>
+      <span>{t.invoices.sum}: {sum} €</span>
+    {/if}
+  </div>
   <div slot="title" class="flex items-center gap-4">
     {#if !projectId}
       <h5>{t.invoices.chooseProject}</h5>
     {/if}
-    {#if projectId}
-      <Button class="primary" label={t.invoices.createInvoice} onclick={createInvoice}/>
-    {/if}
     <ProjectSelect emptyOption={t.projects.chooseProject} bind:projectId/>
-    <MonthSelectField bind:from bind:to/>
     <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} max={[to, today].min()}/> -
     <FormField title={t.timeEntries.toDate} type="date" bind:value={to} min={from} max={today}/>
+    <MonthSelectField bind:from bind:to/>
+
   </div>
   {#if projectId}
     <TimeEntryTable {timeEntries} isInvoicePage={true} bind:selectedEntryIds={selectedEntryIds}/>

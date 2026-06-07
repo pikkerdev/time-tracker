@@ -95,14 +95,15 @@
     "fromDate": "From",
     "toDate": "To",
     "selected": "Selected"
-  },
+      },
 
   "invoices": {
     "title": "Invoices",
     "invoice": "Invoice",
     "createInvoice": "Create an invoice",
     "timeEntriesMustBelongToSameProject": "All time entries must belong to the same project to create an invoice",
-    "chooseProject": "Choose a project to create an invoice"
+    "chooseProject": "Choose a project to create an invoice",
+    "sum": "Invoice sum"
 
   }
 }
