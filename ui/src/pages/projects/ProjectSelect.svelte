@@ -22,5 +22,5 @@
     emptyOption = !isForm ? t.projects.all : undefined
   }
 </script>
-<SelectField bind:value={projectId} label={isForm? t.projects.project : undefined} emptyOption={t.projects.all}
+<SelectField bind:value={projectId} label={isForm? t.projects.project : undefined} {emptyOption}
              options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>
