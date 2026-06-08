@@ -1,4 +1,5 @@
 <script lang="ts">
+
   import {t, today} from 'i18n'
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import MonthSelectField from 'src/forms/MonthSelectField.svelte'
@@ -13,8 +14,8 @@
   let timeEntries: TimeEntryView[]
   const LAST_PROJECT_KEY_INVOICE = 'lastProjectIdInvoice' // TODO: reuse lastProjectId, move to another file
   let projectId: Id<Project> = localStorage.getItem(LAST_PROJECT_KEY_INVOICE) || ''
-  let from : string | undefined
-  let to : string | undefined
+  let from : string
+  let to : string
   let selectedEntryIds: string[] = []
 
   async function createInvoice() {
@@ -22,6 +23,7 @@
     await api.post('invoices/create', invoiceCreateRequest)
     localStorage.setItem(LAST_PROJECT_KEY_INVOICE, projectId)
     showToast(t.general.saved)
+    await loadEntries(projectId, from, to)
   }
 
   async function loadEntries(projectId: Id<Project>, from: string, to: string) {
@@ -41,7 +43,7 @@
 
 <MainPageLayout class="relative spaced" title={t.invoices.createInvoice}>
   <div class="justify-items-start flex items-center gap-4">
-    {#if projectId}
+    {#if projectId && selectedEntryIds.length > 0}
       <Button class="primary" label={t.invoices.createInvoice} onclick={createInvoice}/>
       <span>{t.invoices.sum}: {sum} €</span>
     {/if}
