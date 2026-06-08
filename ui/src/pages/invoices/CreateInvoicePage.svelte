@@ -34,9 +34,8 @@
 
   $: if (projectId && from && to) loadEntries(projectId, from, to)
 
-  // TODO: use ArrayExtensions.sum
   $: sum = timeEntries?.filter(entry => selectedEntryIds.includes(entry.entry.id) && !entry.entry.invoiceId)
-    .reduce((sum, entry) => sum +(entry.entry.hourlyRate * entry.entry.hours), 0)
+    .sum(entry => entry.entry.hourlyRate * entry.entry.hours)
 </script>
 
 <!-- todo preview for an invoice -->
