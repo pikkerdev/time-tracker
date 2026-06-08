@@ -12,7 +12,8 @@
   import Button from 'src/components/Button.svelte'
 
   let timeEntries: TimeEntryView[]
-  let projectId: Id<Project> = ''
+  const LAST_PROJECT_KEY_INVOICE = 'lastProjectIdInvoice'
+  let projectId: Id<Project> = localStorage.getItem(LAST_PROJECT_KEY_INVOICE) || ''
   let from : string | undefined
   let to : string | undefined
   let selectedEntryIds: string[] = []
@@ -20,6 +21,7 @@
   async function createInvoice() {
     const invoiceCreateRequest: InvoiceCreateRequest = {date: today, timeEntryIds: selectedEntryIds}
     await api.post('invoices', invoiceCreateRequest)
+    localStorage.setItem(LAST_PROJECT_KEY_INVOICE, projectId)
     showToast(t.general.saved)
   }
 
@@ -44,11 +46,8 @@
       <span>{t.invoices.sum}: {sum} €</span>
     {/if}
   </div>
-  <div slot="title" class="flex items-center gap-4">
-    {#if !projectId}
-      <h5>{t.invoices.chooseProject}</h5>
-    {/if}
-    <ProjectSelect emptyOption={t.projects.chooseProject} bind:projectId/>
+  <div slot="title" class="flex items-end gap-4">
+    <ProjectSelect bind:projectId showLastProject={true}/>
     <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} max={[to, today].min()}/> -
     <FormField title={t.timeEntries.toDate} type="date" bind:value={to} min={from} max={today}/>
     <MonthSelectField bind:from bind:to/>
