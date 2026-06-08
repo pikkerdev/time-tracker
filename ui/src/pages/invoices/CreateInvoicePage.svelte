@@ -20,7 +20,7 @@
 
   async function createInvoice() {
     const invoiceCreateRequest: InvoiceCreateRequest = {date: today, timeEntryIds: selectedEntryIds}
-    await api.post('invoices/create', invoiceCreateRequest)
+    await api.post('invoices', invoiceCreateRequest)
     localStorage.setItem(LAST_PROJECT_KEY_INVOICE, projectId)
     showToast(t.general.saved)
     await loadEntries(projectId, from, to)
