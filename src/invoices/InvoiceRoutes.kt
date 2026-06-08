@@ -14,7 +14,7 @@ class InvoiceRoutes(
   val repository: InvoiceRepository,
   val timeEntryRepository: TimeEntryRepository
 ) {
-
+  // TODO: remove /create, this is not RESTful, just POST /invoices is enough
   @POST("/create") @Access(ADMIN)
   fun create(req: InvoiceCreateRequest): Invoice {
     val timeEntries = timeEntryRepository.listByIds(req.timeEntryIds)
@@ -29,5 +29,5 @@ class InvoiceRoutes(
   }
 }
 
-  data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>)
+data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>)
 

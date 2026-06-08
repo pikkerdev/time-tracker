@@ -7,10 +7,11 @@
   import Button from 'src/components/Button.svelte'
 
   export let timeEntries: TimeEntryView[]
-  export let isTimeEntryPage = false
-  export let isInvoicePage = false
+  export let isTimeEntryPage = false // TODO too specific
+  export let isInvoicePage = false // TODO too specific
   export let onSaved: () => void = () => {}
   export let selectedEntryIds: string[] = []
+
   let timeEntry: TimeEntryView
   let show = false
 

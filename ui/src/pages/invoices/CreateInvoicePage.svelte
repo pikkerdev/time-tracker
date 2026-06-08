@@ -1,5 +1,4 @@
 <script lang="ts">
-
   import {t, today} from 'i18n'
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import MonthSelectField from 'src/forms/MonthSelectField.svelte'
@@ -12,7 +11,7 @@
   import Button from 'src/components/Button.svelte'
 
   let timeEntries: TimeEntryView[]
-  const LAST_PROJECT_KEY_INVOICE = 'lastProjectIdInvoice'
+  const LAST_PROJECT_KEY_INVOICE = 'lastProjectIdInvoice' // TODO: reuse lastProjectId, move to another file
   let projectId: Id<Project> = localStorage.getItem(LAST_PROJECT_KEY_INVOICE) || ''
   let from : string | undefined
   let to : string | undefined
@@ -33,6 +32,7 @@
 
   $: if (projectId && from && to) loadEntries(projectId, from, to)
 
+  // TODO: use ArrayExtensions.sum
   $: sum = timeEntries?.filter(entry => selectedEntryIds.includes(entry.entry.id) && !entry.entry.invoiceId)
     .reduce((sum, entry) => sum +(entry.entry.hourlyRate * entry.entry.hours), 0)
 </script>
