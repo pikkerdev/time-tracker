@@ -15,7 +15,7 @@
   let show = false
 
   $: if (isInvoicePage && timeEntries) {
-    selectedEntryIds = timeEntries.map(e => e.entry.id)
+    selectedEntryIds = timeEntries.filter(e => !e.entry.invoiceId).map(e => e.entry.id)
   }
 </script>
 
