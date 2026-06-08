@@ -11,11 +11,12 @@
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
   import Button from 'src/components/Button.svelte'
 
-  let timeEntries: TimeEntryView[]
   const LAST_PROJECT_KEY_INVOICE = 'lastProjectIdInvoice'
+
+  let timeEntries: TimeEntryView[]
   let projectId: Id<Project> = localStorage.getItem(LAST_PROJECT_KEY_INVOICE) || ''
-  let from : string | undefined
-  let to : string | undefined
+  let from : string
+  let to : string
   let selectedEntryIds: string[] = []
 
   async function createInvoice() {
@@ -23,6 +24,7 @@
     await api.post('invoices/create', invoiceCreateRequest)
     localStorage.setItem(LAST_PROJECT_KEY_INVOICE, projectId)
     showToast(t.general.saved)
+    await loadEntries(projectId, from, to)
   }
 
   async function loadEntries(projectId: Id<Project>, from: string, to: string) {
@@ -35,13 +37,16 @@
 
   $: sum = timeEntries?.filter(entry => selectedEntryIds.includes(entry.entry.id) && !entry.entry.invoiceId)
     .reduce((sum, entry) => sum +(entry.entry.hourlyRate * entry.entry.hours), 0)
+
+  $: selectedEntryIds
+
 </script>
 
 <!-- todo preview for an invoice -->
 
 <MainPageLayout class="relative spaced" title={t.invoices.createInvoice}>
   <div class="justify-items-start flex items-center gap-4">
-    {#if projectId}
+    {#if projectId && selectedEntryIds.length > 0}
       <Button class="primary" label={t.invoices.createInvoice} onclick={createInvoice}/>
       <span>{t.invoices.sum}: {sum} €</span>
     {/if}
