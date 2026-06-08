@@ -20,7 +20,7 @@
 
   async function createInvoice() {
     const invoiceCreateRequest: InvoiceCreateRequest = {date: today, timeEntryIds: selectedEntryIds}
-    await api.post('invoices', invoiceCreateRequest)
+    await api.post('invoices/create', invoiceCreateRequest)
     localStorage.setItem(LAST_PROJECT_KEY_INVOICE, projectId)
     showToast(t.general.saved)
   }
@@ -39,7 +39,7 @@
 
 <!-- todo preview for an invoice -->
 
-<MainPageLayout class="relative spaced" title={t.invoices.title}>
+<MainPageLayout class="relative spaced" title={t.invoices.createInvoice}>
   <div class="justify-items-start flex items-center gap-4">
     {#if projectId}
       <Button class="primary" label={t.invoices.createInvoice} onclick={createInvoice}/>

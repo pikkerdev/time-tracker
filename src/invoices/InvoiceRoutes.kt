@@ -15,7 +15,7 @@ class InvoiceRoutes(
   val timeEntryRepository: TimeEntryRepository
 ) {
 
-  @POST @Access(ADMIN)
+  @POST("/create") @Access(ADMIN)
   fun create(req: InvoiceCreateRequest): Invoice {
     val timeEntries = timeEntryRepository.listByIds(req.timeEntryIds)
     val projectId = timeEntries.first().projectId
