@@ -20,6 +20,7 @@ class InvoiceRoutes(
     val timeEntries = timeEntryRepository.listByIds(req.timeEntryIds)
     val projectId = timeEntries.first().projectId
     if (timeEntries.any { it.projectId != projectId }) throw IllegalArgumentException("timeEntries.timeEntriesMustBelongToSameProject")
+    require(timeEntries.all { it.invoiceId == null }) {"Already Invoiced"}
     val netAmount = timeEntries.sumOf { it.hours * it.hourlyRate }
     val vatAmount = netAmount * vatRate
     val invoice = Invoice(repository.nextId(req.date), projectId, req.date, netAmount, vatAmount)
