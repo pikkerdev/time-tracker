@@ -7,6 +7,7 @@ import invoices.InvoiceRoutes
 import klite.*
 import klite.annotations.annotated
 import klite.http.httpClient
+import klite.jdbc.RequestTransactionHandler
 import klite.json.JsonBody
 import klite.oauth.AuthRoutes
 import klite.oauth.GoogleOAuthClient
@@ -27,19 +28,21 @@ fun main() {
   ).apply {
     initDB()
 
+    register(httpClient())
+
+    use<JsonBody>()
+    use<RequestTransactionHandler>()
+
     val path = if (!Config.isProd) Path.of("ui/build") else Path.of("ui/public")
     assets("/", AssetsHandler(path, useIndexForUnknownPaths = true))
 
     context("/oauth") {
       register<OAuthUserProvider>(AuthUserProvider::class)
-      register(httpClient())
       register<GoogleOAuthClient>()
       annotated<OAuthRoutes>()
     }
 
     context("/api") {
-      useOnly<JsonBody>()
-
       post("/js-error") { logger("js-error").error(rawBody) }
 
       before<AccessChecker>()
