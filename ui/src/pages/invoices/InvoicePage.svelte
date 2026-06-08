@@ -32,7 +32,7 @@
   $: if (projectId && from && to) loadEntries(projectId, from, to)
 
   $: sum = timeEntries?.filter(entry => selectedEntryIds.includes(entry.entry.id) && !entry.entry.invoiceId)
-    .reduce((sum, entry) => sum +(entry.entry.hourlyRate), 0)
+    .reduce((sum, entry) => sum +(entry.entry.hourlyRate * entry.entry.hours), 0)
 </script>
 
 <!-- todo preview for an invoice -->
