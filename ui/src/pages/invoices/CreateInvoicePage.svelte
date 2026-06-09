@@ -1,5 +1,4 @@
 <script lang="ts">
-
   import {t, today} from 'i18n'
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import MonthSelectField from 'src/forms/MonthSelectField.svelte'
@@ -34,8 +33,8 @@
 
   $: if (projectId && from && to) loadEntries(projectId, from, to)
 
-  $: sum = timeEntries?.filter(entry => selectedEntryIds.includes(entry.entry.id) && !entry.entry.invoiceId)
-    .sum(entry => entry.entry.hourlyRate * entry.entry.hours)
+  $: totalAmount = timeEntries?.filter(e => selectedEntryIds.includes(e.entry.id) && !e.entry.invoiceId)
+    .sum(e => e.entry.hourlyRate * e.entry.hours)
 </script>
 
 <!-- todo preview for an invoice -->
@@ -44,7 +43,7 @@
   <div class="justify-items-start flex items-center gap-4">
     {#if projectId && selectedEntryIds.length > 0}
       <Button class="primary" label={t.invoices.createInvoice} onclick={createInvoice}/>
-      <span>{t.invoices.sum}: {sum} €</span>
+      <span>{t.invoices.sum}: {totalAmount} €</span>
     {/if}
   </div>
   <div slot="title" class="flex items-end gap-4">
