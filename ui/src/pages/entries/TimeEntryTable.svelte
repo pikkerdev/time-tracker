@@ -10,6 +10,7 @@
   export let narrow = false
   export let onSaved: () => void = () => {}
   export let selectedEntryIds: string[] = []
+  export let projectId: string | undefined
 
   let timeEntry: TimeEntryView
   let show = false
@@ -49,7 +50,7 @@
       <td class="text-right">
         {#if e.entry.invoiceId}
           {e.entry.invoiceId}
-        {:else}
+        {:else if projectId}
           <input type="checkbox" bind:group={selectedEntryIds} value={e.entry.id}>
         {/if}
       </td>
