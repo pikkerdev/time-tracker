@@ -24,8 +24,8 @@
   $: if (from && to) loadEntries(projectId, from, to, myTimeEntries)
 
   $: {
-    if (!from || !to) from = from || to
-    to = to || from
+    if (!from || !to) from ||= to
+    to ||= from
   }
 </script>
 
