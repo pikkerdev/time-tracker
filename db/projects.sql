@@ -27,3 +27,6 @@ create index on projects(customerId);
 
 --changeset projects:stortyTrackerId:bigint
 alter table projects alter column storyTrackerId type bigint using storyTrackerId::bigint;
+
+--changeset projects.tags
+alter table projects add column tags text[] default '{}' not null;

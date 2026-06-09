@@ -6,7 +6,8 @@
   import {user} from 'src/stores/auth'
   import api from 'src/api/api'
 
-  export let projectId: Id<Project>
+  export let projectId: Id<Project> = ''
+  export let project: Project | undefined = undefined
   export let showLastProject: boolean = false
 
   let projects: Project[] = []
@@ -16,6 +17,8 @@
     else projects = await api.get('projects?myProjects=false')
     projects.sort((a,b) => a.customerName!.localeCompare(b.customerName!) || a.name.localeCompare(b.name))
   })
+
+  $: project = projects.find(p => p.id == projectId) as Project
 
 </script>
 <SelectField bind:value={projectId} label={showLastProject? t.projects.project : undefined}

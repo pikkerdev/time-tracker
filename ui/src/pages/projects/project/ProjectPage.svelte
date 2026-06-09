@@ -1,6 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser} from 'src/api/types'
+  import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser, type User} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {formatAmount, t} from 'i18n'
@@ -54,6 +54,10 @@
       <div>
         <p class="text-sm text-gray-500">{t.projects.storyTrackerId}</p>
         <p class="text-lg font-medium">{project.storyTrackerId}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">tags</p>
+        <p class="text-lg font-medium">{project.tags}</p>
       </div>
     </div>
   {/if}
