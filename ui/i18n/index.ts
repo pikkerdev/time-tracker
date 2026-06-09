@@ -28,8 +28,8 @@ export function formatCurrency(code: string) {
   return !code || code === 'EUR' ? '€' : code
 }
 
-export function formatAmount(amount: number, currency: string) {
-  return `${amount.toFixed(2)}\u00A0${currency}`
+export function formatAmount(amount: number, currency = 'EUR') {
+  return `${amount.toFixed(2)}\u00A0${formatCurrency(currency)}`
 }
 
 export function formatDate(date: Date | string) {

@@ -29,7 +29,7 @@
 
 </script>
 
-<Form {submit} class="min-w-1/4 max-w-96 spaced">
+<Form {submit}>
   <ProjectSelect bind:projectId={timeEntry.projectId} showLastProject={true}/>
   <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours} step={0.1}/>
   {#if !isNew}

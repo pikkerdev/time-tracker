@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {t, today} from 'i18n'
+  import {formatAmount, t, today} from 'i18n'
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import MonthSelectField from 'src/forms/MonthSelectField.svelte'
   import ProjectSelect from 'src/pages/projects/ProjectSelect.svelte'
@@ -43,7 +43,7 @@
   <div class="justify-items-start flex items-center gap-4">
     {#if projectId && selectedEntryIds.length > 0}
       <Button class="primary" label={t.invoices.createInvoice} onclick={createInvoice}/>
-      <span>{t.invoices.sum}: {totalAmount} €</span>
+      <span>{t.invoices.totalAmount}: {formatAmount(totalAmount)}</span>
     {/if}
   </div>
   <div slot="title" class="flex items-end gap-4">
@@ -53,6 +53,6 @@
     <MonthSelectField bind:from bind:to/>
   </div>
   {#if projectId}
-    <TimeEntryTable {timeEntries} isInvoicePage={true} bind:selectedEntryIds={selectedEntryIds}/>
+    <TimeEntryTable {timeEntries} bind:selectedEntryIds={selectedEntryIds}/>
   {/if}
 </MainPageLayout>

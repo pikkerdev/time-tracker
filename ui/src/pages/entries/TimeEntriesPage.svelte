@@ -1,10 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import {
-    type Id,
-    type Project,
-    type TimeEntryView
-  } from 'src/api/types'
+  import {type Id, type Project, type TimeEntryView} from 'src/api/types'
   import api from 'src/api/api'
   import {t, today,} from 'i18n'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
@@ -16,8 +12,8 @@
   let timeEntries: TimeEntryView[]
   let myTimeEntries = false
   let projectId: Id<Project> = ''
-  let from : string | undefined
-  let to : string | undefined
+  let from: string | undefined
+  let to: string | undefined
 
   async function loadEntries(projectId: Id<Project>, from: string, to: string, myTimeEntries: boolean) {
     const params = new URLSearchParams({from, to, myTimeEntries: myTimeEntries.toString()})
@@ -31,7 +27,6 @@
     if (!from || !to) from = from || to
     to = to || from
   }
-
 </script>
 
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>

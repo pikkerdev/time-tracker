@@ -30,7 +30,9 @@
 <MainPageLayout class="flex flex-col gap-4 lg:gap-8">
   <div class="flex flex-col gap-4 items-center">
     <TimeEntryCalendar bind:date {dates} {timeEntryHours}/>
-    <TimeEntryForm bind:timeEntry onSaved={() => loadEntries(date)}/>
-    <TimeEntryTable {timeEntries} isTimeEntryPage={false} onSaved={() => loadEntries(date)}/>
+    <div class="min-w-1/4 max-w-96">
+      <TimeEntryForm bind:timeEntry onSaved={() => loadEntries(date)}/>
+    </div>
+    <TimeEntryTable {timeEntries} narrow onSaved={() => loadEntries(date)}/>
   </div>
 </MainPageLayout>
