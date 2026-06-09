@@ -15,13 +15,13 @@
   let from: string | undefined
   let to: string | undefined
 
-  async function loadEntries(projectId: Id<Project>, from: string, to: string, myTimeEntries: boolean) {
+  async function loadEntries(from: string, to: string, myTimeEntries: boolean, projectId: Id<Project>) {
     const params = new URLSearchParams({from, to, myTimeEntries: myTimeEntries.toString()})
-    if (projectId) params.append("projectId", projectId)
+    if (projectId) params.append('projectId', projectId)
     timeEntries = await api.get(`projects/timeentries?${params}`)
   }
 
-  $: if (from && to) loadEntries(projectId, from, to, myTimeEntries)
+  $: if (from && to) loadEntries(from, to, myTimeEntries, projectId)
 
   $: {
     if (!from || !to) from ||= to
@@ -40,5 +40,5 @@
       <input title={t.timeEntries.showMyTimeEntries} type="checkbox" bind:checked={myTimeEntries}/>
     {/if}
   </div>
-  <TimeEntryTable {timeEntries} onSaved={() => from && to && loadEntries(projectId, from, to, myTimeEntries)}/>
+  <TimeEntryTable {timeEntries} onSaved={() => from && to && loadEntries(from, to, myTimeEntries, projectId)}/>
 </MainPageLayout>
