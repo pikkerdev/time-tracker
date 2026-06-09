@@ -11,8 +11,6 @@
   import {showToast} from 'src/stores/toasts'
   import Button from 'src/components/Button.svelte'
 
-  const LAST_PROJECT_KEY_INVOICE = 'lastProjectIdInvoice' // TODO: reuse lastProjectId, move to another file
-
   export let projectId: Id<Project> = ''
 
   let timeEntries: TimeEntryView[]
@@ -31,7 +29,6 @@
   async function createInvoice() {
     const invoiceCreateRequest: InvoiceCreateRequest = {date: today, timeEntryIds: selectedEntryIds}
     await api.post('invoices', invoiceCreateRequest)
-    localStorage.setItem(LAST_PROJECT_KEY_INVOICE, projectId)
     showToast(t.general.saved)
     await loadEntries(from, to, myTimeEntries, projectId)
   }

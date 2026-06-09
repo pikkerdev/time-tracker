@@ -34,7 +34,7 @@
 </script>
 
 <Form {submit}>
-  <ProjectSelect  bind:projectId={timeEntry.projectId} bind:project showLastProject={true}/>
+  <ProjectSelect bind:projectId={timeEntry.projectId} bind:project showLastProject={true} localStorageKey={LAST_PROJECT_KEY}/>
   <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours} step={0.1}/>
   {#if !isNew}
     <FormField label={t.timeEntries.date} type="date" bind:value={timeEntry.date} max={today}/>

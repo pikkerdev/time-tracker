@@ -9,6 +9,7 @@
   export let projectId: Id<Project> = ''
   export let project: Project | undefined = undefined
   export let showLastProject: boolean = false
+  export let localStorageKey: string | undefined = undefined
 
   let projects: Project[] = []
 
@@ -16,6 +17,10 @@
     if (!$user.isAdmin || showLastProject) projects = await api.get('projects?myProjects=true&noCustomer=true')
     else projects = await api.get('projects?myProjects=false')
     projects.sort((a,b) => a.customerName!.localeCompare(b.customerName!) || a.name.localeCompare(b.name))
+    if (localStorageKey && !projectId) {
+      const lastProjectId = localStorage.getItem(localStorageKey)
+      if (lastProjectId) projectId = lastProjectId
+    }
   })
 
   $: project = projects.find(p => p.id == projectId) as Project

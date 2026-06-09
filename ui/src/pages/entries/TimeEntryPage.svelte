@@ -2,17 +2,14 @@
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import {today, toISODate} from 'i18n'
   import TimeEntryForm from 'src/pages/entries/TimeEntryForm.svelte'
-  import type {LocalDate, TimeEntry, TimeEntryView} from 'src/api/types'
+  import type { LocalDate, TimeEntry, TimeEntryView} from 'src/api/types'
   import api from 'src/api/api'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
   import TimeEntryCalendar from 'src/pages/entries/TimeEntryCalendar.svelte'
 
-  const LAST_PROJECT_KEY = 'lastProjectId'
-
   let date = today
-  let latestProjectId = localStorage.getItem(LAST_PROJECT_KEY) ?? undefined
   let timeEntries: TimeEntryView[] = []
-  let timeEntry: TimeEntry = {date, projectId: latestProjectId} as TimeEntry
+  let timeEntry: TimeEntry = {date} as TimeEntry
   let timeEntryHours: Record<LocalDate, number> = {}
 
   let dates = Array.from({length: 28}, (_, i) =>
@@ -33,6 +30,6 @@
     <div class="min-w-1/4 max-w-96">
       <TimeEntryForm bind:timeEntry onSaved={() => loadEntries(date)}/>
     </div>
-    <TimeEntryTable {timeEntries} narrow onSaved={() => loadEntries(date)}/>
+    <TimeEntryTable projectId={timeEntry.projectId} {timeEntries} narrow onSaved={() => loadEntries(date)}/>
   </div>
 </MainPageLayout>
