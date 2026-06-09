@@ -4,9 +4,9 @@ export type Entity<T extends Entity<T>> = {id: Id<T>}
 // class customers.Customer
 export interface Customer {businessRegistryCode?: string; id: Id<Customer>; invoiceEmail?: Email; legalAddress?: string; legalName?: string; name: string; phone?: Phone; vatId?: string}
 // class invoices.Invoice
-export interface Invoice {amount: number; date: LocalDate; id: InvoiceId; projectId: Id<Project>; totalAmount: number; vatAmount: number}
+export interface Invoice {amount: number; comment: string; date: LocalDate; description: string; id: InvoiceId; projectId: Id<Project>; totalAmount: number; vatAmount: number}
 // class invoices.InvoiceCreateRequest
-export interface InvoiceCreateRequest {date: LocalDate; timeEntryIds: Array<Id<TimeEntry>>}
+export interface InvoiceCreateRequest {comment: string; date: LocalDate; description: string; timeEntryIds: Array<Id<TimeEntry>>}
 // class invoices.InvoiceId
 export type InvoiceId = number
 // class project.Project

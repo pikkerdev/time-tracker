@@ -27,3 +27,7 @@ alter table invoices drop column customerId;
 
 --changeset invoices_project_idx
 create index on invoices(projectId);
+
+--changeset invoices.alter-add-description-comment
+alter table invoices add column description text not null default '',
+   add column comment text not null default '';
