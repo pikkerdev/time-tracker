@@ -1,16 +1,15 @@
 <script lang="ts">
   import Avatar from 'src/layout/Avatar.svelte'
   import {t} from 'i18n'
-  import {Link} from 'src/router'
   import {user} from 'src/stores/auth'
   import Button from 'src/components/Button.svelte'
+  import {Link} from '@keksworks/svelte-tiny-router'
 
   let menuOpen = window.innerWidth >= 1024
 
   function toggleMenu() {
     menuOpen = !menuOpen
   }
-
 </script>
 
 <header

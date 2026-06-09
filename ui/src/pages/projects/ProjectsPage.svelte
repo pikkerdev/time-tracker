@@ -2,10 +2,9 @@
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import ProjectFormModal from 'src/pages/projects/ProjectFormModal.svelte'
   import type {Customer, Id, Project} from 'src/api/types'
-  import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {t} from 'i18n'
-  import {Link} from 'src/router'
+  import {Link} from '@keksworks/svelte-tiny-router'
   import {user} from 'src/stores/auth'
 
   let projects: Project[] = []
