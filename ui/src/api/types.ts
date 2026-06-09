@@ -10,7 +10,7 @@ export interface InvoiceCreateRequest {date: LocalDate; timeEntryIds: Array<Id<T
 // class invoices.InvoiceId
 export type InvoiceId = number
 // class project.Project
-export interface Project {currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; storyTrackerId?: number}
+export interface Project {currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; storyTrackerId?: number; tags: Array<string>}
 // class project.ProjectMember$Role
 export enum ProjectMemberRole {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT', INTERN = 'INTERN', CUSTOMER = 'CUSTOMER'}
 // class project.ProjectMember$Status
@@ -22,7 +22,7 @@ export interface ProjectMemberRequest {role: ProjectMemberRole; userId: Id<User>
 // class project.ProjectMemberUser
 export interface ProjectMemberUser {member: ProjectMember; user: User}
 // class project.TimeEntry
-export interface TimeEntry {date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; invoiceId?: InvoiceId; projectId: Id<Project>; storyId?: number; tags: Array<string>; userId: Id<User>}
+export interface TimeEntry {date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; invoiceId?: InvoiceId; projectId: Id<Project>; storyId?: number; tag?: string; userId: Id<User>}
 // class project.TimeEntryView
 export interface TimeEntryView {customerName: string; entry: TimeEntry; projectName: string; userName: string}
 // class users.AuthRole
