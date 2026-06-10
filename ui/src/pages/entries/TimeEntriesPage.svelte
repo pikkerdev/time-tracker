@@ -43,7 +43,7 @@
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>
   <div slot="title" class="flex items-center gap-4">
     {#if projectId && selectedEntryIds.length > 0}
-      <Button class="primary" label={t.invoices.preview} onclick={() => show = true}/>
+      <Button class="primary" label={t.invoices.create} onclick={() => show = true}/>
       <span>{t.invoices.totalAmount}: {formatAmount(totalAmount)}</span>
     {/if}
     <ProjectSelect bind:projectId/>
