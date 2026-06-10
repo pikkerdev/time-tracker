@@ -1,10 +1,10 @@
 <script lang="ts">
-  import {formatAmount, t, today} from 'i18n'
+  import {formatAmount, t, today, toISODate} from 'i18n'
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import MonthSelectField from 'src/forms/MonthSelectField.svelte'
   import ProjectSelect from 'src/pages/projects/ProjectSelect.svelte'
   import FormField from 'src/forms/FormField.svelte'
-  import type {Id, InvoiceCreateRequest, Project, TimeEntryView} from 'src/api/types'
+  import type {Id, InvoiceCreateRequest, LocalDate, Project, TimeEntryView} from 'src/api/types'
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
@@ -16,11 +16,11 @@
   let from : string
   let to : string
   let selectedEntryIds: string[] = []
+  let dueDate = today
   export let description: string = ''
-  export let comment: string = ''
 
-  async function createInvoice() {
-    const invoiceCreateRequest: InvoiceCreateRequest = {date: today, timeEntryIds: selectedEntryIds, description, comment}
+    async function createInvoice() {
+    const invoiceCreateRequest: InvoiceCreateRequest = {date: today, timeEntryIds: selectedEntryIds, description, dueDate}
     await api.post('invoices', invoiceCreateRequest)
     localStorage.setItem(LAST_PROJECT_KEY_INVOICE, projectId)
     showToast(t.general.saved)

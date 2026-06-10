@@ -13,7 +13,7 @@ data class Invoice(
   val amount: Decimal,
   val vatAmount: Decimal,
   val description: String,
-  val comment: String
+  val dueDate: LocalDate,
 ): BaseEntity<InvoiceId> {
   val totalAmount: Decimal get() = amount + vatAmount
 }

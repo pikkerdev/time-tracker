@@ -31,3 +31,13 @@ create index on invoices(projectId);
 --changeset invoices.alter-add-description-comment
 alter table invoices add column description text not null default '',
    add column comment text not null default '';
+
+--changeset invoices.alter-add-dueDate-drop-comment
+alter table invoices add column dueDate date,
+  drop column comment;
+
+--changeset invoices.update-dueDate
+update invoices set dueDate = date + interval '14 days' where dueDate is null;
+
+--changeset invoices.set-dueDate-not-null
+alter table invoices alter column dueDate set not null;

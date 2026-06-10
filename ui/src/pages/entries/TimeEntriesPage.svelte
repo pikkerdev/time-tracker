@@ -58,6 +58,6 @@
   <TimeEntryTable bind:selectedEntryIds={selectedEntryIds} {timeEntries} {projectId} onSaved={() => from && to && loadEntries(from, to, myTimeEntries, projectId)}/>
 </MainPageLayout>
 
-<Modal title={t.invoices.preview} bind:show>
-  <InvoicePreview {selectedEntryIds}/>
+<Modal title={t.invoices.create} bind:show>
+  <InvoicePreview {selectedEntryIds} bind:show/>
 </Modal>

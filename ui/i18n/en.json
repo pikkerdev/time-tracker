@@ -106,7 +106,9 @@
     "chooseProject": "Choose a project to create an invoice",
     "totalAmount": "Total",
     "invoiced": "Invoiced",
-    "preview": "Invoice preview"
+    "preview": "Invoice preview",
+    "description": "Invoice description",
+    "dueDate": "Due date"
   },
   "company": {
     "title": "Company",
