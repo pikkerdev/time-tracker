@@ -7,7 +7,7 @@
 
 <MainPageLayout class="relative spaced" title={t.invoices.title}>
   <div slot="title">
-    <Button onclick={() => navigate('/invoices/create')}>{t.invoices.createInvoice}</Button>
+    <Button onclick={() => navigate('/invoices/create')}>{t.invoices.create}</Button>
   </div>
 </MainPageLayout>
 

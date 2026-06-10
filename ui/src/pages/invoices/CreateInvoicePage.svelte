@@ -41,10 +41,10 @@
 
 <!-- todo preview for an invoice -->
 
-<MainPageLayout class="relative spaced" title={t.invoices.createInvoice}>
+<MainPageLayout class="relative spaced" title={t.invoices.create}>
   <div class="justify-items-start flex items-center gap-4">
     {#if projectId && selectedEntryIds.length > 0}
-      <Button class="primary" label={t.invoices.createInvoice} onclick={createInvoice}/>
+      <Button class="primary" label={t.invoices.create} onclick={createInvoice}/>
       <span>{t.invoices.totalAmount}: {formatAmount(totalAmount)}</span>
     {/if}
   </div>
