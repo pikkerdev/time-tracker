@@ -16,9 +16,11 @@
   let from : string
   let to : string
   let selectedEntryIds: string[] = []
+  export let description: string = ''
+  export let comment: string = ''
 
   async function createInvoice() {
-    const invoiceCreateRequest: InvoiceCreateRequest = {date: today, timeEntryIds: selectedEntryIds}
+    const invoiceCreateRequest: InvoiceCreateRequest = {date: today, timeEntryIds: selectedEntryIds, description, comment}
     await api.post('invoices', invoiceCreateRequest)
     localStorage.setItem(LAST_PROJECT_KEY_INVOICE, projectId)
     showToast(t.general.saved)
@@ -53,6 +55,6 @@
     <MonthSelectField bind:from bind:to/>
   </div>
   {#if projectId}
-    <TimeEntryTable {timeEntries} bind:selectedEntryIds={selectedEntryIds}/>
+    <TimeEntryTable {timeEntries} {projectId} bind:selectedEntryIds={selectedEntryIds}/>
   {/if}
 </MainPageLayout>
