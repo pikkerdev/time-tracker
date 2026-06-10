@@ -23,14 +23,16 @@
       {menuOpen ? 'flex' : 'hidden'} lg:flex">
       <div class="text-lg flex lg:items-center gap-2 lg:gap-6 max-lg:flex-col max-lg:order-2">
         {#if $user}
-          <Link to="/projects">Projects</Link>
+          <Link to="/projects" label={t.projects.title}/>
+          {#if $user.isAdmin}
+            <Link to="/customers" label={t.customers.title}/>
+            <Link to="/users" label={t.users.title}/>
+          {/if}
           {#if $user.isUser || $user.isAdmin}
-            <Link to="/timeentries">{t.timeEntries.title}</Link>
+            <Link to="/timeentries" label={t.timeEntries.title}/>
           {/if}
           {#if $user.isAdmin}
-            <Link to="/customers">Customers</Link>
-            <Link to="/users">Users</Link>
-            <Link to="/invoices">Invoices</Link>
+            <Link to="/invoices" label={t.invoices.title}/>
           {/if}
         {/if}
       </div>
