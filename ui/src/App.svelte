@@ -1,7 +1,6 @@
 <script lang="ts">
   import {t} from 'i18n'
   import Toasts from 'src/components/Toasts.svelte'
-  import {navigate, Route, Router} from 'src/router'
   import HomePage from 'src/pages/home/HomePage.svelte'
   import CustomersPage from 'src/pages/customers/CustomersPage.svelte'
   import ProjectsPage from 'src/pages/projects/ProjectsPage.svelte'
@@ -14,6 +13,7 @@
   import {user} from 'src/stores/auth'
   import CreateInvoicePage from 'src/pages/invoices/CreateInvoicePage.svelte'
   import InvoicesPage from 'src/pages/invoices/InvoicesPage.svelte'
+  import {navigate, Route, Router} from '@keksworks/svelte-tiny-router'
 
   onMount(() => {
     if ($user && location.pathname == '/')

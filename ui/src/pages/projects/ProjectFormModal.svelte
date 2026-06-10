@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    type Customer,
-    type Project,
-    ProjectMemberRole
-  } from 'src/api/types'
+  import {type Customer, type Project, ProjectMemberRole} from 'src/api/types'
   import Modal from 'src/components/Modal.svelte'
   import {formatCurrency, t} from 'i18n'
   import Button from 'src/components/Button.svelte'
@@ -13,7 +9,7 @@
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
   import SelectField from 'src/forms/SelectField.svelte'
-  import {navigate} from 'src/router'
+  import {navigate} from '@keksworks/svelte-tiny-router'
   import NumberField from 'src/forms/NumberField.svelte'
   import type {ProjectContext} from 'src/pages/projects/context'
 

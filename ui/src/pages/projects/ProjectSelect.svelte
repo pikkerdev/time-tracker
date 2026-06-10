@@ -8,7 +8,7 @@
 
   export let projectId: Id<Project> = ''
   export let project: Project | undefined = undefined
-  export let showLastProject: boolean = false
+  export let showLastProject = false
   export let localStorageKey: string | undefined = undefined
 
   let projects: Project[] = []
@@ -24,8 +24,8 @@
   })
 
   $: project = projects.find(p => p.id == projectId) as Project
-
 </script>
+
 <SelectField bind:value={projectId} label={showLastProject? t.projects.project : undefined}
              emptyOption={!showLastProject? t.projects.all : undefined}
              options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>

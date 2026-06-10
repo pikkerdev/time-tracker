@@ -6,7 +6,7 @@
   import type {Customer} from 'src/api/types'
   import {t} from 'i18n'
   import Button from 'src/components/Button.svelte'
-  import {navigate} from 'src/router'
+  import {navigate} from '@keksworks/svelte-tiny-router'
   import Modal from 'src/components/Modal.svelte'
   import CustomerForm from 'src/pages/customers/CustomerForm.svelte'
 

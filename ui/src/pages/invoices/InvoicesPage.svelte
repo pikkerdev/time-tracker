@@ -2,7 +2,7 @@
   import {t} from 'i18n'
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import Button from 'src/components/Button.svelte'
-  import {navigate} from 'src/router'
+  import {navigate} from '@keksworks/svelte-tiny-router'
 </script>
 
 <MainPageLayout class="relative spaced" title={t.invoices.title}>
