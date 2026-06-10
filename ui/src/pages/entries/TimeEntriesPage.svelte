@@ -18,7 +18,8 @@
   let from: string
   let to: string
   export let selectedEntryIds: string[] = []
-
+  export let description: string = ''
+  export let comment: string = ''
 
   async function loadEntries(from: string, to: string, myTimeEntries: boolean, projectId: Id<Project>) {
     const params = new URLSearchParams({from, to, myTimeEntries: myTimeEntries.toString()})
@@ -27,7 +28,7 @@
   }
 
   async function createInvoice() {
-    const invoiceCreateRequest: InvoiceCreateRequest = {date: today, timeEntryIds: selectedEntryIds}
+    const invoiceCreateRequest: InvoiceCreateRequest = {date: today, timeEntryIds: selectedEntryIds, description, comment}
     await api.post('invoices', invoiceCreateRequest)
     showToast(t.general.saved)
     await loadEntries(from, to, myTimeEntries, projectId)
