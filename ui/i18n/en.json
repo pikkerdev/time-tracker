@@ -102,10 +102,17 @@
   "invoices": {
     "title": "Invoices",
     "invoice": "Invoice",
-    "createInvoice": "Create an invoice",
+    "create": "Create an invoice",
     "timeEntriesMustBelongToSameProject": "All time entries must belong to the same project to create an invoice",
     "chooseProject": "Choose a project to create an invoice",
     "totalAmount": "Total",
-    "invoiced": "Invoiced"
+    "invoiced": "Invoiced",
+    "preview": "Invoice preview"
+  },
+  "company": {
+    "title": "Company",
+    "name": "Pikker Technology OÜ",
+    "address": "Laeva tn 2, Tallinn 10111",
+    "phone": "+372 53064406"
   }
 }
