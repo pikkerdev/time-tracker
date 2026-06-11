@@ -4,8 +4,20 @@
   import {user} from 'src/stores/auth'
   import Button from 'src/components/Button.svelte'
   import {Link} from '@keksworks/svelte-tiny-router'
+  import {onDestroy} from 'svelte'
+  import {slide, type SlideParams, type TransitionConfig} from 'svelte/transition'
 
-  let menuOpen = window.innerWidth >= 1024
+  const largeScreenMedia = window.matchMedia?.('(min-width: 1024px)')
+
+  let menuOpen = false
+  let isLargeScreen = largeScreenMedia?.matches ?? window.innerWidth >= 1024
+
+  function updateScreen(event: MediaQueryListEvent) {
+    isLargeScreen = event.matches
+  }
+
+  largeScreenMedia?.addEventListener('change', updateScreen)
+  onDestroy(() => largeScreenMedia?.removeEventListener('change', updateScreen))
 
   function toggleMenu() {
     menuOpen = !menuOpen
@@ -13,6 +25,10 @@
 
   function closeMenu() {
     menuOpen = false
+  }
+
+  function menuSlide(node: Element, params: SlideParams = {}): TransitionConfig {
+    return isLargeScreen ? {duration: 0} : slide(node, params)
   }
 </script>
 
@@ -22,29 +38,31 @@
     <img src="/favicon.svg" class="size-10" title="Time Tracker Logo" alt="Logo">
     <h1 class="font-bold text-2xl">{t.title}</h1>
   </Link>
-  <div
-    class="top-full right-0 left-0 flex flex-col lg:flex-row grow lg:items-center lg:justify-between gap-2 lg:gap-8 z-10 max-lg:bg-stone-50 max-lg:absolute p-2
-      {menuOpen ? 'flex' : 'hidden'} max-lg:shadow-lg lg:flex">
-    <div class="text-lg flex lg:items-center gap-2 lg:gap-6 max-lg:flex-col max-lg:order-2">
-      {#if $user}
-        <Link to="/projects" label={t.projects.title} onclick={closeMenu}/>
-        {#if $user.isAdmin}
-          <Link to="/customers" label={t.customers.title} onclick={closeMenu}/>
-          <Link to="/users" label={t.users.title} onclick={closeMenu}/>
+  {#if isLargeScreen || menuOpen}
+    <div
+      class="top-full right-0 left-0 flex flex-col lg:flex-row grow lg:items-center lg:justify-between gap-2 lg:gap-8 z-10 max-lg:bg-stone-50 max-lg:absolute p-2 max-lg:shadow-lg"
+      transition:menuSlide>
+      <div class="text-lg flex lg:items-center gap-2 lg:gap-6 max-lg:flex-col max-lg:order-2">
+        {#if $user}
+          <Link to="/projects" label={t.projects.title} onclick={closeMenu}/>
+          {#if $user.isAdmin}
+            <Link to="/customers" label={t.customers.title} onclick={closeMenu}/>
+            <Link to="/users" label={t.users.title} onclick={closeMenu}/>
+          {/if}
+          {#if $user.isUser || $user.isAdmin}
+            <Link to="/timeentries" label={t.timeEntries.title} onclick={closeMenu}/>
+          {/if}
+          {#if $user.isAdmin}
+            <Link to="/invoices" label={t.invoices.title} onclick={closeMenu}/>
+          {/if}
         {/if}
-        {#if $user.isUser || $user.isAdmin}
-          <Link to="/timeentries" label={t.timeEntries.title} onclick={closeMenu}/>
-        {/if}
-        {#if $user.isAdmin}
-          <Link to="/invoices" label={t.invoices.title} onclick={closeMenu}/>
-        {/if}
-      {/if}
+      </div>
+      <Avatar/>
     </div>
-    <Avatar/>
-  </div>
+  {/if}
   <Button icon="burger" class="default lg:hidden!" onclick={toggleMenu}/>
 </header>
 
-{#if menuOpen}
+{#if menuOpen && !isLargeScreen}
   <Button class="absolute inset-0 z-9 cursor-default!" onclick={closeMenu}/>
 {/if}
