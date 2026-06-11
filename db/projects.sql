@@ -33,3 +33,9 @@ alter table projects add column tags text[] default '{}' not null;
 
 --changeset projects:rename-tags-to-activities
 alter table projects rename column tags to activities;
+
+--changeset projects:status
+alter table projects add column status text not null default 'ACTIVE';
+
+--changeset projects.updatedAt
+alter table projects add column updatedAt timestamptz not null default now();

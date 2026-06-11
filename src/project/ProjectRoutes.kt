@@ -38,6 +38,10 @@ class ProjectRoutes(
     return project
   }
 
+  @DELETE("/:id") @Access(ADMIN)
+  fun delete(@PathParam id: Id<Project>) =
+    projectRepository.delete(id)
+
   @POST("/:id/members") @Access(ADMIN)
   fun saveMember(@PathParam id: Id<Project>, member: ProjectMemberRequest): ProjectMemberUser {
     val projectMember = projectMemberRepository.find(id, member.userId, active = false)
@@ -49,8 +53,9 @@ class ProjectRoutes(
   }
 
   @GET @Access(ADMIN, USER, EXTERNAL)
-  fun list(@AttrParam user: User, @QueryParam myProjects: Boolean? = false, @QueryParam noCustomer: Boolean = false) =
-    if (myProjects == true || user.authRole != ADMIN) projectRepository.forMember(user.id, noCustomer)
+  fun list(@AttrParam user: User, @QueryParam myProjects: Boolean? = false, @QueryParam noCustomer: Boolean = false, @QueryParam includeDeleted: Boolean = false) =
+    if (myProjects == true || user.authRole != ADMIN) projectRepository.forMember(user.id, noCustomer, includeDeleted)
+    else if (!includeDeleted) projectRepository.listNotDeleted()
     else projectRepository.list()
 
   @GET("/:id/members") @Access(ADMIN, USER, EXTERNAL)

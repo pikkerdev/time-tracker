@@ -1,6 +1,13 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser} from 'src/api/types'
+  import {
+    type Id,
+    type Project,
+    type ProjectMember,
+    ProjectMemberRole,
+    type ProjectMemberUser,
+    type User
+  } from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {formatAmount, t} from 'i18n'
@@ -9,6 +16,8 @@
   import type {ProjectContext} from 'src/pages/projects/context'
   import ProjectMembersModal from 'src/pages/projects/project/ProjectMembersModal.svelte'
   import {user} from 'src/stores/auth'
+  import Button from 'src/components/Button.svelte'
+  import {showToast} from 'src/stores/toasts'
 
   export let id: Id<Project>
 
@@ -20,6 +29,11 @@
       project!.members = r.indexBy(m => m.user.id)
     })
   })
+
+  async function deleteProject(Id: Id<Project>) {
+    if (confirm(t.general.deleteConfirm)) await api.delete(`projects/${Id}`)
+    showToast(t.general.deleted)
+  }
 </script>
 
 <MainPageLayout class="relative" title={project?.name}>
@@ -48,6 +62,7 @@
             <span class="justify-start">{t.members.roles[role]}</span>
             <span>{formatAmount(rate, project.currency)}</span>
           </div>
+
         {/if}
       {/each}
     </div>
@@ -60,5 +75,10 @@
         <p class="text-lg font-medium">{project.activities}</p>
       </div>
     </div>
+    <div>
+      <p class="text-sm text-gray-500">{t.projects.status}</p>
+      <p class="text-lg font-medium">{project.status}</p>
+    </div>
+    <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => deleteProject(id)}/>
   {/if}
 </MainPageLayout>

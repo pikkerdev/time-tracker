@@ -62,7 +62,9 @@
     "myProjects": "My projects",
     "showMyProjects": "Show my projects",
     "all": "All projects",
-    "chooseProject": "Choose project"
+    "chooseProject": "Choose project",
+    "status": "Status",
+    "showDeleted": "Show deleted"
   },
   "users": {
     "title": "Users",
