@@ -9,7 +9,7 @@
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
   import ProjectSelect from 'src/pages/projects/ProjectSelect.svelte'
-  import EntryTagsEditor from 'src/pages/entries/EntryTagsEditor.svelte'
+  import EntryActivityEditor from 'src/pages/entries/EntryActivityEditor.svelte'
 
   const LAST_PROJECT_KEY = 'lastProjectId'
 
@@ -22,7 +22,7 @@
 
   async function submit() {
     timeEntry = await api.post('projects/timeentries' + (isNew ? '' : '/' + timeEntry.id), timeEntry)
-    if (timeEntry.tag) project.tags.push(timeEntry.tag)
+    if (timeEntry.activity) project.activities.push(timeEntry.activity)
     await api.post(`projects/${project.id}`, project)
     localStorage.setItem(LAST_PROJECT_KEY, timeEntry.projectId)
     showToast(t.general.saved)
@@ -39,7 +39,7 @@
   {#if !isNew}
     <FormField label={t.timeEntries.date} type="date" bind:value={timeEntry.date} max={today}/>
   {/if}
-  <EntryTagsEditor label={t.timeEntries.tag} bind:tag={timeEntry.tag} projectTags={project?.tags}/>
+  <EntryActivityEditor label={t.timeEntries.activity} bind:activity={timeEntry.activity} projectActivities={project?.activities}/>
   <FormField label={t.timeEntries.storyId} required={false} bind:value={timeEntry.storyId}/>
   <TextAreaField label={t.timeEntries.description} required={false} bind:value={timeEntry.description}/>
   <Button type="submit" label={t.general.save} class="primary"/>

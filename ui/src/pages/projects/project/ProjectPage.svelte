@@ -56,8 +56,8 @@
         <p class="text-lg font-medium">{project.storyTrackerId}</p>
       </div>
       <div>
-        <p class="text-sm text-gray-500">{t.timeEntries.tags}</p>
-        <p class="text-lg font-medium">{project.tags}</p>
+        <p class="text-sm text-gray-500">{t.timeEntries.activities}</p>
+        <p class="text-lg font-medium">{project.activities}</p>
       </div>
     </div>
   {/if}

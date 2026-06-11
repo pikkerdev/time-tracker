@@ -16,7 +16,7 @@ data class Project(
   val hourlyRates: Map<ProjectMember.Role, Decimal>,
   val currency: Currency = EUR,
   val storyTrackerId: Long? = null,
-  val tags: Set<String> = setOf("Development", "Meeting", "Consultancy", "Testing", "Research", "Support"),
+  val activities: Set<String> = setOf("Development", "Meeting", "Consultancy", "Testing", "Research", "Support"),
   @JsonProperty(readOnly = true) val customerName: String? = null,
   override val id: Id<Project> = Id()
 ): Entity<Project>

@@ -31,3 +31,6 @@ alter table time_entry drop column tags;
 
 --changeset time_entry.tag
 alter table time_entry add column tag text;
+
+--changeset time_entry:rename-tag-to-activity
+alter table time_entry rename column tag to activity;

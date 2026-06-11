@@ -94,8 +94,8 @@
     "showMyTimeEntries": "Show my time entries",
     "fromDate": "From",
     "toDate": "To",
-    "tag": "Tag",
-    "tags": "Tags",
+    "activity": "Activity",
+    "activities": "Activities",
     "selected": "Selected"
   },
   "invoices": {

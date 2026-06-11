@@ -30,3 +30,6 @@ alter table projects alter column storyTrackerId type bigint using storyTrackerI
 
 --changeset projects.tags
 alter table projects add column tags text[] default '{}' not null;
+
+--changeset projects:rename-tags-to-activities
+alter table projects rename column tags to activities;

@@ -26,7 +26,7 @@
       !narrow && [t.users.name, e => e.userName],
       !narrow && [t.timeEntries.date, e => e.entry.date],
       [t.timeEntries.hours, e => e.entry.hours],
-      [t.timeEntries.tag, e => e.entry.tag],
+      [t.timeEntries.activity, e => e.entry.activity],
       [t.timeEntries.storyId, e => e.entry.storyId],
       [t.timeEntries.description, e => e.entry.description],
       !narrow && [t.projects.hourlyRate, e => e.entry.hourlyRate],
@@ -42,7 +42,7 @@
       <td>{formatDate(e.entry.date)}</td>
     {/if}
     <td class="text-right">{e.entry.hours}</td>
-    <td>{e.entry.tag}</td>
+    <td>{e.entry.activity}</td>
     <td>{e.entry.storyId}</td>
     <td>{e.entry.description}</td>
     {#if !narrow}
