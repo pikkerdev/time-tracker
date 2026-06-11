@@ -9,6 +9,7 @@ import invoices.InvoiceId
 import klite.Email
 import klite.d
 import project.*
+import project.Project.Status.DELETED
 import project.ProjectMember.Role.DEVELOPER
 import users.AuthRole.ADMIN
 import users.AuthRole.EXTERNAL
@@ -31,6 +32,7 @@ object TestData {
   val customer = Customer("Customer1")
   val project = Project(customer.id, "Project1", hourlyRates = mapOf(DEVELOPER to 88.d), customerName = customer.name)
   val project2 = Project(customer.id, "Project2", hourlyRates = mapOf(DEVELOPER to 44.d), customerName = customer.name)
+  val project3 = Project(customer.id, "Project3", hourlyRates = mapOf(DEVELOPER to 44.d), customerName = customer.name, status = DELETED)
   val projectMember = ProjectMember(project.id, user.id, DEVELOPER, createdAt = now)
   val projectMemberUser = ProjectMemberUser(projectMember, user)
   val invoice = Invoice(InvoiceId(2026060101), project.id, LocalDate.of(2026, 6, 1), 760.d, 240.d, description = "development", dueDate = LocalDate.of(2026, 6, 14))

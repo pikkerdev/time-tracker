@@ -9,8 +9,10 @@ export interface Invoice {amount: number; date: LocalDate; description: string; 
 export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; timeEntryIds: Array<Id<TimeEntry>>}
 // class invoices.InvoiceId
 export type InvoiceId = number
+// class project.Project$Status
+export enum ProjectStatus {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class project.Project
-export interface Project {activities: Array<string>; currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; storyTrackerId?: number}
+export interface Project {activities: Array<string>; currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; status: ProjectStatus; storyTrackerId?: number; updatedAt?: Instant}
 // class project.ProjectMember$Role
 export enum ProjectMemberRole {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT', INTERN = 'INTERN', CUSTOMER = 'CUSTOMER'}
 // class project.ProjectMember$Status

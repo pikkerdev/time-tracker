@@ -54,14 +54,24 @@ class ProjectRoutesTest: BaseMocks() {
 
   @Test fun `list projects`() {
     every { projectRepository.forMember(user.id, false) } returns listOf(project)
+    expect(routes.list(user)).toContainExactly(project)
     every { projectRepository.forMember(user.id, true) } returns listOf(project)
     expect(routes.list(user)).toContainExactly(project)
 
-    every { projectRepository.list() } returns listOf(project)
-    expect(routes.list(admin)).toContainExactly(project)
-
     every { projectRepository.forMember(admin.id, false) } returns listOf(project)
     expect(routes.list(admin, myProjects = true)).toContainExactly(project)
+
+    every { projectRepository.listNotDeleted() } returns listOf(project)
+    expect(routes.list(admin)).toContainExactly(project)
+
+    every { projectRepository.list() } returns listOf(project)
+    expect(routes.list(admin, includeDeleted = true)).toContainExactly(project)
+
+  }
+
+  @Test fun delete() {
+    routes.delete(project.id)
+    verify { projectRepository.delete(project.id) }
   }
 
   @Test fun members() {

@@ -10,9 +10,10 @@
 
   let projects: Project[] = []
   let isMyProjects: boolean = false
+  let showDeleted: boolean = false
   export let customerId: Id<Customer>
 
-  async function load(customerId?: Id<Customer>, myProjects = false) {
+  async function load(customerId?: Id<Customer>, myProjects?: Boolean, includeDeleted?: Boolean) {
     let url = 'projects'
     if (customerId) {
       url = `customers/${customerId}/projects`
@@ -20,16 +21,20 @@
     if (myProjects) {
       url += '?myProjects=true'
     }
+    if (includeDeleted) {
+      url += '?includeDeleted=true'
+    }
     projects = await api.get(url)
   }
 
-  $: {load(customerId, isMyProjects)}
+  $: {load(customerId, isMyProjects, showDeleted)}
 </script>
 
 <MainPageLayout class="relative" title={t.projects.title}>
   <div slot="title" class="flex items-center gap-4">
     {#if $user.isAdmin}
       {#if !customerId}
+        <CheckboxField label={t.projects.showDeleted} title={t.projects.showDeleted} onchange={() => showDeleted = !showDeleted}/>
         <CheckboxField label={t.projects.showMyProjects} title={t.projects.showMyProjects} onchange={() => isMyProjects = !isMyProjects}/>
       {/if}
       <ProjectFormModal/>
@@ -43,6 +48,9 @@
           <p><span class="font-medium">{project.customerName}</span></p>
           {#if project.storyTrackerId}
             <p><span class="font-medium">{t.projects.storyTrackerId}</span>: {project.storyTrackerId}</p>
+          {/if}
+          {#if project.status == 'DELETED'}
+            <p><span class="font-medium text-red-700">{project.status}</span></p>
           {/if}
         </div>
       </Link>
