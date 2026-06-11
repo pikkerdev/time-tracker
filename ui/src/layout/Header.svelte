@@ -10,6 +10,10 @@
   function toggleMenu() {
     menuOpen = !menuOpen
   }
+
+  function closeMenu() {
+    menuOpen = false
+  }
 </script>
 
 <header
@@ -23,16 +27,16 @@
       {menuOpen ? 'flex' : 'hidden'} max-lg:shadow-lg lg:flex">
     <div class="text-lg flex lg:items-center gap-2 lg:gap-6 max-lg:flex-col max-lg:order-2">
       {#if $user}
-        <Link to="/projects" label={t.projects.title}/>
+        <Link to="/projects" label={t.projects.title} onclick={closeMenu}/>
         {#if $user.isAdmin}
-          <Link to="/customers" label={t.customers.title}/>
-          <Link to="/users" label={t.users.title}/>
+          <Link to="/customers" label={t.customers.title} onclick={closeMenu}/>
+          <Link to="/users" label={t.users.title} onclick={closeMenu}/>
         {/if}
         {#if $user.isUser || $user.isAdmin}
-          <Link to="/timeentries" label={t.timeEntries.title}/>
+          <Link to="/timeentries" label={t.timeEntries.title} onclick={closeMenu}/>
         {/if}
         {#if $user.isAdmin}
-          <Link to="/invoices" label={t.invoices.title}/>
+          <Link to="/invoices" label={t.invoices.title} onclick={closeMenu}/>
         {/if}
       {/if}
     </div>
@@ -42,5 +46,5 @@
 </header>
 
 {#if menuOpen}
-  <Button class="absolute inset-0 z-9 cursor-default!" onclick={() => menuOpen = false}/>
+  <Button class="absolute inset-0 z-9 cursor-default!" onclick={closeMenu}/>
 {/if}
