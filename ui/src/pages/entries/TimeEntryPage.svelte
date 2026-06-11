@@ -2,7 +2,7 @@
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import {today, toISODate} from 'i18n'
   import TimeEntryForm from 'src/pages/entries/TimeEntryForm.svelte'
-  import type { LocalDate, TimeEntry, TimeEntryView} from 'src/api/types'
+  import type {LocalDate, TimeEntry, TimeEntryView} from 'src/api/types'
   import api from 'src/api/api'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
   import TimeEntryCalendar from 'src/pages/entries/TimeEntryCalendar.svelte'
@@ -30,6 +30,8 @@
     <div class="min-w-1/4 max-w-96">
       <TimeEntryForm bind:timeEntry onSaved={() => loadEntries(date)}/>
     </div>
-    <TimeEntryTable projectId={timeEntry.projectId} {timeEntries} narrow onSaved={() => loadEntries(date)}/>
+    <div class="px-4 overflow-x-scroll max-w-full">
+      <TimeEntryTable projectId={timeEntry.projectId} {timeEntries} narrow onSaved={() => loadEntries(date)}/>
+    </div>
   </div>
 </MainPageLayout>
