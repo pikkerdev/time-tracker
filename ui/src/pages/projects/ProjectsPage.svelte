@@ -6,6 +6,7 @@
   import {t} from 'i18n'
   import {Link} from '@keksworks/svelte-tiny-router'
   import {user} from 'src/stores/auth'
+  import CheckboxField from 'src/forms/CheckboxField.svelte'
 
   let projects: Project[] = []
   let isMyProjects: boolean = false
@@ -29,8 +30,7 @@
   <div slot="title" class="flex items-center gap-4">
     {#if $user.isAdmin}
       {#if !customerId}
-        {t.projects.showMyProjects}
-        <input title={t.projects.showMyProjects} type="checkbox" onchange={() => isMyProjects = !isMyProjects}/>
+        <CheckboxField label={t.projects.showMyProjects} title={t.projects.showMyProjects} onchange={() => isMyProjects = !isMyProjects}/>
       {/if}
       <ProjectFormModal/>
     {/if}

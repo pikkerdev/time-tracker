@@ -11,6 +11,7 @@
   import Button from 'src/components/Button.svelte'
   import Modal from 'src/components/Modal.svelte'
   import InvoicePreview from 'src/pages/invoices/InvoicePreview.svelte'
+  import CheckboxField from 'src/forms/CheckboxField.svelte'
 
   export let projectId: Id<Project> = ''
   export let selectedEntryIds: string[] = []
@@ -51,8 +52,7 @@
     <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} max={[to, today].min()}/> -
     <FormField title={t.timeEntries.toDate} type="date" bind:value={to} min={from} max={today}/>
     {#if $user.isAdmin}
-      {t.timeEntries.showMyTimeEntries}
-      <input title={t.timeEntries.showMyTimeEntries} type="checkbox" bind:checked={myTimeEntries}/>
+      <CheckboxField label={t.timeEntries.showMyTimeEntries} title={t.timeEntries.showMyTimeEntries} bind:checked={myTimeEntries} />
     {/if}
   </div>
   <TimeEntryTable bind:selectedEntryIds={selectedEntryIds} {timeEntries} {projectId} onSaved={() => from && to && loadEntries(from, to, myTimeEntries, projectId)}/>

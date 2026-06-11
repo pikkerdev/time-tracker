@@ -5,6 +5,7 @@
   import TimeEntryForm from 'src/pages/entries/TimeEntryForm.svelte'
   import Modal from 'src/components/Modal.svelte'
   import Button from 'src/components/Button.svelte'
+  import CheckboxField from 'src/forms/CheckboxField.svelte'
 
   export let timeEntries: TimeEntryView[]
   export let narrow = false
@@ -32,7 +33,7 @@
       !narrow && [t.projects.hourlyRate, e => e.entry.hourlyRate],
       !narrow && [t.timeEntries.invoiceId, e => e.entry.invoiceId],
       ''
-    ]} rightAlign={[t.timeEntries.hours, t.projects.hourlyRate, t.timeEntries.invoiceId]}
+    ]} rightAlign={[t.timeEntries.hours, t.projects.hourlyRate]}
    items={timeEntries} let:item={e}>
   <tr>
     <td>{e.customerName}</td>
@@ -49,11 +50,11 @@
       <td class="text-right">{formatAmount(e.entry.hourlyRate)}</td>
     {/if}
     {#if !narrow}
-      <td class="text-right">
+      <td>
         {#if e.entry.invoiceId}
           {e.entry.invoiceId}
         {:else if projectId}
-          <input type="checkbox" bind:group={selectedEntryIds} value={e.entry.id}>
+            <CheckboxField bind:group={selectedEntryIds} value={e.entry.id}/>
         {/if}
       </td>
     {/if}
