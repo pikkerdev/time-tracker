@@ -55,6 +55,7 @@
     "name": "Project Name",
     "description": "Description",
     "hourlyRate": "Hourly rate",
+    "hourlyRates": "Hourly rates",
     "storyTrackerId": "Story tracker id",
     "currency": "Currency",
     "edit": "Edit project",

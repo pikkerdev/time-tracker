@@ -40,7 +40,7 @@
         <p class="text-lg font-medium">{project.description}</p>
       </div>
       <div>
-        <p class="text-sm text-gray-500 w-20 text-right">{t.projects.hourlyRate}</p>
+        <p class="text-sm text-gray-500 w-20 text-right">{t.projects.hourlyRates}</p>
         {#each Object.values(ProjectMemberRole) as role}
         {@const rate = project.hourlyRates[role]}
         {#if rate}

@@ -18,13 +18,11 @@
 
   const isNew = !project.id
   let customers = [] as Customer[]
-  let hourlyRate: number | undefined
   let billedRoles = Object.values(ProjectMemberRole).filter(r => r !== ProjectMemberRole.CUSTOMER)
 
   let show = false
 
   $: if (!project.hourlyRates) project.hourlyRates = {}
-  $: if (isNew) billedRoles.forEach(role => project.hourlyRates[role] = hourlyRate)
 
   async function submit() {
     let newProject = project as Project
@@ -48,16 +46,13 @@
     <SelectField label={t.customers.customer} bind:value={project.customerId} options={Object.values(customers).map(c => [c.id, c.name]).toObject()} emptyOption=""/>
     <FormField label={t.projects.name} bind:value={project.name}/>
     <TextAreaField label={t.projects.description} bind:value={project.description} rows={3} required={false}/>
-    {#if isNew}
-      <NumberField label={t.projects.hourlyRate} bind:value={hourlyRate} unit={formatCurrency(project.currency)}/>
-    {:else}
-      <p class="text-sm text-black-500 mb-2">{t.projects.hourlyRate}</p>
-      <div class="ml-4 spaced">
-        {#each billedRoles as role}
-          <NumberField label={t.members.roles[role]} bind:value={project.hourlyRates[role]} unit={formatCurrency(project.currency)}/>
-        {/each}
-      </div>
-    {/if}
+    <p class="block text-sm font-medium text-gray-700">{t.projects.hourlyRates}</p>
+    <div class="ml-4 spaced">
+      {#each billedRoles as role}
+        <NumberField label={t.members.roles[role]} bind:value={project.hourlyRates[role]} unit={formatCurrency(project.currency)}/>
+      {/each}
+    </div>
+
     <FormField label={t.projects.storyTrackerId} bind:value={project.storyTrackerId} required={false}/>
     <Button type="submit" label={t.general.save} class="primary"/>
   </Form>
