@@ -16,7 +16,7 @@
 <svelte:body on:click={handleOutsideClick} on:keyup={handleEscape}/>
 
 <div class="shrink-0 relative md:inline-block" bind:this={dropdown}>
-  <div on:click={() => open = !open} on:keydown={e => e.key === 'Enter' && (open = !open)} role="button" tabindex="0">
+  <div on:click={() => open = !open} on:keydown={e => e.key === 'Enter' && (open = !open)} role="button" tabindex="0" class="cursor-pointer">
     <slot/>
   </div>
 
