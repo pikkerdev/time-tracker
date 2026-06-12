@@ -9,14 +9,10 @@
 
 {#if $user}
   <Dropdown class="right-0 z-50!" bind:open={isDropDownOpen}>
-    <Button class="gap-2 default">
-      <img src={$user.avatarUrl} alt="" class="rounded-full w-8">
-      {$user.name}
-    </Button>
+    <img src={$user.avatarUrl} alt="" class="rounded-xl w-9 hover:scale-105">
     <svelte:fragment slot="open">
-      <div class="py-0.5 px-1">
+        {$user.name}
         <Button class="" label={t.login.logout} size="sm" icon="logout" onclick={logout}/>
-      </div>
     </svelte:fragment>
   </Dropdown>
 {:else}
