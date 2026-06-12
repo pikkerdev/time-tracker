@@ -25,7 +25,7 @@
     {@const percentage = timeEntryHours[d] * 100 / 8}
     <Button onclick={() => date = d}
             class="default px-1.5! py-1! flex-col {d == date ? 'ring-2 ring-primary-500' : ''}"
-            style="background: linear-gradient(to top, #3b82f6 0%, #3b82f6 {percentage}%, white {percentage}%);">
+            style="background: linear-gradient(to top, #D7A262 0%, #D7A262 {percentage}%, white {percentage}%);">
       <div class="whitespace-pre-line text-xs!" class:text-muted={[0, 6].includes(new Date(d).getDay())}>{formatShortDate(d).replace(', ', '\n').replaceAll(' ', '\u00A0')}</div>
       <div class="text-block">{timeEntryHours[d] ?? 0}h</div>
     </Button>
