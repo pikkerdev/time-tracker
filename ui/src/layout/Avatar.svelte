@@ -11,8 +11,13 @@
   <Dropdown class="right-0 z-50!" bind:open={isDropDownOpen}>
     <img src={$user.avatarUrl} alt="" class="rounded-xl w-9 hover:scale-105">
     <svelte:fragment slot="open">
-        {$user.name}
-        <Button class="" label={t.login.logout} size="sm" icon="logout" onclick={logout}/>
+      <div class="min-w-56 p-3">
+        <div class="mb-3">
+          <span class="font-medium text-gray-900 truncate">{$user.name}</span>
+          <span class="text-sm text-gray-500 truncate">{$user.email}</span>
+        </div>
+        <Button class="w-full justify-start! hover:bg-gray-50" label={t.login.logout} size="sm" icon="logout" onclick={logout}/>
+      </div>
     </svelte:fragment>
   </Dropdown>
 {:else}
