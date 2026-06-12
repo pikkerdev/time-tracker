@@ -16,25 +16,16 @@
 <svelte:body on:click={handleOutsideClick} on:keyup={handleEscape}/>
 
 <div class="shrink-0 relative md:inline-block" bind:this={dropdown}>
-  <div on:click={() => open = !open} on:keydown={e => e.key === 'Enter' && (open = !open)} role="button" tabindex="0" class="cursor-pointer">
+  <button onclick={() => open = !open} type="button" tabindex="0"
+       class="cursor-pointer">
     <slot/>
-  </div>
+  </button>
 
   {#if open}
     <div out:fade|local={{duration: 200}}
-         class="dropdown overflow-y-auto {$$props.class ?? ''}"
+         class="bg-white ring-1 ring-gray-300 focus:outline-none absolute z-10 shadow-lg mt-2 rounded-md overflow-y-auto {$$props.class}"
          role="menu">
       <slot name="open"/>
     </div>
   {/if}
 </div>
-
-<style>
-  @reference 'src/global.css';
-
-  :global(.dropdown) {
-    @apply origin-top-left min-w-min
-    bg-white ring-1 ring-gray-300 focus:outline-none overflow-hidden text-sm
-    absolute z-10 shadow-lg mt-2 rounded-md py-1;
-  }
-</style>
