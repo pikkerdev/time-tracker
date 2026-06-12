@@ -35,7 +35,8 @@
 </script>
 
 {#snippet bottomLine()}
-  <div class="h-0.5 bg-pikker-gold w-0 group-hover:w-10/12 group-focus:w-10/12 transition-all duration-300 rounded-xl"></div>
+  <div
+    class="h-0.5 bg-pikker-gold w-0 group-hover:w-10/12 group-focus:w-10/12 transition-all duration-300 rounded-xl"></div>
 {/snippet}
 
 {#snippet mainLink(to: string, label: string, icon: string)}
@@ -70,10 +71,12 @@
           {/if}
         {/if}
       </div>
-      <Avatar/>
     </div>
   {/if}
-  <Button icon="burger" class="default lg:hidden!" onclick={toggleMenu}/>
+  <div class="flex gap-2">
+    <Button icon="burger" class="default lg:hidden!" onclick={toggleMenu}/>
+    <Avatar/>
+  </div>
 </header>
 
 {#if menuOpen && !isLargeScreen}
