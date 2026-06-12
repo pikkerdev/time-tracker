@@ -5,8 +5,6 @@ import db.Id
 import invoices.InvoiceId
 import klite.Decimal
 import klite.jdbc.Between
-import klite.jdbc.In
-import klite.jdbc.colName
 import klite.jdbc.eq
 import klite.jdbc.getLocalDate
 import klite.jdbc.gte
@@ -15,6 +13,7 @@ import klite.jdbc.query
 import klite.jdbc.select
 import klite.jdbc.update
 import klite.notNullValues
+import project.Project.Status.ACTIVE
 import users.User
 import java.sql.ResultSet
 import java.time.LocalDate
@@ -29,7 +28,8 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   fun listView(userId: Id<User>? = null, projectId: Id<Project>? = null, from: LocalDate? = null, to: LocalDate? = null): List<TimeEntryView> {
     val queryFrom = from ?: to
     val queryTo = to ?: from
-    return db.select(viewFrom, notNullValues(TimeEntry::userId eq userId, TimeEntry::projectId eq projectId, TimeEntry::date gte queryFrom, TimeEntry::date lte queryTo), suffix = defaultOrder) { viewMapper() } }
+    return db.select(viewFrom, notNullValues(TimeEntry::userId eq userId, TimeEntry::projectId eq projectId, TimeEntry::date gte queryFrom, TimeEntry::date lte queryTo,
+      Project::status eq ACTIVE), suffix = defaultOrder) { viewMapper() } }
 
   private fun ResultSet.viewMapper() =
     TimeEntryView(mapper(), getString("c.name"), getString("p.name"), getString("u.firstName") + " " + getString("u.lastName"))

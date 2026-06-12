@@ -18,6 +18,7 @@
   import {user} from 'src/stores/auth'
   import Button from 'src/components/Button.svelte'
   import {showToast} from 'src/stores/toasts'
+  import {navigate} from '@keksworks/svelte-tiny-router'
 
   export let id: Id<Project>
 
@@ -41,6 +42,7 @@
     {#if project && $user.isAdmin}
       <ProjectMembersModal {project}/>
       <ProjectFormModal bind:project label={t.projects.edit}/>
+      <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => {deleteProject(id); navigate(`/projects`)}}/>
     {/if}
   </div>
   {#if project}
@@ -79,6 +81,5 @@
       <p class="text-sm text-gray-500">{t.projects.status}</p>
       <p class="text-lg font-medium">{project.status}</p>
     </div>
-    <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => deleteProject(id)}/>
   {/if}
 </MainPageLayout>

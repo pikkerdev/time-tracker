@@ -37,7 +37,8 @@ object TestData {
   val projectMemberUser = ProjectMemberUser(projectMember, user)
   val invoice = Invoice(InvoiceId(2026060101), project.id, LocalDate.of(2026, 6, 1), 760.d, 240.d, description = "development", dueDate = LocalDate.of(2026, 6, 14))
   val timeEntry = TimeEntry(project.id, user.id, invoiceId = null, date, 7.5.d, hourlyRate = 88.d)
-  val timeEntry2 = TimeEntry(id = Id(), hours = 4.d, hourlyRate = 60.d, projectId = project.id)
+  val timeEntry2 = TimeEntry(project.id, user.id, hours = 4.d, hourlyRate = 60.d)
+  val timeEntry3 = TimeEntry(project3.id, user.id, hours = 4.5.d, hourlyRate = 60.d)
   val timeEntryView = TimeEntryView(timeEntry, customer.name, project.name, user.name)
   val invoiceCreateRequest = InvoiceCreateRequest(LocalDate.of(2026, 6, 1), listOf(timeEntry.id, timeEntry2.id), description= "development", dueDate = LocalDate.of(2026, 6, 14))
 
