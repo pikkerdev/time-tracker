@@ -50,7 +50,7 @@
 
 <header
   class="bg-stone-50 border-b border-gray-300 px-2 sm:px-3 py-3 flex flex-wrap gap-3 justify-between items-center relative z-10">
-  <Link to={$user ? '/entry' : '/'} class="flex gap-2 items-center">
+  <Link to={$user ? '/entry' : '/'} class="">
     <Logo/>
   </Link>
   {#if isLargeScreen || menuOpen}
