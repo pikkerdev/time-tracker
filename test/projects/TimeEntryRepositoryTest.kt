@@ -17,6 +17,8 @@ import db.TestData.twoDaysAgo
 import db.TestData.user
 import db.TestData.yesterday
 import db.TestData.invoice
+import db.TestData.project3
+import db.TestData.timeEntry3
 import invoices.InvoiceRepository
 import klite.Decimal
 import klite.d
@@ -37,6 +39,7 @@ class TimeEntryRepositoryTest: DBTest() {
     userRepository.save(user)
     customerRepository.save(customer)
     projectRepository.save(project)
+    projectRepository.save(project3)
     invoiceRepository.save(invoice)
   }
 
@@ -47,6 +50,7 @@ class TimeEntryRepositoryTest: DBTest() {
 
   @Test fun listView() {
     repository.save(timeEntry)
+    repository.save(timeEntry3)
     expect(repository.listView(from = date)).toContainExactly(timeEntryView)
     expect(repository.listView(user.id, from = date)).toContainExactly(timeEntryView)
     expect(repository.listView(user.id, project.id, from = date, to = today)).toContainExactly(timeEntryView)
