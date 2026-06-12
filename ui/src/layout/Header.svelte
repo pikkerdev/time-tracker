@@ -6,6 +6,7 @@
   import {Link} from '@keksworks/svelte-tiny-router'
   import {onDestroy} from 'svelte'
   import {slide, type SlideParams, type TransitionConfig} from 'svelte/transition'
+  import Logo from 'src/layout/Logo.svelte'
 
   const largeScreenMedia = window.matchMedia?.('(min-width: 1024px)')
 
@@ -35,8 +36,7 @@
 <header
   class="bg-stone-50 border-b border-gray-300 px-2 sm:px-3 py-3 flex flex-wrap gap-3 justify-between items-center relative z-10">
   <Link to={$user ? '/entry' : '/'} class="flex gap-2 items-center">
-    <img src="/favicon.svg" class="size-10" title="Time Tracker Logo" alt="Logo">
-    <h1 class="font-bold text-2xl">{t.title}</h1>
+    <Logo/>
   </Link>
   {#if isLargeScreen || menuOpen}
     <div

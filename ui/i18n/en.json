@@ -1,5 +1,7 @@
 {
   "title": "Time tracker",
+  "time": "Time",
+  "tracker": "Tracker",
   "home": {
     "intro": "Time tracker is a simple and clean alternative to other time tracking tools",
     "slogan": "Sometimes less is more"
