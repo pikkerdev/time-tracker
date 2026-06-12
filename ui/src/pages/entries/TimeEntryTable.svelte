@@ -57,8 +57,8 @@
             <CheckboxField bind:group={selectedEntryIds} value={e.entry.id}/>
         {/if}
       </td>
-    {/if}
-    <td><Button label={t.general.edit} onclick={() => {timeEntry = e; show = true}}/></td>
+      {/if}
+      <td><Button label={t.general.edit} disabled={!!e.entry.invoiceId} onclick={() => {timeEntry = e; show = true}}/></td>
   </tr>
 </SortableTable>
 

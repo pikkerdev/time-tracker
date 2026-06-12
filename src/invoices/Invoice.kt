@@ -1,6 +1,7 @@
 package invoices
 
 import db.Id
+import klite.Converter
 import klite.Decimal
 import klite.jdbc.BaseEntity
 import project.Project
@@ -18,4 +19,10 @@ data class Invoice(
   val totalAmount: Decimal get() = amount + vatAmount
 }
 
-@JvmInline value class InvoiceId(val value: Long)
+@JvmInline value class InvoiceId(val value: Long) {
+  companion object {
+    init {
+      Converter.use { InvoiceId(it.toLong()) }
+    }
+  }
+}
