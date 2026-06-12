@@ -7,6 +7,7 @@
   import {onDestroy} from 'svelte'
   import {slide, type SlideParams, type TransitionConfig} from 'svelte/transition'
   import Logo from 'src/layout/Logo.svelte'
+  import Icon from 'src/icons/Icon.svelte'
 
   const largeScreenMedia = window.matchMedia?.('(min-width: 1024px)')
 
@@ -33,6 +34,20 @@
   }
 </script>
 
+{#snippet bottomLine()}
+  <div class="h-0.5 bg-pikker-gold w-0 group-hover:w-10/12 transition-all duration-300 rounded-xl"></div>
+{/snippet}
+
+{#snippet mainLink(to: string, label: string, icon: string)}
+  <Link {to} onclick={closeMenu} class="flex flex-col text-xl group">
+    <div class="flex items-center gap-1">
+      <Icon name={icon}/>
+      {label}
+    </div>
+    {@render bottomLine()}
+  </Link>
+{/snippet}
+
 <header
   class="bg-stone-50 border-b border-gray-300 px-2 sm:px-3 py-3 flex flex-wrap gap-3 justify-between items-center relative z-10">
   <Link to={$user ? '/entry' : '/'} class="flex gap-2 items-center">
@@ -44,16 +59,14 @@
       transition:menuSlide>
       <div class="text-lg flex lg:items-center gap-2 lg:gap-6 max-lg:flex-col max-lg:order-2">
         {#if $user}
-          <Link to="/projects" label={t.projects.title} onclick={closeMenu}/>
-          {#if $user.isAdmin}
-            <Link to="/customers" label={t.customers.title} onclick={closeMenu}/>
-            <Link to="/users" label={t.users.title} onclick={closeMenu}/>
-          {/if}
           {#if $user.isUser || $user.isAdmin}
-            <Link to="/timeentries" label={t.timeEntries.title} onclick={closeMenu}/>
+            {@render mainLink("/timeentries", t.timeEntries.title, "clock")}
           {/if}
+          {@render mainLink("/projects", t.projects.title, "code-folder")}
           {#if $user.isAdmin}
-            <Link to="/invoices" label={t.invoices.title} onclick={closeMenu}/>
+            {@render mainLink("/customers", t.customers.title, "building")}
+            {@render mainLink("/invoices", t.invoices.title, "document")}
+            {@render mainLink("/users", t.users.title, "users")}
           {/if}
         {/if}
       </div>
