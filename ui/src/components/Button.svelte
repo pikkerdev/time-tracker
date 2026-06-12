@@ -24,7 +24,6 @@
 
   :global(.btn) {
     @apply cursor-pointer border border-transparent rounded-md text-center inline-flex
-    focus:outline-none focus:ring-2 ring-offset-2 focus:ring-gray-500/75
     disabled:opacity-50 justify-center py-2 px-4 text-sm font-medium
     active:opacity-75 active:transition-opacity;
   }
