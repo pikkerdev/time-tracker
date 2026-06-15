@@ -9,7 +9,7 @@
 
 {#if $user}
   <Dropdown class="right-0 z-50!" bind:open={isDropDownOpen}>
-    <img src={$user.avatarUrl} alt="" class="rounded-xl w-9 hover:scale-105">
+    <img src={$user.avatarUrl} alt="" class="rounded-xl w-9">
     <svelte:fragment slot="open">
       <div class="min-w-56 p-3">
         <div class="mb-3">
