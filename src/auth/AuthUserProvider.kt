@@ -28,13 +28,12 @@ class AuthUserProvider(
         else -> AuthRole.EXTERNAL
       }
       user = User(profile.firstName, profile.lastName, profile.email, authRole, profile.avatarUrl)
-      userRepository.save(user)
     } else {
       user = user.copy(authRole = user.authRole)
     }
     userRepository.save(user)
     return user
   }
-  }
+}
 
 
