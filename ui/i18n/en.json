@@ -113,7 +113,8 @@
     "invoiced": "Invoiced",
     "preview": "Invoice preview",
     "description": "Invoice description",
-    "dueDate": "Due date"
+    "dueDate": "Due date",
+    "date": "Date"
   },
   "company": {
     "title": "Company",
