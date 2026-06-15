@@ -1,13 +1,14 @@
 <script lang="ts">
   export let label: string|undefined = undefined
-  export let checked = false
   export let helpText = ''
-
+  export let checked = false
   export let id = label ? label.replace(/\./g, '-') : ''
+  export let group: any[] | undefined = undefined
+  export let value: any = undefined
 </script>
 
 <div class="relative flex gap-2 items-center {$$props.class ?? ''}">
-  <input {id} type="checkbox" bind:checked {...$$restProps} class="{$$restProps.disabled && 'opacity-50'}">
+  <input {id} type="checkbox" {...$$restProps} bind:checked bind:group {value} class="{$$restProps.disabled && 'opacity-50'}">
   <div>
     {#if label}
       <label class="select-none" for={id}>{label}</label>

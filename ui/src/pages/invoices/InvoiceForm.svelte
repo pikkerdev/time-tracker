@@ -12,6 +12,7 @@
   export let show: boolean
 
   let description: string = ''
+  let date = today
   let dueDate: LocalDate = toISODate(today, d => {d.setDate(d.getDate() + 14)
   })
 
@@ -25,6 +26,7 @@
 
 <Form {submit}>
   <FormField label={t.invoices.description} bind:value={description}></FormField>
+  <FormField label={t.invoices.date} type="date" bind:value={date}></FormField>
   <FormField label={t.invoices.dueDate} type="date" bind:value={dueDate}></FormField>
   <Button class="primary" label={t.invoices.create} onclick={submit}/>
 </Form>

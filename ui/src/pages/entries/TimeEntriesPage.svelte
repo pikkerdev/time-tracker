@@ -10,7 +10,7 @@
   import ProjectSelect from 'src/pages/projects/ProjectSelect.svelte'
   import Button from 'src/components/Button.svelte'
   import Modal from 'src/components/Modal.svelte'
-  import InvoicePreview from 'src/pages/invoices/InvoicePreview.svelte'
+  import InvoiceForm from 'src/pages/invoices/InvoiceForm.svelte'
   import CheckboxField from 'src/forms/CheckboxField.svelte'
 
   export let projectId: Id<Project> = ''
@@ -59,5 +59,5 @@
 </MainPageLayout>
 
 <Modal title={t.invoices.create} bind:show>
-  <InvoicePreview {selectedEntryIds} bind:show/>
+  <InvoiceForm {selectedEntryIds} bind:show/>
 </Modal>

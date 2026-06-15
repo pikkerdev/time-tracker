@@ -16,8 +16,11 @@
   let timeEntry: TimeEntryView
   let show = false
 
-  $: if (!narrow && timeEntries) {
+  $: console.log('selected', selectedEntryIds)
+
+  $: if (!narrow && timeEntries && projectId) {
     selectedEntryIds = timeEntries.filter(e => !e.entry.invoiceId).map(e => e.entry.id)
+
   }
 </script>
 
