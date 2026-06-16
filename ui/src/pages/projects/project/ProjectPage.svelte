@@ -1,6 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser} from 'src/api/types'
+  import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser, ProjectStatus} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {formatAmount, t} from 'i18n'
@@ -12,6 +12,7 @@
   import Button from 'src/components/Button.svelte'
   import {showToast} from 'src/stores/toasts'
   import {navigate} from '@keksworks/svelte-tiny-router'
+  import Icon from 'src/icons/Icon.svelte'
 
   export let id: Id<Project>
 
@@ -31,49 +32,50 @@
   }
 </script>
 
-<MainPageLayout class="relative" title="{project?.name}">
-  <div slot="after-title" class="flex justify-end gap-4">
+<MainPageLayout class="relative">
+  <div slot="title">
+    <div class="flex items-center gap-2">
+      <h1>{project?.customerName} - {project?.name}</h1>
+      {#if project?.status === ProjectStatus.DELETED}
+        <span class="text-muted">({t.general.deleted.toUpperCase()})</span>
+      {/if}
+    </div>
+    {#if project?.storyTrackerId}
+      <a class="flex items-center gap-1" href="https://story.pikker.dev/projects/{project.storyTrackerId}"
+         target="_blank">
+        <Icon name="storytracker"/>
+        <span class="text-sm text-muted">{project.storyTrackerId}</span>
+      </a>
+    {/if}
+  </div>
+  <div class="flex justify-end gap-4" slot="after-title">
     {#if project && $user.isAdmin}
       <ProjectMembersModal {project}/>
       <ProjectFormModal bind:project label={t.projects.edit}/>
       <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => deleteProject(id)}/>
     {/if}
   </div>
-  {#if project}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-      <div>
-        <p class="text-sm text-gray-500">{t.customers.customer}</p>
-        <p class="text-lg font-medium">{project.customerName}</p>
+  <div class="flex flex-col gap-2 mt-4">
+    <p class="text-lg lg:max-w-5/6">{project?.description}</p>
+    <div class="flex flex-col flex-wrap gap-16 md:flex-row">
+      <div class="flex flex-col">
+        <span class="text-lg font-semibold">{t.projects.hourlyRates}</span>
+        <hr class="text-pikker-gold border-t-3">
+        <div class="grid grid-cols-2 gap-x-4">
+          {#each Object.values(ProjectMemberRole) as role}
+            {@const rate = project?.hourlyRates[role]}
+            {#if rate}
+              <span class="justify-start">{t.members.roles[role]}</span>
+              <span>{formatAmount(rate, project?.currency)}</span>
+            {/if}
+          {/each}
+        </div>
       </div>
-      <div>
-        <p class="text-sm text-gray-500">{t.projects.description}</p>
-        <p class="text-lg font-medium">{project.description}</p>
-      </div>
-      <div>
-        <p class="text-sm text-gray-500 w-20 text-right">{t.projects.hourlyRates}</p>
-        {#each Object.values(ProjectMemberRole) as role}
-        {@const rate = project.hourlyRates[role]}
-        {#if rate}
-          <div class="flex gap-8 justify-end max-w-40">
-            <span class="justify-start">{t.members.roles[role]}</span>
-            <span>{formatAmount(rate, project.currency)}</span>
-          </div>
-
-        {/if}
-      {/each}
-    </div>
-      <div>
-        <p class="text-sm text-gray-500">{t.projects.storyTrackerId}</p>
-        <p class="text-lg font-medium">{project.storyTrackerId}</p>
-      </div>
-      <div>
-        <p class="text-sm text-gray-500">{t.timeEntries.activities}</p>
-        <p class="text-lg font-medium">{project.activities}</p>
+      <div class="flex flex-col max-w-110">
+        <span class="text-lg font-semibold">{t.timeEntries.activities}</span>
+        <hr class="text-pikker-gold border-t-3">
+        <p>{project?.activities?.map(a => a.split(',')).join(", ")}</p>
       </div>
     </div>
-    <div>
-      <p class="text-sm text-gray-500">{t.projects.status}</p>
-      <p class="text-lg font-medium">{project.status}</p>
-    </div>
-  {/if}
+  </div>
 </MainPageLayout>
