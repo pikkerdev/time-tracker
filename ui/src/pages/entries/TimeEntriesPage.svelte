@@ -42,7 +42,7 @@
 </script>
 
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>
-  <div slot="title" class="flex items-center gap-4">
+  <div slot="after-title" class="flex items-center gap-4">
     {#if projectId && selectedEntryIds.length > 0}
       <Button class="primary" label={t.invoices.create} onclick={() => show = true}/>
       <span>{t.invoices.totalAmount}: {formatAmount(totalAmount)}</span>

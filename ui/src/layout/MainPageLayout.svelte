@@ -9,11 +9,13 @@
 </svelte:head>
 
 <main class="px-2 pt-6 sm:px-3 grow bg-stone-100 {$$restProps.class}">
-  {#if title}
-    <div class="flex justify-between items-center gap-4">
+  <div class="flex justify-between items-center gap-4">
+    {#if title}
       <h1>{title}</h1>
+    {:else}
       <slot name="title"/>
-    </div>
-  {/if}
+    {/if}
+    <slot name="after-title"/>
+  </div>
   <slot/>
 </main>

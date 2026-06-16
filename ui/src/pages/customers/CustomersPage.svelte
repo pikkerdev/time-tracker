@@ -24,7 +24,7 @@
 </script>
 
 <MainPageLayout class="relative flex flex-col gap-4" title={t.customers.title}>
-  <div slot="title">
+  <div slot="after-title">
     <Button label={t.customers.add} onclick={() => edit = {} as Customer}/>
   </div>
   <SortableTable columns={[

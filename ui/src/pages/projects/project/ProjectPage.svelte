@@ -31,8 +31,8 @@
   }
 </script>
 
-<MainPageLayout class="relative" title={project?.name}>
-  <div slot="title" class="flex justify-end gap-4">
+<MainPageLayout class="relative" title="{project?.name}">
+  <div slot="after-title" class="flex justify-end gap-4">
     {#if project && $user.isAdmin}
       <ProjectMembersModal {project}/>
       <ProjectFormModal bind:project label={t.projects.edit}/>

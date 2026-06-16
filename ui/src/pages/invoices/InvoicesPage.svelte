@@ -6,7 +6,7 @@
 </script>
 
 <MainPageLayout class="relative spaced" title={t.invoices.title}>
-  <div slot="title">
+  <div slot="after-title">
     <Button onclick={() => navigate('/invoices/create')}>{t.invoices.create}</Button>
   </div>
 </MainPageLayout>

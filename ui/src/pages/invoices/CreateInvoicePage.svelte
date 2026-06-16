@@ -1,10 +1,10 @@
 <script lang="ts">
-  import {formatAmount, t, today, toISODate} from 'i18n'
+  import {formatAmount, t, today} from 'i18n'
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import MonthSelectField from 'src/forms/MonthSelectField.svelte'
   import ProjectSelect from 'src/pages/projects/ProjectSelect.svelte'
   import FormField from 'src/forms/FormField.svelte'
-  import type {Id, InvoiceCreateRequest, LocalDate, Project, TimeEntryView} from 'src/api/types'
+  import type {Id, InvoiceCreateRequest, Project, TimeEntryView} from 'src/api/types'
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
@@ -48,7 +48,7 @@
       <span>{t.invoices.totalAmount}: {formatAmount(totalAmount)}</span>
     {/if}
   </div>
-  <div slot="title" class="flex items-end gap-4">
+  <div slot="after-title" class="flex items-end gap-4">
     <ProjectSelect bind:projectId showLastProject={true}/>
     <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} max={[to, today].min()}/> -
     <FormField title={t.timeEntries.toDate} type="date" bind:value={to} min={from} max={today}/>

@@ -31,7 +31,7 @@
 </script>
 
 <MainPageLayout class="relative" title={t.projects.title}>
-  <div slot="title" class="flex items-center gap-4">
+  <div slot="after-title" class="flex items-center gap-4">
     {#if $user.isAdmin}
       {#if !customerId}
         <CheckboxField label={t.projects.showDeleted} title={t.projects.showDeleted} onchange={() => showDeleted = !showDeleted}/>
