@@ -42,7 +42,7 @@
 {#snippet mainLink(to: string, label: string, icon: string)}
   <Link {to} onclick={closeMenu} class="flex flex-col text-xl group">
     <div class="flex items-center gap-1">
-      <Icon name={icon} class="group-hover:scale-110 group-focus:scale-110"/>
+      <Icon name={icon}/>
       {label}
     </div>
     {@render bottomLine()}
