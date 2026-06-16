@@ -1,13 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import {
-    type Id,
-    type Project,
-    type ProjectMember,
-    ProjectMemberRole,
-    type ProjectMemberUser,
-    type User
-  } from 'src/api/types'
+  import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {formatAmount, t} from 'i18n'
@@ -33,7 +26,8 @@
 
   async function deleteProject(Id: Id<Project>) {
     if (confirm(t.general.deleteConfirm)) await api.delete(`projects/${Id}`)
-    showToast(t.general.deleted)
+    navigate(`/projects`)
+    showToast(`${t.general.deleted} ${project?.name}`)
   }
 </script>
 
@@ -42,7 +36,7 @@
     {#if project && $user.isAdmin}
       <ProjectMembersModal {project}/>
       <ProjectFormModal bind:project label={t.projects.edit}/>
-      <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => {deleteProject(id); navigate(`/projects`)}}/>
+      <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => deleteProject(id)}/>
     {/if}
   </div>
   {#if project}
