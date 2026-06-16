@@ -5,6 +5,7 @@
   export let size: 'sm'|''|'lg' = ''
   export let label = ''
   export let type: 'button'|'submit' = 'button'
+  export let iconClass: string = ''
   export let onclick: (e: MouseEvent) => void = () => {}
 
   $: hasLabel = label || $$slots.default
@@ -12,7 +13,7 @@
 
 <button {type} {onclick} {...$$restProps} class="btn {$$props.class ?? 'default'} {size} inline-flex items-center gap-1" class:icon-only={icon && !hasLabel}>
   {#if icon}
-    <Icon name={icon} {size}/>
+    <Icon name={icon} {size} class={iconClass}/>
   {/if}
   {#if hasLabel}
     <slot>{label}</slot>

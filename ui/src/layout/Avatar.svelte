@@ -16,7 +16,7 @@
           <span class="font-medium text-gray-900 truncate">{$user.name}</span>
           <span class="text-sm text-gray-500 truncate">{$user.email}</span>
         </div>
-        <Button class="w-full justify-start! hover:bg-gray-50" label={t.login.logout} size="sm" icon="logout" onclick={logout}/>
+        <Button class="w-full justify-start! px-0! hover:bg-gray-50" label={t.login.logout} iconClass="size-5!" icon="logout" onclick={logout}/>
       </div>
     </svelte:fragment>
   </Dropdown>
