@@ -48,7 +48,7 @@
       </a>
     {/if}
   </div>
-  <div class="flex justify-end gap-4" slot="after-title">
+  <div class="flex flex-wrap gap-4" slot="after-title">
     {#if project && $user.isAdmin}
       <ProjectMembersModal {project}/>
       <ProjectFormModal bind:project label={t.projects.edit}/>
@@ -56,9 +56,9 @@
     {/if}
   </div>
   <div class="flex flex-col gap-2 mt-4">
-    <p class="text-lg lg:max-w-5/6">{project?.description}</p>
-    <div class="flex flex-col flex-wrap gap-16 md:flex-row">
-      <div class="flex flex-col">
+    <p class="text-lg">{project?.description}</p>
+    <div class="flex flex-col flex-wrap gap-x-16 gap-y-4 md:flex-row">
+      <div class="flex flex-col w-fit">
         <span class="text-lg font-semibold">{t.projects.hourlyRates}</span>
         <hr class="text-pikker-gold border-t-3">
         <div class="grid grid-cols-2 gap-x-4">
