@@ -22,8 +22,10 @@
 
   async function submit() {
     timeEntry = await api.post('projects/timeentries' + (isNew ? '' : '/' + timeEntry.id), timeEntry)
-    if (timeEntry.activity) project.activities.push(timeEntry.activity)
-    await api.post(`projects/${project.id}`, project)
+    if (timeEntry.activity && !project.activities.includes(timeEntry.activity)) {
+      project.activities.push(timeEntry.activity)
+      project = await api.post(`projects/${project.id}`, project)
+    }
     localStorage.setItem(LAST_PROJECT_KEY, timeEntry.projectId)
     showToast(t.general.saved)
     timeEntry = {date: timeEntry.date, projectId: timeEntry.projectId} as TimeEntry
