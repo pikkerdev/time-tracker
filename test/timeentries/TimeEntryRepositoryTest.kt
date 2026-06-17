@@ -1,4 +1,4 @@
-package projects
+package timeentries
 
 import ch.tutteli.atrium.api.fluent.en_GB.toBeEmpty
 import ch.tutteli.atrium.api.fluent.en_GB.toContainExactly
@@ -24,7 +24,7 @@ import klite.Decimal
 import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import timeentries.TimeEntryRepository
+import projects.ProjectRepository
 import users.UserRepository
 
 class TimeEntryRepositoryTest: DBTest() {
