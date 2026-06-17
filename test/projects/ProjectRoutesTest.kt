@@ -6,22 +6,15 @@ import ch.tutteli.atrium.api.fluent.en_GB.toThrow
 import ch.tutteli.atrium.api.verbs.expect
 import db.BaseMocks
 import db.TestData.admin
-import db.TestData.date
 import db.TestData.project
 import db.TestData.projectMember
 import db.TestData.projectMemberUser
-import db.TestData.timeEntry
-import db.TestData.timeEntryView
-import db.TestData.today
 import db.TestData.user
 import io.mockk.every
 import io.mockk.verify
-import klite.Decimal
 import klite.ForbiddenException
-import klite.d
 import org.junit.jupiter.api.Test
 import projects.ProjectMember.Status.ACTIVE
-import java.time.LocalDate
 
 class ProjectRoutesTest: BaseMocks() {
   val routes = create<ProjectRoutes>()
@@ -96,48 +89,6 @@ class ProjectRoutesTest: BaseMocks() {
    @Test fun `delete member`() {
       routes.deleteMember(projectMember.id)
       verify { projectMemberRepository.delete(projectMember.id) }
-    }
-
-    @Test fun `add time entry`() {
-      every { projectMemberRepository.find(project.id, user.id) } returns projectMember
-      val rate = project.hourlyRates.getValue(projectMember.role)
-      routes.saveTimeEntry(user, timeEntry)
-      verify { timeEntryRepository.save(timeEntry.copy(userId = user.id, hourlyRate = rate)) }
-    }
-
-    @Test fun `edit time entry`() {
-      every { projectMemberRepository.find(project.id, user.id) } returns projectMember
-      val rate = project.hourlyRates.getValue(projectMember.role)
-      val timeEntry =(timeEntry.copy( hours = 3.5.d))
-      routes.editTimeEntry(timeEntry.id, timeEntry)
-      verify { timeEntryRepository.save(timeEntry.copy(userId = user.id, hourlyRate = rate)) }
-    }
-
-    @Test fun `list time entries`() {
-      val timeEntries = listOf(timeEntryView)
-      every { timeEntryRepository.listView() } returns listOf(timeEntryView)
-      every { timeEntryRepository.listView(user.id) } returns listOf(timeEntryView)
-      every { timeEntryRepository.listView(user.id, to = today) } returns listOf(timeEntryView)
-      every { timeEntryRepository.listView(user.id, project.id, date, today) } returns listOf(timeEntryView)
-      every { timeEntryRepository.listView(projectId = project.id, from = date, to = today) } returns listOf(timeEntryView)
-
-      expect(routes.timeEntries(user)).toContainExactly(timeEntryView)
-      expect(routes.timeEntries(user, myTimeEntries = true)).toEqual(timeEntries)
-      expect(routes.timeEntries(user, myTimeEntries = true, to = today)).toEqual(timeEntries)
-      expect(routes.timeEntries(user, myTimeEntries = false, project.id, from = date, to = today)).toEqual(timeEntries)
-      expect(routes.timeEntries(admin, myTimeEntries = false, project.id, from = date, to = today)).toEqual(timeEntries)
-    }
-
-    @Test fun `user times`() {
-      val userTimes = mapOf(LocalDate.now() to Decimal(7.0), LocalDate.now().minusDays(1) to Decimal(2.0))
-      val from = LocalDate.now().minusDays(1)
-      every { timeEntryRepository.userTimes(user.id, from) } returns userTimes
-      expect(routes.userTimes(user, from)).toEqual(userTimes)
-
-      val userTime = mapOf(LocalDate.now() to Decimal(7.0))
-      val singleDay = LocalDate.now()
-      every { timeEntryRepository.userTimes(user.id, singleDay) } returns userTime
-      expect(routes.userTimes(user, singleDay)).toEqual(userTime)
     }
   }
 

@@ -21,7 +21,7 @@
   let project: Project
 
   async function submit() {
-    timeEntry = await api.post('projects/timeentries' + (isNew ? '' : '/' + timeEntry.id), timeEntry)
+    timeEntry = await api.post('timeentries' + (isNew ? '' : '/' + timeEntry.id), timeEntry)
     if (timeEntry.activity && !project.activities.includes(timeEntry.activity)) {
       project.activities.push(timeEntry.activity)
       project = await api.post(`projects/${project.id}`, project)

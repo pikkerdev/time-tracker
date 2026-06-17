@@ -14,6 +14,7 @@ import klite.oauth.GoogleOAuthClient
 import klite.oauth.OAuthRoutes
 import klite.oauth.OAuthUserProvider
 import projects.ProjectRoutes
+import timeentries.TimeEntryRoutes
 import users.UserRoutes
 import java.nio.file.Path
 import kotlin.reflect.full.primaryConstructor
@@ -48,6 +49,7 @@ fun main() {
       before<AccessChecker>()
 
       annotated<ProjectRoutes>("/projects")
+      annotated<TimeEntryRoutes>("/timeentries")
       annotated<CustomerRoutes>("/customers")
       annotated<UserRoutes>("/users")
       annotated<InvoiceRoutes>("/invoices")

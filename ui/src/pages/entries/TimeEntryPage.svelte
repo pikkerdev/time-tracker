@@ -19,8 +19,8 @@
   $: loadEntries(date)
 
   async function loadEntries(date: string) {
-    timeEntries = await api.get(`projects/timeentries?myTimeEntries=true&from=${date}`)
-    timeEntryHours = await api.get(`projects/timeentries/user?from=${dates[0]}`)
+    timeEntries = await api.get(`timeentries?myTimeEntries=true&from=${date}`)
+    timeEntryHours = await api.get(`timeentries/user?from=${dates[0]}`)
   }
 </script>
 
