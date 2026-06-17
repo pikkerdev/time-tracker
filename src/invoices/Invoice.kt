@@ -4,7 +4,7 @@ import db.Id
 import klite.Converter
 import klite.Decimal
 import klite.jdbc.BaseEntity
-import project.Project
+import projects.Project
 import java.time.LocalDate
 
 data class Invoice(

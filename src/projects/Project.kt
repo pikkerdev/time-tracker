@@ -1,4 +1,4 @@
-package project
+package projects
 
 import customers.Customer
 import db.Entity
@@ -6,9 +6,9 @@ import db.Id
 import klite.Decimal
 import klite.jdbc.UpdatableEntity
 import klite.json.JsonProperty
-import project.Project.Status.ACTIVE
+import projects.Project.Status.ACTIVE
 import java.time.Instant
-import java.util.Currency
+import java.util.*
 
 val EUR: Currency = Currency.getInstance("EUR")
 

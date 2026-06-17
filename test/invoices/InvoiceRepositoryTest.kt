@@ -9,7 +9,7 @@ import db.TestData.invoice
 import db.TestData.project
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import project.ProjectRepository
+import projects.ProjectRepository
 
 class InvoiceRepositoryTest: DBTest() {
   val repository = InvoiceRepository(db)

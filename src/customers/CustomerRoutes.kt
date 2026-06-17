@@ -5,7 +5,7 @@ import db.Id
 import klite.annotations.GET
 import klite.annotations.POST
 import klite.annotations.PathParam
-import project.ProjectRepository
+import projects.ProjectRepository
 import users.AuthRole.ADMIN
 
 @Access(ADMIN)

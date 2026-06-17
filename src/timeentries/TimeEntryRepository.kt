@@ -6,7 +6,7 @@ import invoices.InvoiceId
 import klite.Decimal
 import klite.jdbc.*
 import klite.notNullValues
-import project.Project
+import projects.Project
 import users.User
 import java.sql.ResultSet
 import java.time.LocalDate

@@ -24,7 +24,6 @@ import klite.Decimal
 import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import project.ProjectRepository
 import timeentries.TimeEntryRepository
 import users.UserRepository
 

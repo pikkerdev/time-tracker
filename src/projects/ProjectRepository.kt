@@ -1,4 +1,4 @@
-package project
+package projects
 
 import customers.Customer
 import db.CrudRepository
@@ -6,14 +6,10 @@ import db.Id
 import db.json
 import klite.Decimal
 import klite.i18n.Lang.jsonMapper
-import klite.jdbc.create
-import klite.jdbc.eq
-import klite.jdbc.neq
-import klite.jdbc.select
-import klite.jdbc.update
+import klite.jdbc.*
 import klite.json.parse
 import klite.toValues
-import project.ProjectMember.Status.DELETED
+import projects.ProjectMember.Status.DELETED
 import users.User
 import java.sql.ResultSet
 import javax.sql.DataSource

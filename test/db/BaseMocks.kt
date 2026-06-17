@@ -13,8 +13,8 @@ import klite.DependencyInjectingRegistry
 import klite.HttpExchange
 import klite.StatusCode.Companion.Found
 import klite.StatusCodeException
-import project.ProjectMemberRepository
-import project.ProjectRepository
+import projects.ProjectMemberRepository
+import projects.ProjectRepository
 import timeentries.TimeEntryRepository
 import users.UserRepository
 import java.net.URI

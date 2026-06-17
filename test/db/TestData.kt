@@ -6,11 +6,11 @@ import invoices.InvoiceCreateRequest
 import invoices.InvoiceId
 import klite.Email
 import klite.d
-import project.Project
-import project.Project.Status.DELETED
-import project.ProjectMember
-import project.ProjectMember.Role.DEVELOPER
-import project.ProjectMemberUser
+import projects.Project
+import projects.Project.Status.DELETED
+import projects.ProjectMember
+import projects.ProjectMember.Role.DEVELOPER
+import projects.ProjectMemberUser
 import timeentries.TimeEntry
 import timeentries.TimeEntryView
 import users.AuthRole.ADMIN

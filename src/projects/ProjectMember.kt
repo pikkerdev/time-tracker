@@ -1,11 +1,11 @@
-package project
+package projects
 
 import db.Entity
 import db.Id
 import klite.jdbc.UpdatableEntity
 import klite.jdbc.nowSec
-import project.ProjectMember.Role.DEVELOPER
-import project.ProjectMember.Status.ACTIVE
+import projects.ProjectMember.Role.DEVELOPER
+import projects.ProjectMember.Status.ACTIVE
 import users.User
 import java.time.Instant
 

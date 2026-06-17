@@ -14,10 +14,7 @@ import db.TestData.project3
 import db.TestData.user
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import project.ProjectMember
-import project.ProjectMemberRepository
-import project.ProjectRepository
-import project.ProjectMember.Role.CUSTOMER
+import projects.ProjectMember.Role.CUSTOMER
 import users.UserRepository
 
 class ProjectRepositoryTest: DBTest() {

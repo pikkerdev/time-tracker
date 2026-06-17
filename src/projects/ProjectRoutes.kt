@@ -1,13 +1,13 @@
-package project
+package projects
 
 import auth.Access
 import db.Id
 import klite.Decimal
 import klite.ForbiddenException
 import klite.annotations.*
-import project.ProjectMember.Role
-import project.ProjectMember.Role.DEVELOPER
-import project.ProjectMember.Status.ACTIVE
+import projects.ProjectMember.Role
+import projects.ProjectMember.Role.DEVELOPER
+import projects.ProjectMember.Status.ACTIVE
 import timeentries.TimeEntry
 import timeentries.TimeEntryRepository
 import users.AuthRole.*

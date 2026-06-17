@@ -5,7 +5,7 @@ import db.Id
 import invoices.InvoiceId
 import klite.Decimal
 import klite.Decimal.Companion.ZERO
-import project.Project
+import projects.Project
 import users.User
 import java.time.LocalDate
 

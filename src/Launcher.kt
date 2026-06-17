@@ -13,7 +13,7 @@ import klite.oauth.AuthRoutes
 import klite.oauth.GoogleOAuthClient
 import klite.oauth.OAuthRoutes
 import klite.oauth.OAuthUserProvider
-import project.ProjectRoutes
+import projects.ProjectRoutes
 import users.UserRoutes
 import java.nio.file.Path
 import kotlin.reflect.full.primaryConstructor

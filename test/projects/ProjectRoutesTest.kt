@@ -20,11 +20,8 @@ import klite.Decimal
 import klite.ForbiddenException
 import klite.d
 import org.junit.jupiter.api.Test
-import project.ProjectMemberUser
-import project.ProjectMemberRequest
-import project.ProjectRoutes
+import projects.ProjectMember.Status.ACTIVE
 import java.time.LocalDate
-import project.ProjectMember.Status.ACTIVE
 
 class ProjectRoutesTest: BaseMocks() {
   val routes = create<ProjectRoutes>()

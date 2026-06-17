@@ -7,16 +7,13 @@ import ch.tutteli.atrium.api.verbs.expect
 import customers.CustomerRepository
 import db.DBTest
 import db.TestData.customer
-import org.junit.jupiter.api.Test
-import project.ProjectMemberRepository
-import project.ProjectRepository
 import db.TestData.project
 import db.TestData.projectMember
 import db.TestData.user
 import org.junit.jupiter.api.BeforeEach
-import project.ProjectMemberUser
+import org.junit.jupiter.api.Test
+import projects.ProjectMember.Status.DELETED
 import users.UserRepository
-import project.ProjectMember.Status.DELETED
 
 
 class ProjectMemberRepositoryTest: DBTest() {
