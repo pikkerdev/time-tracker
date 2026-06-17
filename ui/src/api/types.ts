@@ -9,23 +9,23 @@ export interface Invoice {amount: number; date: LocalDate; description: string; 
 export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; timeEntryIds: Array<Id<TimeEntry>>}
 // class invoices.InvoiceId
 export type InvoiceId = number
-// class project.Project$Status
+// class projects.Project$Status
 export enum ProjectStatus {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
-// class project.Project
+// class projects.Project
 export interface Project {activities: Array<string>; currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; status: ProjectStatus; storyTrackerId?: number; updatedAt?: Instant}
-// class project.ProjectMember$Role
+// class projects.ProjectMember$Role
 export enum ProjectMemberRole {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT', INTERN = 'INTERN', CUSTOMER = 'CUSTOMER'}
-// class project.ProjectMember$Status
+// class projects.ProjectMember$Status
 export enum ProjectMemberStatus {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
-// class project.ProjectMember
+// class projects.ProjectMember
 export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; projectId: Id<Project>; role: ProjectMemberRole; status: ProjectMemberStatus; updatedAt?: Instant; userId: Id<User>}
-// class project.ProjectMemberRequest
+// class projects.ProjectMemberRequest
 export interface ProjectMemberRequest {role: ProjectMemberRole; userId: Id<User>}
-// class project.ProjectMemberUser
+// class projects.ProjectMemberUser
 export interface ProjectMemberUser {member: ProjectMember; user: User}
-// class project.TimeEntry
+// class timeentries.TimeEntry
 export interface TimeEntry {activity?: string; date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; invoiceId?: InvoiceId; projectId: Id<Project>; storyId?: number; userId: Id<User>}
-// class project.TimeEntryView
+// class timeentries.TimeEntryView
 export interface TimeEntryView {customerName: string; entry: TimeEntry; projectName: string; userName: string}
 // class users.AuthRole
 export enum AuthRole {ADMIN = 'ADMIN', USER = 'USER', EXTERNAL = 'EXTERNAL'}
