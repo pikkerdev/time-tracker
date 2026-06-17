@@ -1,16 +1,18 @@
 package db
 
-import project.TimeEntry
-import project.TimeEntryView
 import customers.Customer
 import invoices.Invoice
 import invoices.InvoiceCreateRequest
 import invoices.InvoiceId
 import klite.Email
 import klite.d
-import project.*
+import project.Project
 import project.Project.Status.DELETED
+import project.ProjectMember
 import project.ProjectMember.Role.DEVELOPER
+import project.ProjectMemberUser
+import timeentries.TimeEntry
+import timeentries.TimeEntryView
 import users.AuthRole.ADMIN
 import users.AuthRole.EXTERNAL
 import users.User

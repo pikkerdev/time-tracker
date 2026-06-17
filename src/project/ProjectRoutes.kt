@@ -8,6 +8,7 @@ import klite.annotations.*
 import project.ProjectMember.Role
 import project.ProjectMember.Role.DEVELOPER
 import project.ProjectMember.Status.ACTIVE
+import timeentries.TimeEntry
 import users.AuthRole.*
 import users.User
 import users.UserRepository
@@ -77,7 +78,7 @@ class ProjectRoutes(
   }
 
   @POST("/timeentries/:id") @Access(ADMIN, USER)
-  fun editTimeEntry( @PathParam id: Id<TimeEntry>, timeEntry: TimeEntry): TimeEntry {
+  fun editTimeEntry(@PathParam id: Id<TimeEntry>, timeEntry: TimeEntry): TimeEntry {
     require(timeEntry.invoiceId == null) {"Can not edit time entry that is in invoice"}
     require(id == timeEntry.id) { "Wrong id" }
     timeEntryRepository.save(timeEntry)

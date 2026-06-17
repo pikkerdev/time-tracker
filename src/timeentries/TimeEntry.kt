@@ -1,10 +1,11 @@
-package project
+package timeentries
 
 import db.Entity
 import db.Id
 import invoices.InvoiceId
 import klite.Decimal
 import klite.Decimal.Companion.ZERO
+import project.Project
 import users.User
 import java.time.LocalDate
 

@@ -5,8 +5,8 @@ import auth.Access
 import db.Id
 import klite.annotations.POST
 import klite.sumOf
-import project.TimeEntry
 import project.TimeEntryRepository
+import timeentries.TimeEntry
 import users.AuthRole.ADMIN
 import java.time.LocalDate
 
