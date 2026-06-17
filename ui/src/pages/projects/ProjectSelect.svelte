@@ -28,4 +28,4 @@
 
 <SelectField bind:value={projectId} label={showLastProject? t.projects.project : undefined}
              emptyOption={!showLastProject? t.projects.all : undefined}
-             options={projects.map(p => [p.id, p.customerName? `${p.customerName} ${p.name}` : p.name]).toObject()}/>
+             options={projects.map(p => [p.id, p.customerName? `${p.customerName} - ${p.name}` : p.name]).toObject()}/>
