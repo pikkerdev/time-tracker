@@ -8,7 +8,7 @@
   import UsersPage from 'src/pages/users/UsersPage.svelte'
   import Header from 'src/layout/Header.svelte'
   import TimeEntriesPage from 'src/pages/entries/TimeEntriesPage.svelte'
-  import TimeEntryPage from 'src/pages/entries/TimeEntryPage.svelte'
+  import TimeEntryPage from 'src/pages/entries/entry/TimeEntryPage.svelte'
   import {onMount} from 'svelte'
   import {user} from 'src/stores/auth'
   import CreateInvoicePage from 'src/pages/invoices/CreateInvoicePage.svelte'
