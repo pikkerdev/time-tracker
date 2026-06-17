@@ -3,7 +3,7 @@
   import {t} from 'i18n'
   import {user} from 'src/stores/auth'
   import Button from 'src/components/Button.svelte'
-  import {Link} from '@keksworks/svelte-tiny-router'
+  import {activePath, Link} from '@keksworks/svelte-tiny-router'
   import {onDestroy} from 'svelte'
   import {slide, type SlideParams, type TransitionConfig} from 'svelte/transition'
   import Logo from 'src/layout/Logo.svelte'
@@ -34,25 +34,27 @@
   }
 </script>
 
-{#snippet bottomLine()}
+{#snippet bottomLine(selected: boolean)}
   <div
-    class="h-0.5 bg-pikker-gold w-0 group-hover:w-10/12 group-focus:w-10/12 transition-all duration-300 rounded-xl"></div>
+    class="h-0.5 bg-pikker-gold w-0 transition-all duration-300 rounded-xl {selected ? 'w-full' : 'group-hover:w-10/12'}">
+  </div>
 {/snippet}
 
 {#snippet mainLink(to: string, label: string, icon: string)}
+  {@const selected = $activePath.startsWith(to)}
   <Link {to} onclick={closeMenu} class="flex flex-col text-xl group">
     <div class="flex items-center gap-1">
       <Icon name={icon}/>
       {label}
     </div>
-    {@render bottomLine()}
+    {@render bottomLine(selected)}
   </Link>
 {/snippet}
 
 <header
   class="bg-stone-50 border-b border-gray-300 px-2 sm:px-3 py-3 flex flex-wrap gap-3 justify-between items-center relative z-10">
-  <Link to={$user ? '/entry' : '/'} class="group">
-    <Logo/>
+  <Link class="group" to={$user ? '/entry' : '/'}>
+    <Logo selected={$activePath.startsWith($user ? '/entry' : '/')}/>
   </Link>
   {#if isLargeScreen || menuOpen}
     <div
@@ -74,7 +76,7 @@
     </div>
   {/if}
   <div class="flex gap-2">
-    <Button icon="burger" class="default lg:hidden!" onclick={toggleMenu}/>
+    <Button class="default lg:hidden!" icon="burger" onclick={toggleMenu}/>
     <Avatar/>
   </div>
 </header>
