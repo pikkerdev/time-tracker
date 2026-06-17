@@ -9,23 +9,23 @@ import db.DBTest
 import db.Id
 import db.TestData.customer
 import db.TestData.date
+import db.TestData.invoice
 import db.TestData.project
+import db.TestData.project3
 import db.TestData.timeEntry
+import db.TestData.timeEntry3
 import db.TestData.timeEntryView
 import db.TestData.today
 import db.TestData.twoDaysAgo
 import db.TestData.user
 import db.TestData.yesterday
-import db.TestData.invoice
-import db.TestData.project3
-import db.TestData.timeEntry3
 import invoices.InvoiceRepository
 import klite.Decimal
 import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import project.ProjectRepository
-import project.TimeEntryRepository
+import timeentries.TimeEntryRepository
 import users.UserRepository
 
 class TimeEntryRepositoryTest: DBTest() {

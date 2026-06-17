@@ -1,4 +1,4 @@
-package project
+package timeentries
 
 import db.CrudRepository
 import db.Id
@@ -6,9 +6,7 @@ import invoices.InvoiceId
 import klite.Decimal
 import klite.jdbc.*
 import klite.notNullValues
-import project.Project.Status.ACTIVE
-import timeentries.TimeEntry
-import timeentries.TimeEntryView
+import project.Project
 import users.User
 import java.sql.ResultSet
 import java.time.LocalDate
@@ -24,8 +22,12 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
     val queryFrom = from ?: to
     val queryTo = to ?: from
     return db.select(viewFrom, notNullValues(
-      TimeEntry::userId eq userId, TimeEntry::projectId eq projectId, TimeEntry::date gte queryFrom, TimeEntry::date lte queryTo,
-      Project::status eq ACTIVE), suffix = defaultOrder) { viewMapper() } }
+      TimeEntry::userId eq userId,
+      TimeEntry::projectId eq projectId,
+      TimeEntry::date gte queryFrom,
+      TimeEntry::date lte queryTo,
+      Project::status eq Project.Status.ACTIVE
+    ), suffix = defaultOrder) { viewMapper() } }
 
   private fun ResultSet.viewMapper() =
     TimeEntryView(

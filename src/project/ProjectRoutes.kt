@@ -9,6 +9,7 @@ import project.ProjectMember.Role
 import project.ProjectMember.Role.DEVELOPER
 import project.ProjectMember.Status.ACTIVE
 import timeentries.TimeEntry
+import timeentries.TimeEntryRepository
 import users.AuthRole.*
 import users.User
 import users.UserRepository

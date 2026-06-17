@@ -1,7 +1,6 @@
 package db
 
 import customers.CustomerRepository
-import db.TestData.date
 import db.TestData.invoice
 import db.TestData.project
 import db.TestData.user
@@ -16,7 +15,7 @@ import klite.StatusCode.Companion.Found
 import klite.StatusCodeException
 import project.ProjectMemberRepository
 import project.ProjectRepository
-import project.TimeEntryRepository
+import timeentries.TimeEntryRepository
 import users.UserRepository
 import java.net.URI
 
