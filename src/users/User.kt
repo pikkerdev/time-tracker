@@ -10,7 +10,7 @@ import java.net.URI
 import java.time.Instant
 
 enum class AuthRole {
-  ADMIN, USER, EXTERNAL
+  ADMIN, INTERNAL, EXTERNAL
 }
 
 data class User(
@@ -23,7 +23,7 @@ data class User(
   override var updatedAt: Instant? = null,
   override val id: Id<User> = Id()
 ): Entity<User>, OAuthUser, UpdatableEntity {
-  val isUser get() = authRole == AuthRole.USER
+  val isInternal get() = authRole == AuthRole.INTERNAL
   val isAdmin get() = authRole == AuthRole.ADMIN
   val name get() = "$firstName $lastName"
 }

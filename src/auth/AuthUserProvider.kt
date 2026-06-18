@@ -24,7 +24,7 @@ class AuthUserProvider(
     if (user == null) {
       val authRole = when {
         admins.contains(email) -> AuthRole.ADMIN
-        email.endsWith("@$users") -> AuthRole.USER
+        email.endsWith("@$users") -> AuthRole.INTERNAL
         else -> AuthRole.EXTERNAL
       }
       user = User(profile.firstName, profile.lastName, profile.email, authRole, profile.avatarUrl)

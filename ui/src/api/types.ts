@@ -28,9 +28,9 @@ export interface TimeEntry {activity?: string; date: LocalDate; description?: st
 // class timeentries.TimeEntryView
 export interface TimeEntryView {customerName: string; entry: TimeEntry; projectName: string; userName: string}
 // class users.AuthRole
-export enum AuthRole {ADMIN = 'ADMIN', USER = 'USER', EXTERNAL = 'EXTERNAL'}
+export enum AuthRole {ADMIN = 'ADMIN', INTERNAL = 'INTERNAL', EXTERNAL = 'EXTERNAL'}
 // class users.User
-export interface User {authRole: AuthRole; avatarUrl?: URI; createdAt: Instant; email: Email; firstName: string; id: Id<User>; isAdmin: boolean; isUser: boolean; lastName: string; name: string; updatedAt?: Instant}
+export interface User {authRole: AuthRole; avatarUrl?: URI; createdAt: Instant; email: Email; firstName: string; id: Id<User>; isAdmin: boolean; isInternal: boolean; lastName: string; name: string; updatedAt?: Instant}
 
 // java.time.LocalDate
 export type LocalDate = `${number}-${number}-${number}`

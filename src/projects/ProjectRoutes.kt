@@ -16,7 +16,7 @@ class ProjectRoutes(
   val projectMemberRepository: ProjectMemberRepository,
   val userRepository: UserRepository,
 ) {
-  @GET("/:id") @Access(ADMIN, USER, EXTERNAL)
+  @GET("/:id") @Access(ADMIN, INTERNAL, EXTERNAL)
   fun get(@PathParam id: Id<Project>, @AttrParam user: User) =
     if (user.authRole == ADMIN || projectMemberRepository.isMember(id, user.id)) projectRepository.get(id)
     else throw ForbiddenException()
@@ -49,13 +49,13 @@ class ProjectRoutes(
     return ProjectMemberUser(projectMember, user)
   }
 
-  @GET @Access(ADMIN, USER, EXTERNAL)
+  @GET @Access(ADMIN, INTERNAL, EXTERNAL)
   fun list(@AttrParam user: User, @QueryParam myProjects: Boolean? = false, @QueryParam noCustomer: Boolean = false, @QueryParam includeDeleted: Boolean = false) =
     if (myProjects == true || user.authRole != ADMIN) projectRepository.forMember(user.id, noCustomer, includeDeleted)
     else if (!includeDeleted) projectRepository.listNotDeleted()
     else projectRepository.list()
 
-  @GET("/:id/members") @Access(ADMIN, USER, EXTERNAL)
+  @GET("/:id/members") @Access(ADMIN, INTERNAL, EXTERNAL)
   fun members(@PathParam id: Id<Project>): List<ProjectMemberUser> =
     projectMemberRepository.list(id)
 
