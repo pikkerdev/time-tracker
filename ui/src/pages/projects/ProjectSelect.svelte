@@ -10,11 +10,12 @@
   export let project: Project | undefined = undefined
   export let showLastProject = false
   export let localStorageKey: string | undefined = undefined
+  export let noCustomer = true
 
   let projects: Project[] = []
 
   onMount(async () => {
-    if (!$user.isAdmin || showLastProject) projects = await api.get('projects?myProjects=true&noCustomer=true')
+    if (!$user.isAdmin || showLastProject) projects = await api.get(`projects?myProjects=true&noCustomer=${noCustomer}`)
     else projects = await api.get('projects?myProjects=false')
     projects.sort((a,b) => a.customerName!.localeCompare(b.customerName!) || a.name.localeCompare(b.name))
     if (localStorageKey && !projectId) {
