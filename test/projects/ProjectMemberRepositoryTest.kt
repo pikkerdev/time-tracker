@@ -8,7 +8,9 @@ import customers.CustomerRepository
 import db.DBTest
 import db.TestData.customer
 import db.TestData.project
+import db.TestData.project2
 import db.TestData.projectMember
+import db.TestData.projectMember2
 import db.TestData.user
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -52,5 +54,16 @@ class ProjectMemberRepositoryTest: DBTest() {
     repository.delete(projectMember.id)
     val deletedProjectMember = projectMember.copy(status = DELETED)
     expect(repository.find(project.id, user.id, active = false)).toEqual(deletedProjectMember)
+  }
+
+  @Test fun findUserProjectMembers() {
+    projectRepository.save(project2)
+    repository.save(projectMember2)
+
+    expect(repository.findUserProjectMembers(user.id)).toEqual(listOf(projectMember, projectMember2))
+
+    repository.delete(projectMember.id)
+    expect(repository.findUserProjectMembers(user.id)).toEqual(listOf(projectMember2))
+    expect(repository.findUserProjectMembers(user.id, active = false)).toEqual(listOf(projectMember.copy(status = DELETED), projectMember2))
   }
 }

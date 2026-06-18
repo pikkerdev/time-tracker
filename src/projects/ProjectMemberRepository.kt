@@ -24,5 +24,8 @@ class ProjectMemberRepository(db: DataSource): CrudRepository<ProjectMember>(db,
 
   fun find(projectId: Id<Project>, userId: Id<User>, active: Boolean = true): ProjectMember? =
     db.select(table, ProjectMember::projectId to projectId, ProjectMember::userId to userId, if (active) notDeleted else null)
-    { create<ProjectMember>()}.firstOrNull()
+    { create<ProjectMember>() }.firstOrNull()
+
+  fun findUserProjectMembers(userId: Id<User>, active: Boolean = true): List<ProjectMember> =
+    db.select(table, ProjectMember::userId to userId, if (active) notDeleted else null) { create<ProjectMember>() }
 }
