@@ -17,7 +17,10 @@
 
   onMount(() => {
     if ($user && location.pathname == '/')
-      navigate('/entry')
+      if ($user.isCustomer)
+        navigate('/timeentries')
+      else
+        navigate('/entry')
   })
 </script>
 

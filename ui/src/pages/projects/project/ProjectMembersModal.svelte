@@ -6,6 +6,7 @@
   import SortableTable from 'src/components/SortableTable.svelte'
   import SelectField from 'src/forms/SelectField.svelte'
   import {
+    AuthRole,
     type Id,
     type ProjectMember,
     type ProjectMemberRequest,
@@ -23,6 +24,8 @@
   let show = false
   let userId: Id<User>
   let role: ProjectMemberRole
+  let userRole: AuthRole | undefined = undefined
+  const roleOptions = Object.fromEntries(Object.values(ProjectMemberRole).filter(e => e !== ProjectMemberRole.CUSTOMER).map(e => [e,e]))
 
   async function onclick() {
     show = true
@@ -30,6 +33,7 @@
   }
 
   async function submit() {
+    userRole = undefined
     return save({userId, role})
   }
 
@@ -55,6 +59,8 @@
     project.members = updatedMembers
     showToast(t.general.deleted)
   }
+
+  $: if (userId) userRole = users.find(u => u.id === userId)?.authRole
 </script>
 
 <Button label={t.members.title} {onclick}/>
@@ -69,9 +75,13 @@
     <tr>
       <td>{m.user.name}</td>
       <td>{m.user.email}</td>
-      <td>
-        <SelectField title={t.members.roles} bind:value={m.member.role} options={t.members.roles} onchange={() => changeMemberRole(m.member)}/>
-      </td>
+      {#if m.user.isCustomer}
+        <td>{t.members.roles.CUSTOMER}</td>
+      {:else}
+        <td>
+          <SelectField title={t.members.roles} bind:value={m.member.role} options={roleOptions} onchange={() => changeMemberRole(m.member)}/>
+        </td>
+      {/if}
       <td>
         <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => deleteMember(m.member.id)}/>
       </td>
@@ -82,7 +92,9 @@
     <Form {submit} class="flex gap-4">
       <SelectField bind:value={userId} placeholder={t.members.chooseMember}
                    options={users.filter(u => !project.members[u.id]).indexBy(u => u.id, u => `${u.name} (${u.email})`)}/>
-      <SelectField bind:value={role} placeholder={t.members.chooseRole} options={t.members.roles}/>
+      {#if !(userRole == 'CUSTOMER' || userRole == undefined)}
+        <SelectField bind:value={role} placeholder={t.members.chooseRole} options={roleOptions}/>
+      {/if}
       <Button type="submit" label={t.general.add}/>
     </Form>
   </div>

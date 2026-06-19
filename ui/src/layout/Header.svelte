@@ -53,8 +53,8 @@
 
 <header
   class="bg-stone-50 border-b border-gray-300 px-2 sm:px-3 py-3 flex flex-wrap gap-3 justify-between items-center relative z-10">
-  <Link class="group" to={$user ? '/entry' : '/'}>
-    <Logo selected={$activePath.startsWith($user ? '/entry' : '/')}/>
+  <Link class="group" to={!$user ? '/' : $user.isCustomer ? '/timeentries' : '/entry'}>
+    <Logo selected={$activePath.startsWith(!$user ? '/' : $user.isCustomer ? '/timeentries' : '/entry')}/>
   </Link>
   {#if isLargeScreen || menuOpen}
     <div
@@ -62,9 +62,7 @@
       transition:menuSlide>
       <div class="text-lg flex lg:items-center gap-2 lg:gap-6 max-lg:flex-col max-lg:order-2">
         {#if $user}
-          {#if $user.isInternal || $user.isAdmin}
-            {@render mainLink("/timeentries", t.timeEntries.title, "clock")}
-          {/if}
+          {@render mainLink("/timeentries", t.timeEntries.title, "clock")}
           {@render mainLink("/projects", t.projects.title, "code-folder")}
           {#if $user.isAdmin}
             {@render mainLink("/customers", t.customers.title, "building")}

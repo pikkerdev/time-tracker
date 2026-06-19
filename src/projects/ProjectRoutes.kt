@@ -16,7 +16,7 @@ class ProjectRoutes(
   val projectMemberRepository: ProjectMemberRepository,
   val userRepository: UserRepository,
 ) {
-  @GET("/:id") @Access(ADMIN, INTERNAL, EXTERNAL)
+  @GET("/:id") @Access(ADMIN, INTERNAL, EXTERNAL, CUSTOMER)
   fun get(@PathParam id: Id<Project>, @AttrParam user: User) =
     if (user.authRole == ADMIN || projectMemberRepository.isMember(id, user.id)) projectRepository.get(id)
     else throw ForbiddenException()
@@ -41,21 +41,26 @@ class ProjectRoutes(
 
   @POST("/:id/members") @Access(ADMIN)
   fun saveMember(@PathParam id: Id<Project>, member: ProjectMemberRequest): ProjectMemberUser {
+    val user = userRepository.get(member.userId)
+    val role = when {
+      user.isCustomer -> Role.CUSTOMER
+      member.role == Role.CUSTOMER -> throw IllegalArgumentException("Cannot assign customer role to a non-customer user")
+      else -> member.role
+    }
     val projectMember = projectMemberRepository.find(id, member.userId, active = false)
-      ?.copy(role = member.role, status = ACTIVE)
-      ?: ProjectMember(id, member.userId, role = member.role)
+      ?.copy(role = role, status = ACTIVE)
+      ?: ProjectMember(id, member.userId, role = role)
     projectMemberRepository.save(projectMember)
-    val user = userRepository.get(projectMember.userId)
     return ProjectMemberUser(projectMember, user)
   }
 
-  @GET @Access(ADMIN, INTERNAL, EXTERNAL)
+  @GET @Access(ADMIN, INTERNAL, EXTERNAL, CUSTOMER)
   fun list(@AttrParam user: User, @QueryParam myProjects: Boolean? = false, @QueryParam noCustomer: Boolean = false, @QueryParam includeDeleted: Boolean = false) =
     if (myProjects == true || user.authRole != ADMIN) projectRepository.forMember(user.id, noCustomer, includeDeleted)
     else if (!includeDeleted) projectRepository.listNotDeleted()
     else projectRepository.list()
 
-  @GET("/:id/members") @Access(ADMIN, INTERNAL, EXTERNAL)
+  @GET("/:id/members") @Access(ADMIN, INTERNAL, EXTERNAL, CUSTOMER)
   fun members(@PathParam id: Id<Project>): List<ProjectMemberUser> =
     projectMemberRepository.list(id)
 
