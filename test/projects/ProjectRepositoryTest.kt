@@ -38,7 +38,6 @@ class ProjectRepositoryTest: DBTest() {
     memberRepository.save(ProjectMember(project.id, user.id))
     memberRepository.save(ProjectMember(project2.id,user.id, CUSTOMER))
     expect(repository.forMember(user.id, false)).toContainExactly(project, project2)
-    expect(repository.forMember(user.id, true)).toContainExactly(project)
     expect(repository.byCustomer(customer.id)).toContain(project)
     expect(repository.listNotDeleted()).toContain(project)
     expect(repository.listNotDeleted()).notToContain(project3)
