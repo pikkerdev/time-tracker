@@ -21,7 +21,6 @@ class ProjectRepository(db: DataSource): CrudRepository<Project>(db, "projects")
 
   private val notDeletedMember = "pm.status" neq DELETED
   private val notDeleted = "$table.status" neq DELETED
-  private val notCustomer = ProjectMember::role neq ProjectMember.Role.CUSTOMER
 
   override fun ResultSet.mapper() = create(
     Project::hourlyRates to jsonMapper.parse<Map<ProjectMember.Role, Decimal>>(getString("hourlyRates")),
@@ -29,11 +28,10 @@ class ProjectRepository(db: DataSource): CrudRepository<Project>(db, "projects")
   )
   override fun Project.persister() = toValues(Project::hourlyRates to json(hourlyRates), skip = listOf(Project::customerName))
 
-  fun forMember(userId: Id<User>, noCustomer: Boolean, includeDeleted: Boolean = false): List<Project> =
+  fun forMember(userId: Id<User>, includeDeleted: Boolean = false): List<Project> =
     db.select("$selectFrom join project_members pm on $table.id = pm.projectId",
       ProjectMember::userId eq userId, notDeletedMember,
-      if (!includeDeleted) notDeleted else null,
-      if (noCustomer) notCustomer else null, suffix = defaultOrder) { mapper() }
+      if (!includeDeleted) notDeleted else null, suffix = defaultOrder) { mapper() }
 
   fun byCustomer(customerId: Id<Customer>): List<Project> = list(Project::customerId eq customerId)
 

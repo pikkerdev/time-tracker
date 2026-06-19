@@ -47,7 +47,7 @@
       <Button class="primary" label={t.invoices.create} onclick={() => show = true}/>
       <span>{t.invoices.totalAmount}: {formatAmount(totalAmount)}</span>
     {/if}
-    <ProjectSelect bind:projectId noCustomer={false}/>
+    <ProjectSelect bind:projectId/>
     <MonthSelectField bind:from bind:to/>
     <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} max={[to, today].min()}/> -
     <FormField title={t.timeEntries.toDate} type="date" bind:value={to} min={from} max={today}/>
