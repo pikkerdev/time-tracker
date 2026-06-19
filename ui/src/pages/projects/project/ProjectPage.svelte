@@ -41,10 +41,10 @@
       {/if}
     </div>
     {#if project?.storyTrackerId}
-      <a class="flex items-center gap-1" href="https://story.pikker.dev/projects/{project.storyTrackerId}"
+      <a class="flex items-center gap-1 group" href="https://story.pikker.dev/projects/{project.storyTrackerId}"
          target="_blank">
-        <Icon name="storytracker"/>
-        <span class="text-sm text-muted">{project.storyTrackerId}</span>
+        <Icon name="storytracker" class="group-hover:rotate-180 transition-all duration-300"/>
+        <span class="text-sm text-muted group-hover:text-blue-600 trainsiton-colors duration-300">{project.storyTrackerId}</span>
       </a>
     {/if}
   </div>
