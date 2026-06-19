@@ -18,3 +18,6 @@ alter table users add column avatarUrl text default null;
 
 --changeset users:rename-role-to-authRole
 alter table users rename column role to authRole;
+
+--changeset users:rename-authrole-user-to-internal
+update users set authrole = 'INTERNAL', updatedat = NOW() WHERE authrole = 'USER';
