@@ -62,7 +62,7 @@
       transition:menuSlide>
       <div class="text-lg flex lg:items-center gap-2 lg:gap-6 max-lg:flex-col max-lg:order-2">
         {#if $user}
-          {#if $user.isUser || $user.isAdmin}
+          {#if $user.isInternal || $user.isAdmin}
             {@render mainLink("/timeentries", t.timeEntries.title, "clock")}
           {/if}
           {@render mainLink("/projects", t.projects.title, "code-folder")}
