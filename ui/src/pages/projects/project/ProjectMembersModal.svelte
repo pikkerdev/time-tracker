@@ -8,7 +8,8 @@
   import {
     type Id,
     type ProjectMember,
-    type ProjectMemberRequest, ProjectMemberRole,
+    type ProjectMemberRequest,
+    ProjectMemberRole,
     type ProjectMemberUser,
     type User
   } from 'src/api/types'
@@ -80,7 +81,7 @@
     <h6 class ="mb-4">{t.members.addMember}</h6>
     <Form {submit} class="flex gap-4">
       <SelectField bind:value={userId} placeholder={t.members.chooseMember}
-                   options={users.filter(u => !project.members[u.id]).indexBy(u => u.id, u => u.name)}/>
+                   options={users.filter(u => !project.members[u.id]).indexBy(u => u.id, u => `${u.name} (${u.email})`)}/>
       <SelectField bind:value={role} placeholder={t.members.chooseRole} options={t.members.roles}/>
       <Button type="submit" label={t.general.add}/>
     </Form>
