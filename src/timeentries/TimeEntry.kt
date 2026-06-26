@@ -17,10 +17,10 @@ data class TimeEntry(
   val date: LocalDate = LocalDate.now(),
   val hours: Decimal,
   val hourlyRate: Decimal = ZERO,
+  val role: Role,
   val storyId: Long? = null,
   val description: String? = null,
   val activity: String? = null,
-  val role: Role,
   override val id: Id<TimeEntry> = Id()
 ): Entity<TimeEntry>
 
