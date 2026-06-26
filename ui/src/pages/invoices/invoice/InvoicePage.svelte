@@ -77,12 +77,12 @@
       </tr>
       </thead>
       <tbody>
-      {#each Object.entries(details?.entries ?? {}) as [role, [hours, rate]]}
+      {#each details?.entries ?? [] as entry}
         <tr>
-          <td class="td">{role.toTitleCase()} {t.invoices.workingHour}</td>
-          <td class="td td-num">{hours}</td>
-          <td class="td td-num">{formatAmount(rate)}</td>
-          <td class="td td-num">{formatAmount(hours * rate)}</td>
+          <td class="td">{entry.role.toTitleCase()} {t.invoices.workingHour}</td>
+          <td class="td td-num">{entry.hours}</td>
+          <td class="td td-num">{formatAmount(entry.rate)}</td>
+          <td class="td td-num">{formatAmount(entry.hours * entry.rate)}</td>
         </tr>
       {/each}
       </tbody>

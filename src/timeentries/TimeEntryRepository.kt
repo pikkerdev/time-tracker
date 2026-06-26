@@ -3,6 +3,7 @@ package timeentries
 import db.CrudRepository
 import db.Id
 import invoices.InvoiceId
+import invoices.RoleHoursEntry
 import klite.Decimal
 import klite.jdbc.*
 import klite.notNullValues
@@ -46,11 +47,11 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   fun listByIds(ids: List<Id<TimeEntry>>): List<TimeEntry> =
     list(TimeEntry::id to ids)
 
-  fun sumHoursByRoleForInvoice(id: InvoiceId): Map<Role, List<Decimal>> =
+  fun sumHoursByRoleForInvoice(id: InvoiceId): List<RoleHoursEntry> =
     db.query("select role, sum(hours) as hours, hourlyRate from $table",
       TimeEntry::invoiceId eq id, suffix = "group by role, hourlyRate order by role"){
-      Role.valueOf(getString("role")) to listOf(Decimal(getString("hours")), Decimal(getString("hourlyRate")))
-    }.toMap()
+      RoleHoursEntry(Role.valueOf(getString("role")), Decimal(getString("hours")), Decimal(getString("hourlyRate")))
+    }
 
   fun updateInvoiceId(ids: List<Id<TimeEntry>>, invoiceId: InvoiceId) {
     db.update(table, mapOf(TimeEntry::invoiceId to invoiceId), TimeEntry::id to ids)

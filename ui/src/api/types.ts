@@ -8,13 +8,15 @@ export interface Invoice {amount: number; date: LocalDate; description: string; 
 // class invoices.InvoiceCreateRequest
 export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; timeEntryIds: Array<Id<TimeEntry>>}
 // class invoices.InvoiceDetails
-export interface InvoiceDetails {customer: Customer; entries: Partial<Record<ProjectMemberRole, Array<number>>>; invoice: Invoice; vat: number}
+export interface InvoiceDetails {customer: Customer; entries: Array<RoleHoursEntry>; invoice: Invoice; vat: number}
 // class invoices.InvoiceId
 export type InvoiceId = number
 // class invoices.InvoiceView
 export interface InvoiceView {creatorName: string; customerName: string; invoice: Invoice; projectName: string}
 // class invoices.InvoiceWithCustomer
 export interface InvoiceWithCustomer {customerId: Id<Customer>; invoice: Invoice}
+// class invoices.RoleHoursEntry
+export interface RoleHoursEntry {hours: number; rate: number; role: ProjectMemberRole}
 // class projects.Project$Status
 export enum ProjectStatus {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class projects.Project

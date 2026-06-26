@@ -34,10 +34,16 @@ data class InvoiceWithCustomer(
   val customerId: Id<Customer>,
 )
 
+data class RoleHoursEntry(
+  val role: Role,
+  val hours: Decimal,
+  val rate: Decimal,
+)
+
 data class InvoiceDetails(
   val invoice: Invoice,
   val customer: Customer,
-  val entries: Map<Role, List<Decimal>>,
+  val entries: List<RoleHoursEntry>,
   val vat: Decimal = vatRate
 )
 
