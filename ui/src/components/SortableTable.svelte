@@ -61,7 +61,7 @@
   }
 </script>
 
-<div class="max-sm:-mx-4 overflow-x-auto lg:mx-0 {$$props.class }" use:renderMoreOnScroll>
+<div class="max-sm:-mx-2 overflow-x-auto lg:mx-0 {$$props.class }" use:renderMoreOnScroll>
   <div class="min-w-full pb-3">
     <table {id}>
       <thead>
