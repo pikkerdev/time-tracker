@@ -7,6 +7,7 @@
   import Button from 'src/components/Button.svelte'
   import FormField from 'src/forms/FormField.svelte'
   import Form from 'src/forms/Form.svelte'
+  import {navigate} from '@keksworks/svelte-tiny-router'
 
   export let selectedEntryIds: string[] = []
   export let show: boolean
@@ -19,9 +20,9 @@
   async function submit() {
     const invoiceCreateRequest: InvoiceCreateRequest = {date: today, timeEntryIds: selectedEntryIds, description, dueDate}
     await api.post('invoices', invoiceCreateRequest)
-    showToast(t.general.saved)
     show = false
-
+    navigate('/invoices')
+    showToast(t.general.saved)
   }</script>
 
 <Form {submit}>
