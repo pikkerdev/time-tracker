@@ -24,7 +24,7 @@ create index on time_entry(userId);
 alter table time_entry add column tags text[] default '{}' not null;
 
 --changeset time_entry.invoiceId
-alter table time_entry add column invoiceId bigint references invoices(id)
+alter table time_entry add column invoiceId bigint references invoices(id);
 
 --changeset time_entry:tags
 alter table time_entry drop column tags;
@@ -34,3 +34,7 @@ alter table time_entry add column tag text;
 
 --changeset time_entry:rename-tag-to-activity
 alter table time_entry rename column tag to activity;
+
+--changeset time_entry.invoiceId-on-delete-null
+alter table time_entry drop constraint time_entry_invoiceid_fkey;
+alter table time_entry add constraint time_entry_invoiceid_fkey foreign key (invoiceId) references invoices(id) on delete set null;
