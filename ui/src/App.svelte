@@ -11,7 +11,6 @@
   import TimeEntryPage from 'src/pages/entries/entry/TimeEntryPage.svelte'
   import {onMount} from 'svelte'
   import {user} from 'src/stores/auth'
-  import CreateInvoicePage from 'src/pages/invoices/create/CreateInvoicePage.svelte'
   import InvoicesPage from 'src/pages/invoices/InvoicesPage.svelte'
   import {navigate, Route, Router} from '@keksworks/svelte-tiny-router'
 
@@ -44,6 +43,5 @@
     <Route path="/customers/:customerId/projects" component={ProjectsPage}/>
     <Route path="/users" component={UsersPage}/>
     <Route path="/invoices" component={InvoicesPage}/>
-    <Route path="/invoices/create" component={CreateInvoicePage}/>
   </Router>
 </div>
