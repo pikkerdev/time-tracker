@@ -106,6 +106,7 @@
   "invoices": {
     "title": "Invoices",
     "id": "Invoice number",
+    "invoiceNo": "Invoice No",
     "project": "Project",
     "invoice": "Invoice",
     "create": "Create an invoice",
@@ -119,12 +120,34 @@
     "description": "Invoice description",
     "dueDate": "Due date",
     "date": "Date",
-    "createdBy": "Created By"
+    "createdBy": "Created By",
+    "from": "From",
+    "billTo": "Bill To",
+    "vat": "VAT",
+    "bankAccount": "Bank Account",
+    "bank": "Bank",
+    "iban": "IBAN",
+    "reference": "Reference",
+    "paymentDetails": "Payment Details",
+    "contact": "Contact",
+    "itemDescription": "Description",
+    "hours": "Hours",
+    "rate": "Rate",
+    "subtotal": "Subtotal"
   },
   "company": {
-    "title": "Company",
     "name": "Pikker Technology OÜ",
     "address": "Laeva tn 2, Tallinn 10111",
-    "phone": "+372 53064406"
+    "phone": "+372 53064406",
+    "email": "contact@pikker.dev",
+    "vatId": "EE102869097",
+    "bankAccount": "Pikker Technology OÜ",
+    "bank": "AS LHV Pank",
+    "iban": "EE887700771010469342",
+    "contactPerson": {
+      "name": "Artur Reiljan",
+      "email": "artur@pikker.dev",
+      "phone": "+372 53064406"
+    }
   }
 }

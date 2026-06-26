@@ -12,7 +12,8 @@
   import {onMount} from 'svelte'
   import {user} from 'src/stores/auth'
   import InvoicesPage from 'src/pages/invoices/InvoicesPage.svelte'
-  import {navigate, Route, Router} from '@keksworks/svelte-tiny-router'
+  import {activePath, navigate, Route, Router} from '@keksworks/svelte-tiny-router'
+  import InvoicePage from 'src/pages/invoices/invoice/InvoicePage.svelte'
 
   onMount(() => {
     if ($user && location.pathname == '/')
@@ -32,7 +33,9 @@
 <slot/>
 
 <div class="min-h-screen flex flex-col">
-  <Header/>
+  {#if !$activePath.startsWith("/invoices/")}
+    <Header/>
+  {/if}
   <Router>
     <Route path="/" component={HomePage}/>
     <Route path="/entry" component={TimeEntryPage}/>
@@ -43,5 +46,6 @@
     <Route path="/customers/:customerId/projects" component={ProjectsPage}/>
     <Route path="/users" component={UsersPage}/>
     <Route path="/invoices" component={InvoicesPage}/>
+    <Route path="/invoices/:id" component={InvoicePage}/>
   </Router>
 </div>
