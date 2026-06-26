@@ -1,39 +1,16 @@
 <script lang="ts">
   import {formatAmount, formatDate, t} from 'i18n'
   import Button from 'src/components/Button.svelte'
+  import type {InvoiceDetails, InvoiceId} from 'src/api/types'
+  import {onMount} from 'svelte'
+  import api from 'src/api/api'
 
-  const mockInvoice = {
-    number: 'INV-2026-0042',
-    date: '2026-06-15',
-    dueDate: '2026-07-15',
-    description: 'Software development services for June 2026',
-    customer: {
-      name: 'Acme Corp OÜ',
-      legalName: 'Acme Corp OÜ',
-      address: 'Tartu mnt 10, Tallinn 10145',
-      vatId: 'EE123456789',
-      email: 'billing@acme.ee'
-    },
-    sender: {
-      name: t.company.name,
-      address: t.company.address,
-      phone: t.company.phone,
-      email: 'info@pikker.ee',
-      vatId: 'EE987654321'
-    },
-    items: [
-      {description: 'Backend development - API integration', hours: 32, rate: 85},
-      {description: 'Frontend development - Dashboard redesign', hours: 24, rate: 80},
-      {description: 'Code review and refactoring', hours: 8, rate: 85},
-      {description: 'Database optimization', hours: 6, rate: 90}
-    ],
-    currency: 'EUR',
-    vatRate: 0.20
-  }
+  export let id: InvoiceId
 
-  $: subtotal = mockInvoice.items.reduce((sum, item) => sum + item.hours * item.rate, 0)
-  $: vatAmount = subtotal * mockInvoice.vatRate
-  $: total = subtotal + vatAmount
+  let details: InvoiceDetails
+  onMount(async () => {
+    details = await api.get(`invoices/${id}`)
+  })
 
   function print() {
     window.print()
@@ -41,19 +18,28 @@
 </script>
 
 <div class="fixed top-2 left-2 flex gap-2 no-print">
-  <Button class="rounded-full! size-12! bg-white" iconClass="size-6!" icon="arrowhead-left" onclick={() => history.back()}/>
-  <Button class="rounded-full! size-12! bg-primary text-white" iconClass="size-6!" icon="printer" onclick={print}/>
+  <Button class="rounded-full! size-12! bg-white" icon="arrowhead-left" iconClass="size-6!"
+          onclick={() => history.back()}/>
+  <Button class="rounded-full! size-12! bg-primary text-white" icon="printer" iconClass="size-6!" onclick={print}/>
 </div>
 
 <div class="invoice-bg flex justify-center p-8 bg-gray-100 min-h-screen">
-  <div class="invoice-page bg-white box-border w-[210mm] min-h-[297mm] p-[20mm_25mm] shadow-lg print:w-full print:min-h-0 print:p-[15mm_20mm] print:shadow-none">
+  <div
+    class="invoice-page bg-white box-border w-[210mm] min-h-[297mm] p-[20mm_25mm] shadow-lg print:w-full print:min-h-0 print:p-[15mm_20mm] print:shadow-none">
     <header class="flex justify-between items-start mb-8 pb-6 border-b-2 border-gray-800">
-      <img src="/own-logo.svg" alt="Logo" class="h-12 print:h-8"/>
+      <img alt="Logo" class="h-12 print:h-8" src="/own-logo.svg"/>
       <div class="text-right">
-        <h1 class="text-3xl font-bold text-gray-800 mb-2 tracking-wide print:text-2xl print:mb-1">{t.invoices.invoice.toUpperCase()}</h1>
-        <div class="text-sm text-gray-500"><span class="font-semibold text-gray-600">{t.invoices.invoiceNo}:</span> {mockInvoice.number}</div>
-        <div class="text-sm text-gray-500"><span class="font-semibold text-gray-600">{t.invoices.date}:</span> {formatDate(mockInvoice.date)}</div>
-        <div class="text-sm text-gray-500"><span class="font-semibold text-gray-600">{t.invoices.dueDate}:</span> {formatDate(mockInvoice.dueDate)}</div>
+        <h1
+          class="text-3xl font-bold text-gray-800 mb-2 tracking-wide print:text-2xl print:mb-1">{t.invoices.invoice.toUpperCase()}</h1>
+        <div class="text-sm text-gray-500">
+          <span class="font-semibold text-gray-600">{t.invoices.invoiceNo}:</span> {details?.invoice.id}
+        </div>
+        <div class="text-sm text-gray-500">
+          <span class="font-semibold text-gray-600">{t.invoices.date}:</span> {formatDate(details?.invoice.date)}
+        </div>
+        <div class="text-sm text-gray-500">
+          <span class="font-semibold text-gray-600">{t.invoices.dueDate}:</span> {formatDate(details?.invoice.dueDate)}
+        </div>
       </div>
     </header>
 
@@ -68,53 +54,52 @@
       </div>
       <div>
         <h4 class="section-label">{t.invoices.billTo}</h4>
-        <p class="party-name">{mockInvoice.customer.name}</p>
-        <p class="section-text">{mockInvoice.customer.address}</p>
-        <p class="section-text">{mockInvoice.customer.email}</p>
-        {#if mockInvoice.customer.vatId}
-          <p class="section-text">{t.invoices.vat}: {mockInvoice.customer.vatId}</p>
+        <p class="party-name">{details?.customer.legalName}</p>
+        <p class="section-text">{details?.customer.legalAddress}</p>
+        <p class="section-text">{details?.customer.invoiceEmail}</p>
+        {#if details?.customer.vatId}
+          <p class="section-text">{t.invoices.vat}: {details?.customer.vatId}</p>
         {/if}
       </div>
     </div>
 
-    {#if mockInvoice.description}
-      <div class="mb-8 print:mb-4">
-        <p class="section-text font-bold">{mockInvoice.description}</p>
-      </div>
-    {/if}
+    <div class="mb-8 print:mb-4">
+      <p class="section-text font-bold">{details?.invoice.description}</p>
+    </div>
 
     <table class="w-full border-collapse mb-8 print:mb-4">
       <thead>
-        <tr>
-          <th class="th text-left!">{t.invoices.itemDescription}</th>
-          <th class="th">{t.invoices.hours}</th>
-          <th class="th">{t.invoices.rate}</th>
-          <th class="th">{t.invoices.amount}</th>
-        </tr>
+      <tr>
+        <th class="th text-left!">{t.invoices.itemDescription}</th>
+        <th class="th">{t.invoices.hours}</th>
+        <th class="th">{t.invoices.rate}</th>
+        <th class="th">{t.invoices.amount}</th>
+      </tr>
       </thead>
       <tbody>
-        {#each mockInvoice.items as item}
-          <tr>
-            <td class="td">{item.description}</td>
-            <td class="td td-num">{item.hours}</td>
-            <td class="td td-num">{formatAmount(item.rate)}</td>
-            <td class="td td-num">{formatAmount(item.hours * item.rate)}</td>
-          </tr>
-        {/each}
+      {#each Object.entries(details?.entries ?? {}) as [role, [hours, rate]]}
+        <tr>
+          <td class="td">{role.toTitleCase()} {t.invoices.workingHour}</td>
+          <td class="td td-num">{hours}</td>
+          <td class="td td-num">{formatAmount(rate)}</td>
+          <td class="td td-num">{formatAmount(hours * rate)}</td>
+        </tr>
+      {/each}
       </tbody>
       <tfoot>
-        <tr>
-          <td colspan="3" class="tfoot-label">{t.invoices.subtotal}</td>
-          <td class="tfoot-value">{formatAmount(subtotal)}</td>
-        </tr>
-        <tr>
-          <td colspan="3" class="tfoot-label">{t.invoices.vat} ({(mockInvoice.vatRate * 100).toFixed(0)}%)</td>
-          <td class="tfoot-value">{formatAmount(vatAmount)}</td>
-        </tr>
-        <tr>
-          <td colspan="3" class="tfoot-label tfoot-label-total">{t.invoices.totalAmount}</td>
-          <td class="tfoot-value tfoot-value-total">{formatAmount(total)}</td>
-        </tr>
+      <tr>
+        <td class="tfoot-label" colspan="3">{t.invoices.subtotal}</td>
+        <td class="tfoot-value">{formatAmount(details?.invoice.amount ?? 0)}</td>
+      </tr>
+      <tr>
+        <td class="tfoot-label" colspan="3">{t.invoices.vat} ({details?.vat * 100}%)</td>
+        <td class="tfoot-value">{formatAmount(details?.invoice.vatAmount ?? 0)}</td>
+      </tr>
+      <tr>
+        <td class="tfoot-label tfoot-label-total" colspan="3">{t.invoices.totalAmount}</td>
+        <td
+          class="tfoot-value tfoot-value-total">{formatAmount((details?.invoice.amount ?? 0) + (details?.invoice.vatAmount ?? 0))}</td>
+      </tr>
       </tfoot>
     </table>
 
@@ -124,7 +109,7 @@
         <p class="section-text"><span class="text-gray-500">{t.invoices.bankAccount}:</span> {t.company.bankAccount}</p>
         <p class="section-text"><span class="text-gray-500">{t.invoices.bank}:</span> {t.company.bank}</p>
         <p class="section-text"><span class="text-gray-500">{t.invoices.iban}:</span> {t.company.iban}</p>
-        <p class="section-text"><span class="text-gray-500">{t.invoices.reference}:</span> </p>
+        <p class="section-text"><span class="text-gray-500">{t.invoices.reference}: {details?.invoice.id}</span></p>
       </div>
       <div>
         <h4 class="section-label">{t.invoices.contact}</h4>

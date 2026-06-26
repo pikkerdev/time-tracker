@@ -1,10 +1,13 @@
 package invoices
 
+import app.vatRate
+import customers.Customer
 import db.Id
 import klite.Converter
 import klite.Decimal
 import klite.jdbc.BaseEntity
 import projects.Project
+import projects.ProjectMember.Role
 import java.time.LocalDate
 
 data class Invoice(
@@ -24,6 +27,18 @@ data class InvoiceView(
   val creatorName: String,
   val customerName: String,
   val projectName: String,
+)
+
+data class InvoiceWithCustomer(
+  val invoice: Invoice,
+  val customerId: Id<Customer>,
+)
+
+data class InvoiceDetails(
+  val invoice: Invoice,
+  val customer: Customer,
+  val entries: Map<Role, List<Decimal>>,
+  val vat: Decimal = vatRate
 )
 
 @JvmInline value class InvoiceId(val value: Long) {

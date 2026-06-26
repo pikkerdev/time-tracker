@@ -7,6 +7,7 @@ import klite.Decimal
 import klite.jdbc.*
 import klite.notNullValues
 import projects.Project
+import projects.ProjectMember.Role
 import users.User
 import java.sql.ResultSet
 import java.time.LocalDate
@@ -44,6 +45,12 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
 
   fun listByIds(ids: List<Id<TimeEntry>>): List<TimeEntry> =
     list(TimeEntry::id to ids)
+
+  fun sumHoursByRoleForInvoice(id: InvoiceId): Map<Role, List<Decimal>> =
+    db.query("select role, sum(hours) as hours, hourlyRate from $table",
+      TimeEntry::invoiceId eq id, suffix = "group by role, hourlyRate order by role"){
+      Role.valueOf(getString("role")) to listOf(Decimal(getString("hours")), Decimal(getString("hourlyRate")))
+    }.toMap()
 
   fun updateInvoiceId(ids: List<Id<TimeEntry>>, invoiceId: InvoiceId) {
     db.update(table, mapOf(TimeEntry::invoiceId to invoiceId), TimeEntry::id to ids)

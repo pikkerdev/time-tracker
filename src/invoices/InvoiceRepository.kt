@@ -13,12 +13,18 @@ import javax.sql.DataSource
 
 class InvoiceRepository(db: DataSource): BaseCrudRepository<Invoice, InvoiceId>(db, "invoices") {
   private val viewFrom = "$table join projects p on projectId = p.id join users u on createdBy = u.id join customers c on p.customerid = c.id"
+  private val withCustomer = "$table i join projects p on i.projectId = p.id join customers c on p.customerid = c.id"
   override val defaultOrder = "order by date desc"
 
   fun nextId(date: LocalDate) = InvoiceId(
     date.year * 1000000L + date.monthValue * 10000L + date.dayOfMonth * 100L +
       (list(Invoice::date to date).firstOrNull()?.id?.value?.mod(100) ?: 0) + 1
   )
+
+  fun getWithCustomerId(id: InvoiceId): InvoiceWithCustomer =
+    db.select(withCustomer, "i.id" eq id) {
+      InvoiceWithCustomer(mapper(), Id(getLong("c.id")))
+    }.first()
 
   fun listView(projectId: Id<Project>?) =
     db.select(viewFrom, notNullValues(Invoice::projectId eq projectId), suffix = defaultOrder) { viewMapper() }

@@ -2,6 +2,7 @@ package invoices
 
 import app.vatRate
 import auth.Access
+import customers.CustomerRepository
 import db.Id
 import klite.annotations.*
 import klite.sumOf
@@ -14,9 +15,17 @@ import java.time.LocalDate
 @Access(ADMIN)
 class InvoiceRoutes(
   val repository: InvoiceRepository,
+  val customerRepository: CustomerRepository,
   val timeEntryRepository: TimeEntryRepository
 ) {
   @GET fun get(@QueryParam projectId: Id<Project>?) = repository.listView(projectId)
+
+  @GET("/:id") fun getDetails(@PathParam id: InvoiceId): InvoiceDetails {
+    val withCustomer = repository.getWithCustomerId(id)
+    val customer = customerRepository.get(withCustomer.customerId)
+    val sumHoursByRole = timeEntryRepository.sumHoursByRoleForInvoice(id)
+    return InvoiceDetails(withCustomer.invoice, customer,sumHoursByRole)
+  }
 
   @POST fun create(req: InvoiceCreateRequest): Invoice {
     val timeEntries = timeEntryRepository.listByIds(req.timeEntryIds)

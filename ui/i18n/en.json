@@ -133,7 +133,8 @@
     "itemDescription": "Description",
     "hours": "Hours",
     "rate": "Rate",
-    "subtotal": "Subtotal"
+    "subtotal": "Subtotal",
+    "workingHour": "working hour"
   },
   "company": {
     "name": "Pikker Technology OÜ",
