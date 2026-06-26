@@ -5,7 +5,6 @@
   import TimeEntryForm from 'src/pages/entries/TimeEntryForm.svelte'
   import Modal from 'src/components/Modal.svelte'
   import Button from 'src/components/Button.svelte'
-  import CheckboxField from 'src/forms/CheckboxField.svelte'
 
   export let timeEntries: TimeEntryView[]
   export let narrow = false
@@ -16,11 +15,14 @@
   let timeEntry: TimeEntryView
   let show = false
 
-  $: console.log('selected', selectedEntryIds)
-
   $: if (!narrow && timeEntries && projectId) {
     selectedEntryIds = timeEntries.filter(e => !e.entry.invoiceId).map(e => e.entry.id)
+  }
 
+  function toggleEntry(entryId: string) {
+    selectedEntryIds = selectedEntryIds.includes(entryId)
+      ? selectedEntryIds.filter(id => id !== entryId)
+      : [...selectedEntryIds, entryId]
   }
 </script>
 
@@ -57,7 +59,7 @@
         {#if e.entry.invoiceId}
           {e.entry.invoiceId}
         {:else if projectId}
-            <CheckboxField bind:group={selectedEntryIds} value={e.entry.id}/>
+            <input type="checkbox" checked={selectedEntryIds.includes(e.entry.id)} onchange={() => toggleEntry(e.entry.id)} class="h-4 w-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500">
         {/if}
       </td>
       {/if}
