@@ -33,7 +33,7 @@ export function formatAmount(amount: number, currency = 'EUR') {
 }
 
 export function formatDate(date: Date | string) {
-  return new Date(date).toLocaleDateString(lang)
+  return new Date(date).toLocaleDateString()
 }
 
 export function toISODate(date: Date | string, transform?: (d: Date) => void) {
