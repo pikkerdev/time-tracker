@@ -19,6 +19,12 @@ data class Invoice(
   val totalAmount: Decimal get() = amount + vatAmount
 }
 
+data class InvoiceView(
+  val invoice: Invoice,
+  val customerName: String,
+  val projectName: String,
+)
+
 @JvmInline value class InvoiceId(val value: Long) {
   companion object {
     init {

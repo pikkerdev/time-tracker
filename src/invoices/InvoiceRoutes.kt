@@ -3,20 +3,24 @@ package invoices
 import app.vatRate
 import auth.Access
 import db.Id
+import klite.annotations.GET
 import klite.annotations.POST
+import klite.annotations.QueryParam
 import klite.sumOf
+import projects.Project
 import timeentries.TimeEntry
 import timeentries.TimeEntryRepository
 import users.AuthRole.ADMIN
 import java.time.LocalDate
 
+@Access(ADMIN)
 class InvoiceRoutes(
   val repository: InvoiceRepository,
   val timeEntryRepository: TimeEntryRepository
 ) {
+  @GET fun get(@QueryParam projectId: Id<Project>?) = repository.listView(projectId)
 
-  @POST @Access(ADMIN)
-  fun create(req: InvoiceCreateRequest): Invoice {
+  @POST fun create(req: InvoiceCreateRequest): Invoice {
     val timeEntries = timeEntryRepository.listByIds(req.timeEntryIds)
     val projectId = timeEntries.first().projectId
     if (timeEntries.any { it.projectId != projectId }) throw IllegalArgumentException("timeEntries.timeEntriesMustBelongToSameProject")
