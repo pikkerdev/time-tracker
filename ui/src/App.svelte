@@ -11,7 +11,7 @@
   import TimeEntryPage from 'src/pages/entries/entry/TimeEntryPage.svelte'
   import {onMount} from 'svelte'
   import {user} from 'src/stores/auth'
-  import CreateInvoicePage from 'src/pages/invoices/CreateInvoicePage.svelte'
+  import CreateInvoicePage from 'src/pages/invoices/create/CreateInvoicePage.svelte'
   import InvoicesPage from 'src/pages/invoices/InvoicesPage.svelte'
   import {navigate, Route, Router} from '@keksworks/svelte-tiny-router'
 
