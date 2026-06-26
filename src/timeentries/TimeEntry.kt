@@ -6,6 +6,7 @@ import invoices.InvoiceId
 import klite.Decimal
 import klite.Decimal.Companion.ZERO
 import projects.Project
+import projects.ProjectMember.Role
 import users.User
 import java.time.LocalDate
 
@@ -19,6 +20,7 @@ data class TimeEntry(
   val storyId: Long? = null,
   val description: String? = null,
   val activity: String? = null,
+  val role: Role,
   override val id: Id<TimeEntry> = Id()
 ): Entity<TimeEntry>
 

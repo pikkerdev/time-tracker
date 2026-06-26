@@ -26,7 +26,7 @@ export interface ProjectMemberRequest {role: ProjectMemberRole; userId: Id<User>
 // class projects.ProjectMemberUser
 export interface ProjectMemberUser {member: ProjectMember; user: User}
 // class timeentries.TimeEntry
-export interface TimeEntry {activity?: string; date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; invoiceId?: InvoiceId; projectId: Id<Project>; storyId?: number; userId: Id<User>}
+export interface TimeEntry {activity?: string; date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; invoiceId?: InvoiceId; projectId: Id<Project>; role: ProjectMemberRole; storyId?: number; userId: Id<User>}
 // class timeentries.TimeEntryView
 export interface TimeEntryView {customerName: string; entry: TimeEntry; projectName: string; userName: string}
 // class users.AuthRole

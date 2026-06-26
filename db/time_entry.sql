@@ -38,3 +38,7 @@ alter table time_entry rename column tag to activity;
 --changeset time_entry.invoiceId-on-delete-null
 alter table time_entry drop constraint time_entry_invoiceid_fkey;
 alter table time_entry add constraint time_entry_invoiceid_fkey foreign key (invoiceId) references invoices(id) on delete set null;
+
+--changeset time_entry.role
+alter table time_entry add column role text;
+update time_entry te set role = pm.role from project_members pm where te.projectId = pm.projectId and te.userId = pm.userId;
