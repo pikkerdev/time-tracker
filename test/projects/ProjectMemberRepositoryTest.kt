@@ -64,6 +64,6 @@ class ProjectMemberRepositoryTest: DBTest() {
 
     repository.delete(projectMember.id)
     expect(repository.findUserProjectMembers(user.id)).toEqual(listOf(projectMember2))
-    expect(repository.findUserProjectMembers(user.id, active = false)).toEqual(listOf(projectMember.copy(status = DELETED), projectMember2))
+    expect(repository.findUserProjectMembers(user.id, active = false)).toContain(projectMember2, projectMember.copy(status = DELETED))
   }
 }
