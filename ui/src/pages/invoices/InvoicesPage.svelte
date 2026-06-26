@@ -24,14 +24,18 @@
     [t.invoices.project, i => `${i.customerName} - ${i.projectName}`],
     [t.invoices.date, i => i.invoice.date],
     [t.invoices.dueDate, i => i.invoice.dueDate],
-    [t.invoices.amount, i => i.invoice.amount],
+    [t.invoices.description, i => i.invoice.description],
+    [t.invoices.amountWithVat, i => i.invoice.totalAmount],
+    [t.invoices.createdBy, i => i.creatorName],
     ''
     ]} let:item={i}>
     <tr>
       <td>{i.customerName} - {i.projectName}</td>
       <td>{formatDate(i.invoice.date)}</td>
       <td>{formatDate(i.invoice.dueDate)}</td>
-      <td>{formatAmount(i.invoice.amount)}</td>
+      <td>{i.invoice.description}</td>
+      <td>{formatAmount(i.invoice.amount)} ({formatAmount(i.invoice.totalAmount)})</td>
+      <td>{i.creatorName}</td>
       <td></td>
     </tr>
   </SortableTable>

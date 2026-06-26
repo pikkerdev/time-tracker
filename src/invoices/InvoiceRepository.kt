@@ -11,7 +11,7 @@ import java.time.LocalDate
 import javax.sql.DataSource
 
 class InvoiceRepository(db: DataSource): BaseCrudRepository<Invoice, InvoiceId>(db, "invoices") {
-  private val viewFrom = "$table join projects p on projectId = p.id join customers c on p.customerid = c.id"
+  private val viewFrom = "$table join projects p on projectId = p.id join users u on createdBy = u.id join customers c on p.customerid = c.id"
   override val defaultOrder = "order by date desc"
 
   fun nextId(date: LocalDate) = InvoiceId(
@@ -25,6 +25,7 @@ class InvoiceRepository(db: DataSource): BaseCrudRepository<Invoice, InvoiceId>(
   private fun ResultSet.viewMapper() =
     InvoiceView(
       mapper(),
+      "${getString("u.firstname")} ${getString("u.lastname")}",
       getString("c.name"),
       getString("p.name")
     )

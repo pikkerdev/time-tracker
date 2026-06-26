@@ -21,6 +21,7 @@ data class Invoice(
 
 data class InvoiceView(
   val invoice: Invoice,
+  val creatorName: String,
   val customerName: String,
   val projectName: String,
 )

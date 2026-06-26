@@ -10,7 +10,7 @@ export interface InvoiceCreateRequest {date: LocalDate; description: string; due
 // class invoices.InvoiceId
 export type InvoiceId = number
 // class invoices.InvoiceView
-export interface InvoiceView {customerName: string; invoice: Invoice; projectName: string}
+export interface InvoiceView {creatorName: string; customerName: string; invoice: Invoice; projectName: string}
 // class projects.Project$Status
 export enum ProjectStatus {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class projects.Project

@@ -112,11 +112,13 @@
     "chooseProject": "Choose a project to create an invoice",
     "totalAmount": "Total",
     "amount": "Amount",
+    "amountWithVat": "Amount (with VAT)",
     "invoiced": "Invoiced",
     "preview": "Invoice preview",
     "description": "Invoice description",
     "dueDate": "Due date",
-    "date": "Date"
+    "date": "Date",
+    "createdBy": "Created By"
   },
   "company": {
     "title": "Company",
