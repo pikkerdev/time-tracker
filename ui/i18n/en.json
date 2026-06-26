@@ -18,8 +18,8 @@
     "deleteConfirm": "Are you sure?",
     "notFound": "Not found",
     "add": "Add",
-    "choose": "Choose"
-
+    "choose": "Choose",
+    "withId": "with ID"
   },
   "errors": {
     "technical": "Technical error, please try again",

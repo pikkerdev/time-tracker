@@ -3,9 +3,7 @@ package invoices
 import app.vatRate
 import auth.Access
 import db.Id
-import klite.annotations.GET
-import klite.annotations.POST
-import klite.annotations.QueryParam
+import klite.annotations.*
 import klite.sumOf
 import projects.Project
 import timeentries.TimeEntry
@@ -32,6 +30,8 @@ class InvoiceRoutes(
     timeEntryRepository.updateInvoiceId(req.timeEntryIds, invoice.id)
     return invoice
   }
+
+  @DELETE("/:id") fun delete(@PathParam id: InvoiceId) = repository.delete(id)
 }
 
 data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>, val description: String, val dueDate: LocalDate)

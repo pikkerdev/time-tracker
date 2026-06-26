@@ -2,6 +2,7 @@ package invoices
 
 import db.Id
 import klite.jdbc.BaseCrudRepository
+import klite.jdbc.delete
 import klite.jdbc.eq
 import klite.jdbc.select
 import klite.notNullValues
@@ -29,4 +30,8 @@ class InvoiceRepository(db: DataSource): BaseCrudRepository<Invoice, InvoiceId>(
       getString("c.name"),
       getString("p.name")
     )
+
+  fun delete(id: InvoiceId): Boolean {
+    return if (db.delete(table, Invoice::id eq id) == 1) true else throw NoSuchElementException()
+  }
 }

@@ -9,7 +9,7 @@ create table invoices(
   vatAmount decimal not null,
   totalAmount decimal not null,
   createdAt date not null default now()::date
-)
+);
 
 --changeset invoices.audit
 alter table invoices drop column timeEntryIds;
@@ -41,3 +41,6 @@ update invoices set dueDate = date + interval '14 days' where dueDate is null;
 
 --changeset invoices.set-dueDate-not-null
 alter table invoices alter column dueDate set not null;
+
+--changeset invoices:app-can-delete
+grant delete on invoices to app;

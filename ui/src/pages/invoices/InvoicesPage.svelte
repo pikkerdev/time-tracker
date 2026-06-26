@@ -2,15 +2,28 @@
   import {formatAmount, formatDate, t} from 'i18n'
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import SortableTable from 'src/components/SortableTable.svelte'
-  import type {InvoiceView} from 'src/api/types'
+  import type {InvoiceId, InvoiceView} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
+  import Button from 'src/components/Button.svelte'
+  import {showToast} from 'src/stores/toasts'
 
   let invoices: InvoiceView[]
 
   onMount(async () => {
     invoices = await api.get('invoices')
   })
+
+  async function del(id: InvoiceId) {
+    if (confirm(t.general.deleteConfirm)) {
+      const res = await api.delete(`invoices/${id}`)
+      if (res) {
+        invoices = invoices.filter(i => i.invoice.id !== id)
+        showToast(`${t.general.deleted} ${t.invoices.invoice} ${t.general.withId}: ${id}`)
+      }
+    }
+  }
+
 </script>
 
 <MainPageLayout class="relative spaced" title={t.invoices.title}>
@@ -30,7 +43,7 @@
       <td>{i.invoice.description}</td>
       <td>{formatAmount(i.invoice.amount)} ({formatAmount(i.invoice.totalAmount)})</td>
       <td>{i.creatorName}</td>
-      <td></td>
+      <td><Button icon="trash" onclick={() => del(i.invoice.id)}/></td>
     </tr>
   </SortableTable>
 </MainPageLayout>
