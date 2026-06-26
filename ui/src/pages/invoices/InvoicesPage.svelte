@@ -28,6 +28,7 @@
 
 <MainPageLayout class="relative spaced" title={t.invoices.title}>
   <SortableTable items={invoices} columns={[
+    [t.invoices.id, i => i.invoice.id],
     [t.invoices.project, i => `${i.customerName} - ${i.projectName}`],
     [t.invoices.date, i => i.invoice.date],
     [t.invoices.dueDate, i => i.invoice.dueDate],
@@ -37,6 +38,7 @@
     ''
     ]} let:item={i}>
     <tr>
+      <td>{i.invoice.id}</td>
       <td>{i.customerName} - {i.projectName}</td>
       <td>{formatDate(i.invoice.date)}</td>
       <td>{formatDate(i.invoice.dueDate)}</td>
