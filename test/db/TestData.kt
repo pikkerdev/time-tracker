@@ -1,9 +1,7 @@
 package db
 
 import customers.Customer
-import invoices.Invoice
-import invoices.InvoiceCreateRequest
-import invoices.InvoiceId
+import invoices.*
 import klite.Email
 import klite.d
 import projects.Project
@@ -44,5 +42,8 @@ object TestData {
   val timeEntry3 = TimeEntry(project3.id, user.id, hours = 4.5.d, hourlyRate = 60.d, role = DEVELOPER)
   val timeEntryView = TimeEntryView(timeEntry, customer.name, project.name, user.name)
   val invoiceCreateRequest = InvoiceCreateRequest(LocalDate.of(2026, 6, 1), listOf(timeEntry.id, timeEntry2.id), description= "development", dueDate = LocalDate.of(2026, 6, 14))
-
+  val invoiceView = InvoiceView(invoice, user.name, customer.name, project.name)
+  val invoiceWithCustomer = InvoiceWithCustomer(invoice, customer.id)
+  val rolesHoursEntry = RoleHoursEntry(DEVELOPER, 10.d, 100.d)
+  val invoiceDetails = InvoiceDetails(invoice, customer, listOf(rolesHoursEntry), 0.24.d)
 }
