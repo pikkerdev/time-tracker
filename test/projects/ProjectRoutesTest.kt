@@ -9,6 +9,8 @@ import db.TestData.admin
 import db.TestData.project
 import db.TestData.projectMember
 import db.TestData.projectMemberUser
+import db.TestData.projectStats
+import db.TestData.projectView
 import db.TestData.user
 import io.mockk.every
 import io.mockk.verify
@@ -20,9 +22,11 @@ class ProjectRoutesTest: BaseMocks() {
   val routes = create<ProjectRoutes>()
 
   @Test fun get() {
-    expect(routes.get(project.id, admin)).toEqual(project)
+    every { timeEntryRepository.statsForProject(project.id) } returns projectStats
+
+    expect(routes.get(project.id, admin)).toEqual(projectView)
     every { projectMemberRepository.isMember(project.id, user.id) } returns true
-    expect(routes.get(project.id, user)).toEqual(project)
+    expect(routes.get(project.id, user)).toEqual(projectView)
 
     every { projectMemberRepository.isMember(project.id, user.id) } returns false
     expect { routes.get(project.id, user) }.toThrow<ForbiddenException>()

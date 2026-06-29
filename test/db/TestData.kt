@@ -4,11 +4,9 @@ import customers.Customer
 import invoices.*
 import klite.Email
 import klite.d
-import projects.Project
+import projects.*
 import projects.Project.Status.DELETED
-import projects.ProjectMember
 import projects.ProjectMember.Role.DEVELOPER
-import projects.ProjectMemberUser
 import timeentries.TimeEntry
 import timeentries.TimeEntryView
 import users.AuthRole.ADMIN
@@ -33,6 +31,8 @@ object TestData {
   val project = Project(customer.id, "Project1", hourlyRates = mapOf(DEVELOPER to 88.d), customerName = customer.name)
   val project2 = Project(customer.id, "Project2", hourlyRates = mapOf(DEVELOPER to 44.d), customerName = customer.name)
   val project3 = Project(customer.id, "Project3", hourlyRates = mapOf(DEVELOPER to 44.d), customerName = customer.name, status = DELETED)
+  val projectStats = ProjectStats(10.d, 20.d, 30.d, 40.d)
+  val projectView = ProjectView(project, projectStats)
   val projectMember = ProjectMember(project.id, user.id, DEVELOPER, createdAt = now)
   val projectMember2 = ProjectMember(project2.id, user.id, DEVELOPER, createdAt = now)
   val projectMemberUser = ProjectMemberUser(projectMember, user)
