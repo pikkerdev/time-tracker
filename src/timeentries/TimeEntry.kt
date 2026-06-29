@@ -7,6 +7,7 @@ import klite.Decimal
 import klite.Decimal.Companion.ZERO
 import projects.Project
 import projects.ProjectMember.Role
+import projects.ProjectMember.Role.DEVELOPER
 import users.User
 import java.time.LocalDate
 
@@ -17,7 +18,7 @@ data class TimeEntry(
   val date: LocalDate = LocalDate.now(),
   val hours: Decimal,
   val hourlyRate: Decimal = ZERO,
-  val role: Role,
+  val role: Role = DEVELOPER,
   val storyId: Long? = null,
   val description: String? = null,
   val activity: String? = null,

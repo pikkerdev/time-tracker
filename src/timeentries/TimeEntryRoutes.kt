@@ -7,10 +7,7 @@ import klite.annotations.*
 import projects.Project
 import projects.ProjectMemberRepository
 import projects.ProjectRepository
-import users.AuthRole.ADMIN
-import users.AuthRole.CUSTOMER
-import users.AuthRole.EXTERNAL
-import users.AuthRole.INTERNAL
+import users.AuthRole.*
 import users.User
 import java.time.LocalDate
 
@@ -29,7 +26,7 @@ class TimeEntryRoutes(
     val project = projectRepository.get(timeEntry.projectId)
     val member = projectMemberRepository.find(timeEntry.projectId, user.id) ?: throw NoSuchElementException("member")
     val rate = project.hourlyRates[member.role] ?: throw NoSuchElementException("hourlyRates")
-    val newTimeEntry = timeEntry.copy(userId = user.id, hourlyRate = rate)
+    val newTimeEntry = timeEntry.copy(userId = user.id, hourlyRate = rate, role = member.role)
     timeEntryRepository.save(newTimeEntry)
     return newTimeEntry
   }
