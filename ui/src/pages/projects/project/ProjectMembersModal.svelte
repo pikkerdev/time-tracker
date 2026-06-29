@@ -2,12 +2,13 @@
   import Modal from 'src/components/Modal.svelte'
   import {t} from 'i18n'
   import Button from 'src/components/Button.svelte'
-  import type {ProjectContext} from 'src/pages/projects/context'
+  import type {Members} from 'src/pages/projects/context'
   import SortableTable from 'src/components/SortableTable.svelte'
   import SelectField from 'src/forms/SelectField.svelte'
   import {
     AuthRole,
     type Id,
+    type Project,
     type ProjectMember,
     type ProjectMemberRequest,
     ProjectMemberRole,
@@ -18,7 +19,8 @@
   import {showToast} from 'src/stores/toasts'
   import Form from 'src/forms/Form.svelte'
 
-  export let project: ProjectContext
+  export let members: Members
+  export let projectId: Id<Project>
 
   let users: User[] = []
   let show = false
@@ -42,8 +44,8 @@
   }
 
   async function save(req: Partial<ProjectMemberRequest>) {
-    const member = await api.post<ProjectMemberUser>(`projects/${project.id}/members`, req)
-    project.members[member.user.id] = member
+    const member = await api.post<ProjectMemberUser>(`projects/${projectId}/members`, req)
+    members[member.user.id] = member
     showToast(t.general.saved)
   }
 
@@ -51,12 +53,12 @@
     if (!confirm(t.general.deleteConfirm)) return
     await api.delete(`projects/member/${memberId}`)
     const updatedMembers: Record<Id<User>, ProjectMemberUser> = {}
-    for (const userId in project.members) {
-      if (project.members[userId].member.id !== memberId) {
-        updatedMembers[userId] = project.members[userId]
+    for (const userId in members) {
+      if (members[userId].member.id !== memberId) {
+        updatedMembers[userId] = members[userId]
       }
     }
-    project.members = updatedMembers
+    members = updatedMembers
     showToast(t.general.deleted)
   }
 
@@ -71,7 +73,7 @@
     [t.users.email, m => m.user.email],
     [t.users.role, m => m.member.role],
     ['', '']
-  ]} items={Object.values(project.members)} let:item={m}>
+  ]} items={Object.values(members)} let:item={m}>
     <tr>
       <td>{m.user.name}</td>
       <td>{m.user.email}</td>
@@ -91,7 +93,7 @@
     <h6 class ="mb-4">{t.members.addMember}</h6>
     <Form {submit} class="flex gap-4">
       <SelectField bind:value={userId} placeholder={t.members.chooseMember}
-                   options={users.filter(u => !project.members[u.id]).indexBy(u => u.id, u => `${u.name} (${u.email})`)}/>
+                   options={users.filter(u => !members[u.id]).indexBy(u => u.id, u => `${u.name} (${u.email})`)}/>
       {#if !(userRole == 'CUSTOMER' || userRole == undefined)}
         <SelectField bind:value={role} placeholder={t.members.chooseRole} options={roleOptions}/>
       {/if}
