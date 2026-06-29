@@ -9,6 +9,7 @@ import klite.jdbc.*
 import klite.notNullValues
 import projects.Project
 import projects.ProjectMember.Role
+import projects.ProjectStats
 import users.User
 import java.sql.ResultSet
 import java.time.LocalDate
@@ -20,16 +21,24 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
 
   override val defaultOrder = "order by date desc, $table.id desc"
 
-  fun listView(userId: Id<User>? = null, projectId: Id<Project>? = null, from: LocalDate? = null, to: LocalDate? = null): List<TimeEntryView> {
+  fun listView(
+    userId: Id<User>? = null,
+    projectId: Id<Project>? = null,
+    from: LocalDate? = null,
+    to: LocalDate? = null
+  ): List<TimeEntryView> {
     val queryFrom = from ?: to
     val queryTo = to ?: from
-    return db.select(viewFrom, notNullValues(
-      TimeEntry::userId eq userId,
-      TimeEntry::projectId eq projectId,
-      TimeEntry::date gte queryFrom,
-      TimeEntry::date lte queryTo,
-      Project::status eq Project.Status.ACTIVE
-    ), suffix = defaultOrder) { viewMapper() } }
+    return db.select(
+      viewFrom, notNullValues(
+        TimeEntry::userId eq userId,
+        TimeEntry::projectId eq projectId,
+        TimeEntry::date gte queryFrom,
+        TimeEntry::date lte queryTo,
+        Project::status eq Project.Status.ACTIVE
+      ), suffix = defaultOrder
+    ) { viewMapper() }
+  }
 
   private fun ResultSet.viewMapper() =
     TimeEntryView(
@@ -39,21 +48,47 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
       getString("u.firstName") + " " + getString("u.lastName")
     )
 
-  fun userTimes(userId: Id<User>, from: LocalDate = LocalDate.now().minusDays(30), until: LocalDate = LocalDate.now()): Map<LocalDate, Decimal> =
-    db.query("select date, sum(hours) as hours from $table",
-      TimeEntry::userId to userId, TimeEntry::date to Between(from, until), suffix = "group by date")
-      { getLocalDate("date") to Decimal(getString("hours")) }.toMap()
+  fun userTimes(
+    userId: Id<User>,
+    from: LocalDate = LocalDate.now().minusDays(30),
+    until: LocalDate = LocalDate.now()
+  ): Map<LocalDate, Decimal> =
+    db.query(
+      "select date, sum(hours) as hours from $table",
+      TimeEntry::userId to userId, TimeEntry::date to Between(from, until), suffix = "group by date"
+    )
+    { getLocalDate("date") to Decimal(getString("hours")) }.toMap()
 
   fun listByIds(ids: List<Id<TimeEntry>>): List<TimeEntry> =
     list(TimeEntry::id to ids)
 
   fun sumHoursByRoleForInvoice(id: InvoiceId): List<RoleHoursEntry> =
-    db.query("select role, sum(hours) as hours, hourlyRate from $table",
-      TimeEntry::invoiceId eq id, suffix = "group by role, hourlyRate order by role"){
+    db.query(
+      "select role, sum(hours) as hours, hourlyRate from $table",
+      TimeEntry::invoiceId eq id, suffix = "group by role, hourlyRate order by role"
+    ) {
       RoleHoursEntry(Role.valueOf(getString("role")), Decimal(getString("hours")), Decimal(getString("hourlyRate")))
     }
 
   fun updateInvoiceId(ids: List<Id<TimeEntry>>, invoiceId: InvoiceId) {
     db.update(table, mapOf(TimeEntry::invoiceId to invoiceId), TimeEntry::id to ids)
   }
+
+  fun statsForProject(id: Id<Project>) =
+    db.query(
+      """select
+      sum(hours) as totalHours,
+      sum(case when invoiceId is null then hours else 0 end) as unbilledHours,
+      sum(hours * hourlyRate) as totalRevenue,
+      sum(case when invoiceId is null then hours * hourlyRate else 0 end) as unbilledRevenue
+      from $table""".trimIndent(),
+      TimeEntry::projectId eq id
+    ) {
+      ProjectStats(
+        getDecimal("totalHours"),
+        getDecimal("unbilledHours"),
+        getDecimal("totalRevenue"),
+        getDecimal("unbilledRevenue")
+      )
+    }.first()
 }

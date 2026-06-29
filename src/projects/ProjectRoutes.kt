@@ -7,6 +7,7 @@ import klite.annotations.*
 import projects.ProjectMember.Role
 import projects.ProjectMember.Role.DEVELOPER
 import projects.ProjectMember.Status.ACTIVE
+import timeentries.TimeEntryRepository
 import users.AuthRole.*
 import users.User
 import users.UserRepository
@@ -14,12 +15,14 @@ import users.UserRepository
 class ProjectRoutes(
   val projectRepository: ProjectRepository,
   val projectMemberRepository: ProjectMemberRepository,
+  val timeEntryRepository: TimeEntryRepository,
   val userRepository: UserRepository,
 ) {
   @GET("/:id") @Access(ADMIN, INTERNAL, EXTERNAL, CUSTOMER)
   fun get(@PathParam id: Id<Project>, @AttrParam user: User) =
-    if (user.authRole == ADMIN || projectMemberRepository.isMember(id, user.id)) projectRepository.get(id)
-    else throw ForbiddenException()
+    if (user.authRole == ADMIN || projectMemberRepository.isMember(id, user.id)) {
+      ProjectView(projectRepository.get(id), timeEntryRepository.statsForProject(id))
+    } else throw ForbiddenException()
 
   @POST @Access(ADMIN)
   fun create(@AttrParam user: User, project: Project): Project {
