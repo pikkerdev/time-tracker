@@ -44,7 +44,7 @@
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>
   <div slot="after-title" class="flex items-center gap-4">
     <ProjectSelect bind:projectId/>
-    <MonthSelectField bind:from bind:to/>
+    <MonthSelectField bind:from bind:to emptyOption={t.general.choosePeriod}/>
     <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} max={[to, today].min()}/> -
     <FormField title={t.timeEntries.toDate} type="date" bind:value={to} min={from} max={today}/>
     {#if $user.isAdmin}

@@ -19,7 +19,8 @@
     "notFound": "Not found",
     "add": "Add",
     "choose": "Choose",
-    "withId": "with ID"
+    "withId": "with ID",
+    "choosePeriod": "Choose Period"
   },
   "errors": {
     "technical": "Technical error, please try again",
