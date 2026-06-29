@@ -42,3 +42,7 @@ alter table time_entry add constraint time_entry_invoiceid_fkey foreign key (inv
 --changeset time_entry.role
 alter table time_entry add column role text;
 update time_entry te set role = pm.role from project_members pm where te.projectId = pm.projectId and te.userId = pm.userId;
+
+--changeset time_entry.modify-storyId-to-array
+alter table time_entry alter column storyId type bigint[] using case when storyId is null then '{}'::bigint[] else ARRAY[storyId] end,
+alter column storyId set default '{}', alter column storyId set not null;
