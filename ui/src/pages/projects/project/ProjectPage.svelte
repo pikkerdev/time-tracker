@@ -88,6 +88,17 @@
           {/each}
         </div>
       </div>
+      {#if ctx?.members}
+        <div class="flex flex-col">
+          <span class="text-lg font-semibold">{t.members.title}</span>
+          <hr class="text-pikker-gold border-t-3">
+          <div class="flex flex-col">
+            {#each Object.values(ctx.members) as member}
+              <span>{member.user.name} - {member.member.role.toTitleCase()}</span>
+            {/each}
+          </div>
+        </div>
+      {/if}
       <div class="flex flex-col max-w-110">
         <span class="text-lg font-semibold">{t.timeEntries.activities}</span>
         <hr class="text-pikker-gold border-t-3">
