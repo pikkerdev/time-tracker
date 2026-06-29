@@ -1,0 +1,159 @@
+{
+  "title": "Ajaarvestus",
+  "time": "Aeg",
+  "tracker": "Arvestus",
+  "home": {
+    "intro": "Ajaarvestus on lihtne ja puhas alternatiiv teistele ajaarvestuse tööriistadele",
+    "slogan": "Mõnikord on vähem rohkem"
+  },
+  "general": {
+    "close": "Sulge",
+    "optional": "Valikuline",
+    "saved": "Salvestatud",
+    "save": "Salvesta",
+    "noItems": "Üksusi pole",
+    "edit": "Muuda",
+    "delete": "Kustuta",
+    "deleted": "Kustutatud",
+    "deleteConfirm": "Oled kindel?",
+    "notFound": "Ei leitud",
+    "add": "Lisa",
+    "choose": "Vali",
+    "withId": "ID-ga"
+  },
+  "errors": {
+    "technical": "Tehniline viga, palun proovi uuesti",
+    "tooLong": "Liiga pikk",
+    "alreadyExists": "Projekt on juba olemas",
+    "cannotModifyYourRole": "Sa ei saa muuta oma autentimise rolli",
+    "cannotModifyInitialAdminRole": "Sa ei saa muuta esialgset admini autentimise rolli"
+  },
+  "contacts": {
+    "email": "E-post"
+  },
+  "login": {
+    "googleLogin": "Google sisselogimine",
+    "logout": "Logi välja"
+  },
+  "customers": {
+    "title": "Kliendid",
+    "customer": "Klient",
+    "add": "Lisa klient",
+    "edit": "Muuda klienti",
+    "name": "Nimi",
+    "legalName": "Juriidiline nimi",
+    "businessRegistryCode": "Ettevõtte registrinumber",
+    "legalAddress": "Juriidiline aadress",
+    "vatId": "KMKR nr",
+    "email": "E-post",
+    "invoiceEmail": "Arve e-post",
+    "phone": "Telefoninumber",
+    "details": "Näita detaile"
+  },
+  "projects": {
+    "title": "Projektid",
+    "project": "Projekt",
+    "new": "Uus projekt",
+    "name": "Projekti nimi",
+    "description": "Kirjeldus",
+    "hourlyRate": "Tunnihind",
+    "hourlyRates": "Tunnihinnad",
+    "storyTrackerId": "Loo jälitaja ID",
+    "currency": "Valuuta",
+    "edit": "Muuda projekti",
+    "myProjects": "Minu projektid",
+    "showMyProjects": "Näita minu projekte",
+    "all": "Kõik projektid",
+    "chooseProject": "Vali projekt",
+    "status": "Staatus",
+    "showDeleted": "Näita kustutatuid",
+    "overview": "Ülevaade",
+    "totalHours": "Tundide koguarv",
+    "unbilledHours": "Arveldamata tunnid",
+    "totalRevenue": "Kogukäive",
+    "unbilledRevenue": "Arveldamata käive"
+  },
+  "users": {
+    "title": "Kasutajad",
+    "name": "Nimi",
+    "firstName": "Eesnimi",
+    "lastName": "Perekonnanimi",
+    "email": "E-post",
+    "role": "Roll"
+  },
+  "members": {
+    "title": "Liikmed",
+    "addMember": "Lisa uus liige",
+    "chooseMember": "Vali liige",
+    "deleteMember": "Kustuta liige",
+    "chooseRole": "Vali roll",
+    "roles": {
+      "DEVELOPER": "Arendaja",
+      "ARCHITECT": "Arhitekt",
+      "INTERN": "Praktikant",
+      "CUSTOMER": "Klient"
+    }
+  },
+  "timeEntries": {
+    "title": "Ajaanded",
+    "date": "Kuupäev",
+    "hours": "Tunnid",
+    "invoiceId": "Arve",
+    "storyId": "Lugu",
+    "description": "Kirjeldus",
+    "showMyTimeEntries": "Näita minu ajaandeid",
+    "fromDate": "Alates",
+    "toDate": "Kuni",
+    "activity": "Tegevus",
+    "activities": "Tegevused",
+    "selected": "Valitud"
+  },
+  "invoices": {
+    "title": "Arved",
+    "id": "Arve number",
+    "invoiceNo": "Arve nr",
+    "project": "Projekt",
+    "invoice": "Arve",
+    "create": "Loo arve",
+    "timeEntriesMustBelongToSameProject": "Kõik ajaanded peavad kuuluma samasse projekti",
+    "chooseProject": "Vali projekt arve loomiseks",
+    "totalAmount": "Kokku",
+    "amount": "Summa",
+    "amountWithVat": "Summa (KM-ga)",
+    "invoiced": "Arveldatud",
+    "preview": "Arve eelvaade",
+    "description": "Arve kirjeldus",
+    "dueDate": "Tähtaeg",
+    "date": "Kuupäev",
+    "createdBy": "Loodud",
+    "from": "Saatja",
+    "billTo": "Saaja",
+    "vat": "KM",
+    "bankAccount": "Pangakonto",
+    "bank": "Pank",
+    "iban": "IBAN",
+    "reference": "Viide",
+    "paymentDetails": "Maksuandmed",
+    "contact": "Kontakt",
+    "itemDescription": "Kirjeldus",
+    "hours": "Tunnid",
+    "rate": "Hind",
+    "subtotal": "Vahesumma",
+    "workingHour": "töötund"
+  },
+  "company": {
+    "name": "Pikker Technology OÜ",
+    "address": "Laeva tn 2, Tallinn 10111",
+    "phone": "+372 53064406",
+    "email": "contact@pikker.dev",
+    "vatId": "EE102869097",
+    "bankAccount": "Pikker Technology OÜ",
+    "bank": "AS LHV Pank",
+    "iban": "EE887700771010469342",
+    "contactPerson": {
+      "name": "Artur Reiljan",
+      "email": "artur@pikker.dev",
+      "phone": "+372 53064406"
+    }
+  }
+}
