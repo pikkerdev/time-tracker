@@ -1,9 +1,10 @@
 <script lang="ts">
-  import {formatAmount, formatDate, t} from 'i18n'
+  import {changeLangInUrl, formatAmount, formatDate, lang, langsOptions, t} from 'i18n'
   import Button from 'src/components/Button.svelte'
   import type {InvoiceDetails, InvoiceId} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
+  import SelectField from 'src/forms/SelectField.svelte'
 
   export let id: InvoiceId
 
@@ -17,10 +18,11 @@
   }
 </script>
 
-<div class="fixed top-2 left-2 flex gap-2 no-print">
+<div class="fixed top-2 left-2 flex items-center gap-2 no-print">
   <Button class="rounded-full! size-12! bg-white" icon="arrowhead-left" iconClass="size-6!"
-          onclick={() => history.back()}/>
+          onclick={() => window.close()}/>
   <Button class="rounded-full! size-12! bg-primary text-white" icon="printer" iconClass="size-6!" onclick={print}/>
+  <SelectField options={langsOptions} value={lang} onchange={(e) => changeLangInUrl(e.currentTarget.value)}/>
 </div>
 
 <div class="invoice-bg flex justify-center p-8 bg-gray-100 min-h-screen">

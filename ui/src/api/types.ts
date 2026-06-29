@@ -31,6 +31,10 @@ export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; proje
 export interface ProjectMemberRequest {role: ProjectMemberRole; userId: Id<User>}
 // class projects.ProjectMemberUser
 export interface ProjectMemberUser {member: ProjectMember; user: User}
+// class projects.ProjectStats
+export interface ProjectStats {totalHours: number; totalRevenue: number; unbilledHours: number; unbilledRevenue: number}
+// class projects.ProjectView
+export interface ProjectView {project: Project; stats: ProjectStats}
 // class timeentries.TimeEntry
 export interface TimeEntry {activity?: string; date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; invoiceId?: InvoiceId; projectId: Id<Project>; role: ProjectMemberRole; storyId?: number; userId: Id<User>}
 // class timeentries.TimeEntryView

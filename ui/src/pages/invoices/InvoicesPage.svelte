@@ -7,7 +7,7 @@
   import api from 'src/api/api'
   import Button from 'src/components/Button.svelte'
   import {showToast} from 'src/stores/toasts'
-  import {navigate} from '@keksworks/svelte-tiny-router'
+  import Icon from 'src/icons/Icon.svelte'
 
   let invoices: InvoiceView[]
 
@@ -47,7 +47,9 @@
       <td>{formatAmount(i.invoice.amount)} ({formatAmount(i.invoice.totalAmount)})</td>
       <td>{i.creatorName}</td>
       <td>
-        <Button icon="eye" onclick={() => navigate(`/invoices/${i.invoice.id}`)}/>
+        <a class="btn default icon-only" href="/invoices/{i.invoice.id}" target="_blank">
+          <Icon name="eye"/>
+        </a>
         <Button icon="trash" onclick={() => del(i.invoice.id)}/>
       </td>
     </tr>

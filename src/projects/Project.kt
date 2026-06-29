@@ -30,3 +30,15 @@ data class Project(
     DELETED
   }
 }
+
+data class ProjectStats(
+  val totalHours: Decimal,
+  val unbilledHours: Decimal,
+  val totalRevenue: Decimal,
+  val unbilledRevenue: Decimal,
+)
+
+data class ProjectView(
+  val project: Project,
+  val stats: ProjectStats,
+)
