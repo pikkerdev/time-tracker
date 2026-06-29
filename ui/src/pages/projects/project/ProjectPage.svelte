@@ -26,9 +26,11 @@
   })
 
   async function deleteProject(Id: Id<Project>) {
-    if (confirm(t.general.deleteConfirm)) await api.delete(`projects/${Id}`)
-    navigate(`/projects`)
-    showToast(`${t.general.deleted} ${ctx?.project?.name}`)
+    if (confirm(t.general.deleteConfirm)) {
+      await api.delete(`projects/${Id}`)
+      navigate(`/projects`)
+      showToast(`${t.general.deleted} ${ctx?.project?.name}`)
+    }
   }
 </script>
 
@@ -44,7 +46,8 @@
       <a class="flex items-center gap-1 group" href="https://story.pikker.dev/projects/{ctx.project.storyTrackerId}"
          target="_blank">
         <Icon name="storytracker" class="group-hover:rotate-180 transition-all duration-300"/>
-        <span class="text-sm text-muted group-hover:text-blue-600 trainsiton-colors duration-300">{ctx.project.storyTrackerId}</span>
+        <span
+          class="text-sm text-muted group-hover:text-blue-600 trainsiton-colors duration-300">{ctx.project.storyTrackerId}</span>
       </a>
     {/if}
   </div>
