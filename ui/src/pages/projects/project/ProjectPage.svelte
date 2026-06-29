@@ -59,6 +59,20 @@
     <p class="text-lg">{ctx?.project?.description}</p>
     <div class="flex flex-col flex-wrap gap-x-16 gap-y-4 md:flex-row">
       <div class="flex flex-col w-fit">
+        <span class="text-lg font-semibold">{t.projects.overview}</span>
+        <hr class="text-pikker-gold border-t-3">
+        <div class="grid grid-cols-2 gap-x-4">
+          <span>{t.projects.totalHours}</span>
+          <span>{ctx?.stats?.totalHours}</span>
+          <span>{t.projects.unbilledHours}</span>
+          <span>{ctx?.stats?.unbilledHours}</span>
+          <span>{t.projects.totalRevenue}</span>
+          <span>{ctx?.stats?.totalRevenue}</span>
+          <span>{t.projects.unbilledRevenue}</span>
+          <span>{ctx?.stats?.unbilledRevenue}</span>
+        </div>
+      </div>
+      <div class="flex flex-col w-fit">
         <span class="text-lg font-semibold">{t.projects.hourlyRates}</span>
         <hr class="text-pikker-gold border-t-3">
         <div class="grid grid-cols-2 gap-x-4">
