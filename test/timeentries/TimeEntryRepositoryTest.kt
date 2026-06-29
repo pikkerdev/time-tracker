@@ -1,6 +1,7 @@
 package timeentries
 
 import ch.tutteli.atrium.api.fluent.en_GB.toBeEmpty
+import ch.tutteli.atrium.api.fluent.en_GB.toContain
 import ch.tutteli.atrium.api.fluent.en_GB.toContainExactly
 import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
@@ -13,6 +14,7 @@ import db.TestData.invoice
 import db.TestData.project
 import db.TestData.project3
 import db.TestData.timeEntry
+import db.TestData.timeEntry2
 import db.TestData.timeEntry3
 import db.TestData.timeEntryView
 import db.TestData.today
@@ -20,10 +22,13 @@ import db.TestData.twoDaysAgo
 import db.TestData.user
 import db.TestData.yesterday
 import invoices.InvoiceRepository
+import invoices.RoleHoursEntry
 import klite.Decimal
 import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import projects.ProjectMember.Role.ARCHITECT
+import projects.ProjectMember.Role.DEVELOPER
 import projects.ProjectRepository
 import users.UserRepository
 
@@ -82,5 +87,19 @@ class TimeEntryRepositoryTest: DBTest() {
     repository.save(timeEntry)
     repository.updateInvoiceId(listOf(timeEntry.id), invoice.id)
     expect(repository.get(timeEntry.id).invoiceId).toEqual(invoice.id)
+  }
+
+  @Test fun `sum hours by role for invoices`() {
+    repository.save(timeEntry.copy(invoiceId = invoice.id))
+    repository.save(timeEntry2.copy(invoiceId = invoice.id))
+    repository.save(timeEntry2.copy(id = Id(), invoiceId = invoice.id, hourlyRate = 100.d, role = ARCHITECT))
+
+    println(repository.list())
+
+    expect(repository.sumHoursByRoleForInvoice(invoice.id)).toContain(
+      RoleHoursEntry(DEVELOPER, 7.5.d, 88.d),
+      RoleHoursEntry(DEVELOPER, 4.d, 60.d),
+      RoleHoursEntry(ARCHITECT, 4.d, 100.d),
+    )
   }
 }
