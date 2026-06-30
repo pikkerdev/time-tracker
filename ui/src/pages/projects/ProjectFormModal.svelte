@@ -11,6 +11,7 @@
   import SelectField from 'src/forms/SelectField.svelte'
   import {navigate} from '@keksworks/svelte-tiny-router'
   import NumberField from 'src/forms/NumberField.svelte'
+  import ColorField from 'src/forms/ColorField.svelte'
 
   export let project = {} as Project
   export let label = t.projects.new
@@ -52,7 +53,7 @@
         <NumberField label={t.members.roles[role]} bind:value={newProject.hourlyRates[role]} unit={formatCurrency(newProject.currency)}/>
       {/each}
     </div>
-
+    <ColorField label={t.projects.color} bind:value={newProject.color} />
     <FormField label={t.projects.storyTrackerId} bind:value={newProject.storyTrackerId} required={false}/>
     <Button type="submit" label={t.general.save} class="primary"/>
   </Form>

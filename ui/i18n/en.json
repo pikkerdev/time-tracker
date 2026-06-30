@@ -72,7 +72,8 @@
     "totalHours": "Total hours",
     "unbilledHours": "Unbilled hours",
     "totalRevenue": "Total revenue",
-    "unbilledRevenue": "Unbilled revenue"
+    "unbilledRevenue": "Unbilled revenue",
+    "color": "Color"
   },
   "users": {
     "title": "Users",

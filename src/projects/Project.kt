@@ -22,6 +22,7 @@ data class Project(
   val activities: Set<String> = setOf("Development", "Meeting", "Consultancy", "Testing", "Research", "Support"),
   override var updatedAt: Instant? = null,
   val status: Status = ACTIVE,
+  val color: String = "#D7A262",
   @JsonProperty(readOnly = true) val customerName: String? = null,
   override val id: Id<Project> = Id()
 ): Entity<Project>, UpdatableEntity {

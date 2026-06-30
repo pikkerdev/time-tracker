@@ -10,7 +10,7 @@
   let date = today
   let timeEntries: TimeEntryView[] = []
   let timeEntry: TimeEntry = {date} as TimeEntry
-  let timeEntryHours: Record<LocalDate, number> = {}
+  let timeEntryHours: Record<LocalDate, Record<string, number>> = {}
 
   let dates = Array.from({length: 28}, (_, i) =>
     toISODate(new Date(), d => d.setDate(d.getDate() - i))).toReversed()
@@ -27,7 +27,7 @@
 <MainPageLayout class="flex flex-col gap-4 lg:gap-8">
   <div class="flex flex-col gap-4 items-center">
     <TimeEntryCalendar bind:date {dates} {timeEntryHours}/>
-    <div class="min-w-1/4 max-w-96">
+    <div class="min-w-1/4 max-w-1/4">
       <TimeEntryForm bind:timeEntry onSaved={() => loadEntries(date)}/>
     </div>
     <div class="px-4 overflow-x-scroll max-w-full">

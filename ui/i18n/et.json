@@ -72,7 +72,8 @@
     "totalHours": "Tundide koguarv",
     "unbilledHours": "Arveldamata tunnid",
     "totalRevenue": "Kogukäive",
-    "unbilledRevenue": "Arveldamata käive"
+    "unbilledRevenue": "Arveldamata käive",
+    "color": "Värv"
   },
   "users": {
     "title": "Kasutajad",

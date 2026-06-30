@@ -49,6 +49,7 @@
             <p><span class="font-medium text-red-700">{project.status}</span></p>
           {/if}
         </div>
+        <div class="w-5 h-5 rounded " style="background-color:{project.color}"></div>
       </Link>
     {/each}
   </div>

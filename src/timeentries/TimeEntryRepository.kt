@@ -52,12 +52,15 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
     userId: Id<User>,
     from: LocalDate = LocalDate.now().minusDays(30),
     until: LocalDate = LocalDate.now()
-  ): Map<LocalDate, Decimal> =
+  ): Map<LocalDate, Map<String, Decimal>> =
     db.query(
-      "select date, sum(hours) as hours from $table",
-      TimeEntry::userId to userId, TimeEntry::date to Between(from, until), suffix = "group by date"
-    )
-    { getLocalDate("date") to Decimal(getString("hours")) }.toMap()
+      "select date, color, sum(hours) as hours from $table join projects p on projectId = p.id",
+      TimeEntry::userId to userId, TimeEntry::date to Between(from, until), suffix = "group by date, color"
+    ){
+      Triple(getLocalDate("date"), getString("color"), Decimal(getString("hours")))
+    }
+      .groupBy({ it.first }, { it.second to it.third })
+      .mapValues { (_, value) -> value.toMap() }
 
   fun listByIds(ids: List<Id<TimeEntry>>): List<TimeEntry> =
     list(TimeEntry::id to ids)
