@@ -19,7 +19,8 @@
     "notFound": "Ei leitud",
     "add": "Lisa",
     "choose": "Vali",
-    "withId": "ID-ga"
+    "withId": "ID-ga",
+    "choosePeriod": "Vali periood"
   },
   "errors": {
     "technical": "Tehniline viga, palun proovi uuesti",

@@ -43,12 +43,8 @@
 
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>
   <div slot="after-title" class="flex items-center gap-4">
-    {#if projectId && selectedEntryIds.length > 0}
-      <Button class="primary" label={t.invoices.create} onclick={() => show = true}/>
-      <span>{t.invoices.totalAmount}: {formatAmount(totalAmount)}</span>
-    {/if}
     <ProjectSelect bind:projectId/>
-    <MonthSelectField bind:from bind:to/>
+    <MonthSelectField bind:from bind:to emptyOption={t.general.choosePeriod}/>
     <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} max={[to, today].min()}/> -
     <FormField title={t.timeEntries.toDate} type="date" bind:value={to} min={from} max={today}/>
     {#if $user.isAdmin}
@@ -56,6 +52,12 @@
     {/if}
   </div>
   <TimeEntryTable bind:selectedEntryIds={selectedEntryIds} {timeEntries} {projectId} onSaved={() => from && to && loadEntries(from, to, myTimeEntries, projectId)}/>
+  {#if projectId && selectedEntryIds.length > 0}
+    <div class="bg-white shadow-lg border border-b-black fixed bottom-2 left-2 justify-items-center space-y-1 px-2 py-2 rounded-md">
+      <div class="font-bold">{t.invoices.totalAmount}: {formatAmount(totalAmount)}</div>
+      <Button class="primary" label={t.invoices.create} onclick={() => show = true}/>
+    </div>
+  {/if}
 </MainPageLayout>
 
 <Modal title={t.invoices.create} bind:show>
