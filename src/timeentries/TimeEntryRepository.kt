@@ -75,20 +75,12 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   }
 
   fun statsForProject(id: Id<Project>) =
-    db.query(
-      """select
-      sum(hours) as totalHours,
-      sum(case when invoiceId is null then hours else 0 end) as unbilledHours,
-      sum(hours * hourlyRate) as totalRevenue,
-      sum(case when invoiceId is null then hours * hourlyRate else 0 end) as unbilledRevenue
+    db.query<ProjectStats>("""select
+      coalesce(sum(hours), 0) as totalHours,
+      coalesce(sum(case when invoiceId is null then hours else 0 end), 0) as unbilledHours,
+      coalesce(sum(hours * hourlyRate), 0) as totalRevenue,
+      coalesce(sum(case when invoiceId is null then hours * hourlyRate else 0 end), 0) as unbilledRevenue
       from $table""".trimIndent(),
       TimeEntry::projectId eq id
-    ) {
-      ProjectStats(
-        getDecimal("totalHours"),
-        getDecimal("unbilledHours"),
-        getDecimal("totalRevenue"),
-        getDecimal("unbilledRevenue")
-      )
-    }.first()
+    ).first()
 }
