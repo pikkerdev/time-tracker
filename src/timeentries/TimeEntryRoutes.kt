@@ -39,7 +39,7 @@ class TimeEntryRoutes(
   fun editTimeEntry(@PathParam id: Id<TimeEntry>, timeEntry: TimeEntry): TimeEntry {
     require(timeEntry.invoiceId == null) {"Can not edit time entry that is in invoice"}
     require(id == timeEntry.id) { "Wrong id" }
-    val oldTimeEntry = timeEntryRepository.get(timeEntry.id)
+    val oldTimeEntry = timeEntryRepository.get(id)
     val user = userRepository.get(timeEntry.userId)
     require(((userTimes(user, timeEntry.date, timeEntry.date).get(timeEntry.date)?: 0.d) + timeEntry.hours - oldTimeEntry.hours) <= 24.d) {"Too many hours"}
     timeEntryRepository.save(timeEntry)

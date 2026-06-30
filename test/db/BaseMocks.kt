@@ -3,6 +3,7 @@ package db
 import customers.CustomerRepository
 import db.TestData.invoice
 import db.TestData.project
+import db.TestData.timeEntry
 import db.TestData.user
 import invoices.InvoiceRepository
 import io.mockk.clearAllMocks
@@ -59,6 +60,10 @@ abstract class BaseMocks {
     projectRepository.apply {
       every { get(project.id) } returns project
       every { list()} returns listOf(project)
+    }
+
+    timeEntryRepository.apply {
+      every {get(timeEntry.id)} returns timeEntry
     }
 
     invoiceRepository.apply {
