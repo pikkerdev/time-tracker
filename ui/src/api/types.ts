@@ -17,6 +17,28 @@ export interface InvoiceView {creatorName: string; customerName: string; invoice
 export interface InvoiceWithCustomer {customerId: Id<Customer>; invoice: Invoice}
 // class invoices.RoleHoursEntry
 export interface RoleHoursEntry {hours: number; rate: number; role: ProjectMemberRole}
+// class merit.CountryCode
+export enum CountryCode {EE = 'EE'}
+// class merit.MeritInvoice$Customer
+export interface MeritInvoiceCustomer {countryCode: CountryCode; email?: Email; name: string; notTDCustomer: boolean; phoneNo?: Phone; regNo?: string}
+// class merit.MeritInvoice$InvoiceRequest
+export interface MeritInvoiceInvoiceRequest {addAttachment: boolean; id: string}
+// class merit.MeritInvoice$InvoiceResponse
+export interface MeritInvoiceInvoiceResponse {header: MeritInvoiceInvoiceResponseHeader; payments: Array<MeritInvoicePayment>}
+// class merit.MeritInvoice$InvoiceResponseHeader
+export interface MeritInvoiceInvoiceResponseHeader {paid: boolean}
+// class merit.MeritInvoice$Item
+export interface MeritInvoiceItem {code: string; description: string; type: number}
+// class merit.MeritInvoice$Payment
+export interface MeritInvoicePayment {amount: number; paymDate: LocalDate}
+// class merit.MeritInvoice$Response
+export interface MeritInvoiceResponse {customerId: string; invoiceId: string; invoiceNo: string; refNo: number}
+// class merit.MeritInvoice$Row
+export interface MeritInvoiceRow {amount: number; item: MeritInvoiceItem; price: number; quantity: number; taxId: string}
+// class merit.MeritInvoice$TaxAmount
+export interface MeritInvoiceTaxAmount {amount?: number; taxId: string}
+// class merit.MeritInvoice
+export interface MeritInvoice {currencyCode: string; customer: MeritInvoiceCustomer; docDate: LocalDate; dueDate: LocalDate; fComment: string; invoiceNo: string; invoiceRow: Array<MeritInvoiceRow>; taxAmount: Array<MeritInvoiceTaxAmount>; totalAmount: number; transactionDate: LocalDate}
 // class projects.Project$Status
 export enum ProjectStatus {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class projects.Project
