@@ -42,7 +42,7 @@
 </script>
 
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>
-  <div slot="after-title" class="flex items-center gap-4">
+  <div slot="after-title" class="flex flex-wrap items-center gap-4 ">
     <ProjectSelect bind:projectId/>
     <MonthSelectField bind:from bind:to emptyOption={t.general.choosePeriod}/>
     <FormField title={t.timeEntries.fromDate} type="date" bind:value={from} max={[to, today].min()}/> -
