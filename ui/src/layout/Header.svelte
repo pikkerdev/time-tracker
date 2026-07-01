@@ -64,8 +64,10 @@
         {#if $user}
           {@render mainLink("/timeentries", t.timeEntries.title, "clock")}
           {@render mainLink("/projects", t.projects.title, "code-folder")}
-          {#if $user.isAdmin}
+          {#if $user.isAdmin || $user.isInternal}
             {@render mainLink("/customers", t.customers.title, "building")}
+          {/if}
+          {#if $user.isAdmin}
             {@render mainLink("/invoices", t.invoices.title, "document")}
             {@render mainLink("/users", t.users.title, "users")}
           {/if}
