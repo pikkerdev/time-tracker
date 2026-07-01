@@ -59,7 +59,7 @@ class ProjectRoutes(
 
   @GET @Access(ADMIN, INTERNAL, EXTERNAL, CUSTOMER)
   fun list(@AttrParam user: User, @QueryParam myProjects: Boolean? = false, @QueryParam includeDeleted: Boolean = false) =
-    if (myProjects == true || user.authRole != ADMIN) projectRepository.forMember(user.id, includeDeleted)
+    if (myProjects == true || user.authRole == EXTERNAL || user.authRole == CUSTOMER) projectRepository.forMember(user.id, includeDeleted)
     else if (!includeDeleted) projectRepository.listNotDeleted()
     else projectRepository.list()
 
