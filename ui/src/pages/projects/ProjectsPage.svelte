@@ -32,12 +32,16 @@
 
 <MainPageLayout class="relative" title={t.projects.title}>
   <div slot="after-title" class="flex items-center gap-4">
-    {#if $user.isAdmin}
+    {#if $user.isAdmin || $user.isInternal}
       {#if !customerId}
-        <CheckboxField label={t.projects.showDeleted} title={t.projects.showDeleted} onchange={() => showDeleted = !showDeleted}/>
         <CheckboxField label={t.projects.showMyProjects} title={t.projects.showMyProjects} onchange={() => isMyProjects = !isMyProjects}/>
       {/if}
-      <ProjectFormModal/>
+      {#if $user.isAdmin}
+        {#if !customerId}
+          <CheckboxField label={t.projects.showDeleted} title={t.projects.showDeleted} onchange={() => showDeleted = !showDeleted}/>
+        {/if}
+        <ProjectFormModal/>
+      {/if}
     {/if}
   </div>
   <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 my-3 text-lg">
@@ -49,6 +53,7 @@
             <p><span class="font-medium text-red-700">{project.status}</span></p>
           {/if}
         </div>
+        <div class="w-5 h-5 rounded " style="background-color:{project.color}"></div>
       </Link>
     {/each}
   </div>

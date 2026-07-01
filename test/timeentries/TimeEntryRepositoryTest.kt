@@ -71,10 +71,10 @@ class TimeEntryRepositoryTest: DBTest() {
     repository.save(entry3)
 
     expect(repository.userTimes(user.id, from = today, until = today)).toBeEmpty()
-    expect(repository.userTimes(user.id, from = yesterday, until = yesterday)).toEqual(mapOf(yesterday to 7.d))
-    expect(repository.userTimes(user.id, until = twoDaysAgo)).toEqual(mapOf(twoDaysAgo to 2.d))
+    expect(repository.userTimes(user.id, from = yesterday, until = yesterday)).toEqual(mapOf(yesterday to mapOf("#D7A262" to 7.d)))
+    expect(repository.userTimes(user.id, until = twoDaysAgo)).toEqual(mapOf(twoDaysAgo to mapOf("#D7A262" to 2.d)))
 
-    val userTimes = mapOf(yesterday to Decimal(7.0), twoDaysAgo to 2.d)
+    val userTimes = mapOf(yesterday to mapOf("#D7A262" to 7.d), twoDaysAgo to mapOf("#D7A262" to 2.d),)
     expect(repository.userTimes(user.id, from = twoDaysAgo)).toEqual(userTimes)
   }
 
@@ -93,8 +93,6 @@ class TimeEntryRepositoryTest: DBTest() {
     repository.save(timeEntry.copy(invoiceId = invoice.id))
     repository.save(timeEntry2.copy(invoiceId = invoice.id))
     repository.save(timeEntry2.copy(id = Id(), invoiceId = invoice.id, hourlyRate = 100.d, role = ARCHITECT))
-
-    println(repository.list())
 
     expect(repository.sumHoursByRoleForInvoice(invoice.id)).toContain(
       RoleHoursEntry(DEVELOPER, 7.5.d, 88.d),

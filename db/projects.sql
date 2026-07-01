@@ -39,3 +39,6 @@ alter table projects add column status text not null default 'ACTIVE';
 
 --changeset projects.updatedAt
 alter table projects add column updatedAt timestamptz not null default now();
+
+--changeset projects.color
+alter table projects add column color text not null default '#D7A262'

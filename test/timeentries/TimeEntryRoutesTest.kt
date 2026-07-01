@@ -53,12 +53,12 @@ class TimeEntryRoutesTest: BaseMocks() {
   }
 
   @Test fun `user times`() {
-    val userTimes = mapOf(LocalDate.now() to Decimal(7.0), LocalDate.now().minusDays(1) to Decimal(2.0))
+    val userTimes = mapOf(LocalDate.now() to mapOf("#D7A262" to 7.d), LocalDate.now().minusDays(1) to mapOf("#D7A262" to 2.d))
     val from = LocalDate.now().minusDays(1)
     every { timeEntryRepository.userTimes(user.id, from) } returns userTimes
     expect(routes.userTimes(user, from)).toEqual(userTimes)
 
-    val userTime = mapOf(LocalDate.now() to Decimal(7.0))
+    val userTime = mapOf(LocalDate.now() to mapOf("#D7A262" to 7.d))
     val singleDay = LocalDate.now()
     every { timeEntryRepository.userTimes(user.id, singleDay) } returns userTime
     expect(routes.userTimes(user, singleDay)).toEqual(userTime)
