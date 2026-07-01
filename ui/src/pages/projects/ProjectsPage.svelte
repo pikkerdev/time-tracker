@@ -14,16 +14,11 @@
   export let customerId: Id<Customer>
 
   async function load(customerId?: Id<Customer>, myProjects?: Boolean, includeDeleted?: Boolean) {
-    let url = 'projects'
-    if (customerId) {
-      url = `customers/${customerId}/projects`
-    }
-    if (myProjects) {
-      url += '?myProjects=true'
-    }
-    if (includeDeleted) {
-      url += '?includeDeleted=true'
-    }
+    const params = new URLSearchParams()
+    if (myProjects) params.append('myProjects', myProjects.toString())
+    if (includeDeleted) params.append('includeDeleted', includeDeleted.toString())
+    let url = `projects?${params}`
+    if (customerId) url = `customers/${customerId}/projects`
     projects = await api.get(url)
   }
 
