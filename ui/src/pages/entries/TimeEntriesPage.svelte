@@ -2,7 +2,7 @@
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import {type Id, type Project, type TimeEntryView} from 'src/api/types'
   import api from 'src/api/api'
-  import {formatAmount, t, today,} from 'i18n'
+  import {formatAmount, t, today, toISODate,} from 'i18n'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
   import {user} from 'src/stores/auth'
   import FormField from 'src/forms/FormField.svelte'
@@ -18,8 +18,8 @@
 
   let timeEntries: TimeEntryView[]
   let myTimeEntries = false
-  let from: string
-  let to: string
+  let from = toISODate(new Date(), d => d.setDate(d.getDate() - 29))
+  let to = toISODate(new Date())
   let show = false
 
   async function loadEntries(from: string, to: string, myTimeEntries: boolean, projectId: Id<Project>) {
