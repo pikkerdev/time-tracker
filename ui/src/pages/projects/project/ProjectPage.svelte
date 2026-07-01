@@ -3,7 +3,7 @@
   import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser, ProjectStatus} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
-  import {formatAmount, t} from 'i18n'
+  import {formatAmount, formatCurrency, t} from 'i18n'
   import ProjectFormModal from 'src/pages/projects/ProjectFormModal.svelte'
 
   import type {ProjectContext} from 'src/pages/projects/context'
@@ -69,11 +69,18 @@
           <span>{ctx?.stats?.totalHours}</span>
           <span>{t.projects.unbilledHours}</span>
           <span>{ctx?.stats?.unbilledHours}</span>
-          <span>{t.projects.totalRevenue}</span>
-          <span>{ctx?.stats?.totalRevenue}</span>
-          <span>{t.projects.unbilledRevenue}</span>
-          <span>{ctx?.stats?.unbilledRevenue}</span>
-        </div>
+          {#if ctx?.project?.currency}
+            <span>{t.projects.totalRevenue}</span>
+            <span>{ctx?.stats?.totalRevenue} {formatCurrency(ctx?.project?.currency)}</span>
+            <span>{t.projects.unbilledRevenue}</span>
+            <span>{ctx?.stats?.unbilledRevenue} {formatCurrency(ctx?.project?.currency)}</span>
+          {:else }
+            <span>{t.projects.totalRevenue}</span>
+            <span>{ctx?.stats?.totalRevenue}</span>
+            <span>{t.projects.unbilledRevenue}</span>
+            <span>{ctx?.stats?.unbilledRevenue}</span>
+          {/if}
+            </div>
       </div>
       <div class="flex flex-col w-fit">
         <span class="text-lg font-semibold">{t.projects.hourlyRates}</span>
