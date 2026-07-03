@@ -6,9 +6,10 @@
   export let storyIds: number[] = []
   export let id: string|undefined = undefined
   export let required = true
-  export let min = 0
 
   let value: number | undefined
+  let max = 9
+  let min = 0
 
   function remove(i: number) {
     storyIds.splice(i, 1)
@@ -24,17 +25,19 @@
     }
   }
 
-  function keydown(e: KeyboardEvent) {
-    if (e.key === 'Enter' && value) {
-      if (!storyIds) storyIds = []
-      e.preventDefault()
+  function handleInput(e: Event) {
+    const target = e.target as HTMLInputElement
+    let currentVal = target.value
+
+    if (currentVal.length >= 9) {
+      value = Number(currentVal.slice(0, 9))
       if (!storyIds.includes(value)) add()
     }
   }
 </script>
 
 <FormField {label} bind:id {required} >
-    <input {id} {required} {min} type="number"  bind:value on:keydown={keydown} {...$$restProps}>
+    <input {id} {required} {min} {max} type="number"  bind:value on:input={handleInput} {...$$restProps}/>
 </FormField>
 <div class="flex flex-wrap gap-1.5">
   {#each storyIds as s, i}

@@ -9,7 +9,7 @@
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
   import ProjectSelect from 'src/pages/projects/ProjectSelect.svelte'
-  import EntryActivityEditor from 'src/pages/entries/EntryActivityEditor.svelte'
+  import EntryActivityEditor from 'src/pages/entries/entry/EntryActivityEditor.svelte'
   import TimeEntryStoryIdField from 'src/pages/entries/entry/TimeEntryStoryIdField.svelte'
 
   const LAST_PROJECT_KEY = 'lastProjectId'
