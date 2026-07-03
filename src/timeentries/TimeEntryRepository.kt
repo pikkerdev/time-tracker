@@ -2,6 +2,7 @@ package timeentries
 
 import db.CrudRepository
 import db.Id
+import db.Status.ACTIVE
 import invoices.InvoiceId
 import invoices.RoleHoursEntry
 import klite.Decimal
@@ -35,7 +36,7 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
         TimeEntry::projectId eq projectId,
         TimeEntry::date gte queryFrom,
         TimeEntry::date lte queryTo,
-        Project::status eq Project.Status.ACTIVE
+        "p.status" eq ACTIVE
       ), suffix = defaultOrder
     ) { viewMapper() }
   }

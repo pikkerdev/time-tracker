@@ -5,6 +5,8 @@ import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.fluent.en_GB.toThrow
 import ch.tutteli.atrium.api.verbs.expect
 import db.BaseMocks
+import db.Status.ACTIVE
+import db.Status.DELETED
 import db.TestData.admin
 import db.TestData.project
 import db.TestData.projectMember
@@ -16,7 +18,6 @@ import io.mockk.every
 import io.mockk.verify
 import klite.ForbiddenException
 import org.junit.jupiter.api.Test
-import projects.ProjectMember.Status.ACTIVE
 
 class ProjectRoutesTest: BaseMocks() {
   val routes = create<ProjectRoutes>()
@@ -65,7 +66,7 @@ class ProjectRoutesTest: BaseMocks() {
 
   @Test fun delete() {
     routes.delete(project.id)
-    verify { projectRepository.delete(project.id) }
+    verify { projectRepository.setStatus(project.id, DELETED) }
   }
 
   @Test fun members() {

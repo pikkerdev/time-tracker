@@ -7,6 +7,8 @@ import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
 import customers.CustomerRepository
 import db.DBTest
+import db.Status.ACTIVE
+import db.Status.DELETED
 import db.TestData.customer
 import db.TestData.project
 import db.TestData.project2
@@ -45,11 +47,25 @@ class ProjectRepositoryTest: DBTest() {
     expect(repository.list()).toContain(project3)
   }
 
+  @Test fun `set status`() {
+    repository.save(project)
+    repository.setStatus(project.id, DELETED)
+    expect(repository.get(project.id).status).toEqual(DELETED)
 
-  @Test fun delete() {
+    repository.setStatus(project.id, ACTIVE)
+    expect(repository.get(project.id).status).toEqual(ACTIVE)
+  }
+
+  @Test fun `set statuses`() {
     repository.save(project)
     repository.save(project2)
-    repository.delete(project.id)
-    expect(repository.listNotDeleted()).notToContain(project)
+
+    repository.setStatuses(customer.id, DELETED)
+    expect(repository.get(project.id).status).toEqual(DELETED)
+    expect(repository.get(project2.id).status).toEqual(DELETED)
+
+    repository.setStatuses(customer.id, ACTIVE)
+    expect(repository.get(project.id).status).toEqual(ACTIVE)
+    expect(repository.get(project2.id).status).toEqual(ACTIVE)
   }
 }

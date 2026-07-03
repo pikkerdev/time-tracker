@@ -3,10 +3,11 @@ package projects
 import customers.Customer
 import db.Entity
 import db.Id
+import db.Status
+import db.Status.ACTIVE
 import klite.Decimal
 import klite.jdbc.UpdatableEntity
 import klite.json.JsonProperty
-import projects.Project.Status.ACTIVE
 import java.time.Instant
 import java.util.*
 
@@ -25,12 +26,7 @@ data class Project(
   val color: String = "#D7A262",
   @JsonProperty(readOnly = true) val customerName: String? = null,
   override val id: Id<Project> = Id()
-): Entity<Project>, UpdatableEntity {
-  enum class Status {
-    ACTIVE,
-    DELETED
-  }
-}
+): Entity<Project>, UpdatableEntity
 
 data class ProjectStats(
   val totalHours: Decimal,

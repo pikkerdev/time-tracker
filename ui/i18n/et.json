@@ -20,7 +20,10 @@
     "add": "Lisa",
     "choose": "Vali",
     "withId": "ID-ga",
-    "choosePeriod": "Vali periood"
+    "choosePeriod": "Vali periood",
+    "status": "Staatus",
+    "showDeleted": "Näita kustutatuid",
+    "setActive": "Aktiveeri"
   },
   "errors": {
     "technical": "Tehniline viga, palun proovi uuesti",

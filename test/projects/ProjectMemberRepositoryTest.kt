@@ -6,6 +6,7 @@ import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
 import customers.CustomerRepository
 import db.DBTest
+import db.Status.DELETED
 import db.TestData.customer
 import db.TestData.project
 import db.TestData.project2
@@ -14,7 +15,6 @@ import db.TestData.projectMember2
 import db.TestData.user
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import projects.ProjectMember.Status.DELETED
 import users.UserRepository
 
 

@@ -2,8 +2,8 @@ package projects
 
 import db.CrudRepository
 import db.Id
+import db.Status.DELETED
 import klite.jdbc.*
-import projects.ProjectMember.Status.DELETED
 import users.User
 import javax.sql.DataSource
 

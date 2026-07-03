@@ -2,11 +2,12 @@ package projects
 
 import auth.Access
 import db.Id
+import db.Status.ACTIVE
+import db.Status.DELETED
 import klite.ForbiddenException
 import klite.annotations.*
 import projects.ProjectMember.Role
 import projects.ProjectMember.Role.DEVELOPER
-import projects.ProjectMember.Status.ACTIVE
 import timeentries.TimeEntryRepository
 import users.AuthRole.*
 import users.User
@@ -40,7 +41,7 @@ class ProjectRoutes(
 
   @DELETE("/:id") @Access(ADMIN)
   fun delete(@PathParam id: Id<Project>) =
-    projectRepository.delete(id)
+    projectRepository.setStatus(id, DELETED)
 
   @POST("/:id/members") @Access(ADMIN)
   fun saveMember(@PathParam id: Id<Project>, member: ProjectMemberRequest): ProjectMemberUser {

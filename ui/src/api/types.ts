@@ -2,7 +2,9 @@ export type Id<T extends Entity<T>> = string & {_of?: T}
 export type Entity<T extends Entity<T>> = {id: Id<T>}
 
 // class customers.Customer
-export interface Customer {businessRegistryCode?: string; id: Id<Customer>; invoiceEmail?: Email; legalAddress?: string; legalName?: string; name: string; phone?: Phone; vatId?: string}
+export interface Customer {businessRegistryCode?: string; id: Id<Customer>; invoiceEmail?: Email; legalAddress?: string; legalName?: string; name: string; phone?: Phone; status: Status; updatedAt?: Instant; vatId?: string}
+// class db.Status
+export enum Status {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class invoices.Invoice
 export interface Invoice {amount: number; date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; projectId: Id<Project>; totalAmount: number; vatAmount: number}
 // class invoices.InvoiceCreateRequest
@@ -39,16 +41,12 @@ export interface MeritInvoiceRow {amount: number; item: MeritInvoiceItem; price:
 export interface MeritInvoiceTaxAmount {amount?: number; taxId: string}
 // class merit.MeritInvoice
 export interface MeritInvoice {currencyCode: string; customer: MeritInvoiceCustomer; docDate: LocalDate; dueDate: LocalDate; fComment: string; invoiceNo: string; invoiceRow: Array<MeritInvoiceRow>; taxAmount: Array<MeritInvoiceTaxAmount>; totalAmount: number; transactionDate: LocalDate}
-// class projects.Project$Status
-export enum ProjectStatus {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class projects.Project
-export interface Project {activities: Array<string>; color: string; currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; status: ProjectStatus; storyTrackerId?: number; updatedAt?: Instant}
+export interface Project {activities: Array<string>; color: string; currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; status: Status; storyTrackerId?: number; updatedAt?: Instant}
 // class projects.ProjectMember$Role
 export enum ProjectMemberRole {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT', INTERN = 'INTERN', CUSTOMER = 'CUSTOMER'}
-// class projects.ProjectMember$Status
-export enum ProjectMemberStatus {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class projects.ProjectMember
-export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; projectId: Id<Project>; role: ProjectMemberRole; status: ProjectMemberStatus; updatedAt?: Instant; userId: Id<User>}
+export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; projectId: Id<Project>; role: ProjectMemberRole; status: Status; updatedAt?: Instant; userId: Id<User>}
 // class projects.ProjectMemberRequest
 export interface ProjectMemberRequest {role: ProjectMemberRole; userId: Id<User>}
 // class projects.ProjectMemberUser
