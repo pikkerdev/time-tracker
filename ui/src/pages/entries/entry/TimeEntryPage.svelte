@@ -27,7 +27,7 @@
 <MainPageLayout class="flex flex-col gap-4 lg:gap-8">
   <div class="flex flex-col gap-4 items-center">
     <TimeEntryCalendar bind:date {dates} {timeEntryHours}/>
-    <div class="w-50 md:w-70">
+    <div class="w-70">
       <TimeEntryForm bind:timeEntry onSaved={() => loadEntries(date)}/>
     </div>
     <div class="px-4 overflow-x-scroll max-w-full">
