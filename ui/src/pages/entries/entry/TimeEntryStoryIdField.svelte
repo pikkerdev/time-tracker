@@ -18,7 +18,6 @@
 
   function add() {
     if (value) {
-      if (!storyIds) storyIds = []
       storyIds.push(value)
       storyIds = storyIds
       value = undefined
@@ -26,6 +25,7 @@
   }
 
   function handleInput(e: Event) {
+    if (!storyIds) storyIds = []
     const target = e.target as HTMLInputElement
     let currentVal = target.value
 
