@@ -38,7 +38,7 @@ class TimeEntryRoutes(
     val member = projectMemberRepository.find(timeEntry.projectId, user.id) ?: throw NoSuchElementException("member")
     val rate = project.hourlyRates[member.role] ?: throw NoSuchElementException("hourlyRates")
     val newTimeEntry = timeEntry.copy(userId = user.id, hourlyRate = rate, role = member.role)
-    require(((userTimes(user, timeEntry.date, timeEntry.date).get(timeEntry.date)?.values?.fold(0.d) { sum, element ->
+    require(((timeEntryRepository.userTimes(user.id, timeEntry.date, timeEntry.date).get(timeEntry.date)?.values?.fold(0.d) { sum, element ->
       sum.plus(element)
     }?: 0.d) + timeEntry.hours) <= 24.d){"Too many hours"}
     timeEntryRepository.save(newTimeEntry)
@@ -52,7 +52,7 @@ class TimeEntryRoutes(
     require(id == timeEntry.id) { "Wrong id" }
     val oldTimeEntry = timeEntryRepository.get(id)
     val user = userRepository.get(timeEntry.userId)
-    require(((userTimes(user, timeEntry.date, timeEntry.date).get(timeEntry.date)?.values?.fold(0.d) { sum, element ->
+    require(((timeEntryRepository.userTimes(user.id, timeEntry.date, timeEntry.date).get(timeEntry.date)?.values?.fold(0.d) { sum, element ->
       sum.plus(element)
     } ?: 0.d) + timeEntry.hours - oldTimeEntry.hours) <= 24.d) {"Too many hours"}
     timeEntryRepository.save(timeEntry)
