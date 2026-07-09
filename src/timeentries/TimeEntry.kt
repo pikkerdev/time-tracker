@@ -21,7 +21,7 @@ data class TimeEntry(
   val role: Role = DEVELOPER,
   val storyId: Set<Long> = emptySet(),
   val description: String? = null,
-  val activity: String? = null,
+  val activity: String = "Development",
   override val id: Id<TimeEntry> = Id()
 ): Entity<TimeEntry>
 

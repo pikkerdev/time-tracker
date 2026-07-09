@@ -49,3 +49,9 @@ alter column storyId set default '{}', alter column storyId set not null;
 
 --changeset time_entry:grant-delete
 grant delete on time_entry to app;
+
+--changeset time_entry.activity-default-development
+alter table time_entry alter column activity type text using case when activity is null then 'Development' else activity end;
+alter table time_entry alter column activity set default 'Development';
+alter table time_entry alter column activity set not null;
+
