@@ -105,6 +105,7 @@
     "hours": "Hours",
     "invoiceId": "Invoice",
     "storyId": "Story",
+    "storyIds": "Stories",
     "description": "Description",
     "showMyTimeEntries": "Show my time entries",
     "fromDate": "From",

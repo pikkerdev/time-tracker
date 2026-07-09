@@ -105,6 +105,7 @@
     "hours": "Tunnid",
     "invoiceId": "Arve",
     "storyId": "Lugu",
+    "storyIds": "Lood",
     "description": "Kirjeldus",
     "showMyTimeEntries": "Näita minu ajaandeid",
     "fromDate": "Alates",
