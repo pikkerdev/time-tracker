@@ -43,12 +43,12 @@
     {#each projects ?? [] as project}
       <Link to="/projects/{project.id}" class="border border-gray-300 rounded-lg px-4 py-3 bg-white hover:bg-stone-50">
         <h4>{project.customerName} - {project.name}</h4>
-        <div class="flex justify-between text-sm">
+        <div class="flex justify-end gap-4 text-sm">
           {#if project.status == 'DELETED'}
             <p><span class="font-medium text-red-700">{project.status}</span></p>
           {/if}
+          <div class="w-5 h-5 rounded " style="background-color:{project.color}"></div>
         </div>
-        <div class="w-5 h-5 rounded " style="background-color:{project.color}"></div>
       </Link>
     {/each}
   </div>
