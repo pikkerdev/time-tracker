@@ -87,4 +87,7 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
       from $table""".trimIndent(),
       TimeEntry::projectId eq id
     ).first()
+
+  fun delete(id: Id<TimeEntry>) =
+    db.delete(table, TimeEntry::id to id, TimeEntry::invoiceId to null)
 }

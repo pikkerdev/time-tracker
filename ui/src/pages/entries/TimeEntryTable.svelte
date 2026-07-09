@@ -1,10 +1,12 @@
 <script lang="ts">
-  import type {TimeEntryView} from 'src/api/types'
+  import type {Id, TimeEntry, TimeEntryView} from 'src/api/types'
   import {formatAmount, formatDate, t} from 'i18n'
   import SortableTable from 'src/components/SortableTable.svelte'
   import TimeEntryForm from 'src/pages/entries/TimeEntryForm.svelte'
   import Modal from 'src/components/Modal.svelte'
   import Button from 'src/components/Button.svelte'
+  import api from 'src/api/api'
+  import {showToast} from 'src/stores/toasts'
 
   export let timeEntries: TimeEntryView[]
   export let narrow = false
@@ -17,6 +19,14 @@
 
   $: if (!narrow && timeEntries && projectId) {
     selectedEntryIds = timeEntries.filter(e => !e.entry.invoiceId).map(e => e.entry.id)
+  }
+
+  async function deleteEntry(id: Id<TimeEntry>){
+    if (confirm(t.general.deleteConfirm)) {
+      await api.delete(`timeentries/${id}`)
+      showToast(`${t.general.deleted}`)
+      onSaved()
+    }
   }
 
   function toggleEntry(entryId: string) {
@@ -61,7 +71,12 @@
         {/if}
       </td>
       {/if}
-      <td><Button label={t.general.edit} disabled={!!e.entry.invoiceId} onclick={() => {timeEntry = e; show = true}}/></td>
+      <td>
+        <div class="flex gap-3 justify-end">
+          <Button label={t.general.edit} disabled={!!e.entry.invoiceId} onclick={() => {timeEntry = e; show = true}}/>
+          <Button icon="trash" disabled={!!e.entry.invoiceId} onclick={() => {deleteEntry(e.entry.id)}}/>
+        </div>
+      </td>
   </tr>
 </SortableTable>
 

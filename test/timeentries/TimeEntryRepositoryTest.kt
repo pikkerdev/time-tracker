@@ -23,7 +23,6 @@ import db.TestData.user
 import db.TestData.yesterday
 import invoices.InvoiceRepository
 import invoices.RoleHoursEntry
-import klite.Decimal
 import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -99,5 +98,11 @@ class TimeEntryRepositoryTest: DBTest() {
       RoleHoursEntry(DEVELOPER, 4.d, 60.d),
       RoleHoursEntry(ARCHITECT, 4.d, 100.d),
     )
+  }
+
+  @Test fun delete() {
+    repository.save(timeEntry)
+    repository.delete((timeEntry.id))
+    expect(repository.list()).toBeEmpty()
   }
 }
