@@ -23,7 +23,8 @@
   async function setStatus(Id: Id<Customer>, status: Status) {
     if (confirm(t.general.deleteConfirm)) {
       await api.post<Customer>(`customers/${Id}`, `"${status}"`)
-      showToast(`${t.general.deleted}`)
+      if (status == 'ACTIVE') showToast(`${t.general.setActive}`)
+      else showToast(`${t.general.deleted}`)
       const index = customers.findIndex(c => c.id === Id)
       customers.splice(index,1)
       customers = customers
