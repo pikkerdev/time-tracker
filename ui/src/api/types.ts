@@ -56,7 +56,7 @@ export interface ProjectStats {totalHours: number; totalRevenue: number; unbille
 // class projects.ProjectView
 export interface ProjectView {project: Project; stats: ProjectStats}
 // class timeentries.TimeEntry
-export interface TimeEntry {activity: string; date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; invoiceId?: InvoiceId; projectId: Id<Project>; role: ProjectMemberRole; storyId: Array<number>; userId: Id<User>}
+export interface TimeEntry {activity: string; date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; invoiceId?: InvoiceId; projectId: Id<Project>; role: ProjectMemberRole; storyIds: Array<string>; userId: Id<User>}
 // class timeentries.TimeEntryView
 export interface TimeEntryView {customerName: string; entry: TimeEntry; projectName: string; userName: string}
 // class users.AuthRole

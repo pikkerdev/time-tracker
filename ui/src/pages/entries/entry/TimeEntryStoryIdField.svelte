@@ -3,41 +3,36 @@
   import Icon from 'src/icons/Icon.svelte'
 
   export let label: string | undefined
-  export let storyIds: number[] = []
+  export let storyIds: string[] = []
   export let id: string|undefined = undefined
   export let required = true
 
-  let value: number | undefined
-  let max = 9
-  let min = 0
+  let value = ''
 
   function remove(i: number) {
     storyIds.splice(i, 1)
     storyIds = storyIds
   }
 
-  function add() {
-    if (value) {
-      storyIds.push(value)
-      storyIds = storyIds
-      value = undefined
-    }
+  function add(newValue: string) {
+    storyIds.push(newValue)
+    storyIds = storyIds
   }
 
   function handleInput(e: Event) {
     if (!storyIds) storyIds = []
     const target = e.target as HTMLInputElement
-    let currentVal = target.value
+    value = target.value.replace(/\D/g, '')
 
-    if (currentVal.length >= 9) {
-      value = Number(currentVal.slice(0, 9))
-      if (!storyIds.includes(value)) add()
+    if (value.length === 9 && !storyIds.includes(value)) {
+      add(value)
+      value = ''
     }
   }
 </script>
 
 <FormField {label} bind:id {required} >
-    <input {id} {required} {min} {max} type="number"  bind:value on:input={handleInput} {...$$restProps}/>
+  <input {id} {required} type="text" maxlength="9" bind:value on:input={handleInput} {...$$restProps}/>
 </FormField>
 <div class="flex flex-wrap gap-1.5">
   {#each storyIds as s, i}
@@ -46,4 +41,3 @@
       </div>
     {/each}
 </div>
-

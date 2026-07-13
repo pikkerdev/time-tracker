@@ -55,3 +55,10 @@ alter table time_entry alter column activity type text using case when activity 
 alter table time_entry alter column activity set default 'Development';
 alter table time_entry alter column activity set not null;
 
+--changeset time_entry:rename-storyId-to-storyIds
+alter table time_entry rename column storyId to storyIds;
+
+--changeset time_entry.modify-storyId-to-text-array
+alter table time_entry alter column storyIds type text[] using storyIds::text[];
+alter table time_entry alter column storyIds set default '{}';
+
