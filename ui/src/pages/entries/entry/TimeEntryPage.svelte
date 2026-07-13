@@ -25,13 +25,15 @@
 </script>
 
 <MainPageLayout class="flex flex-col gap-4 lg:gap-8">
-  <div class="flex flex-col gap-4 items-center">
+  <div class="flex flex-col gap-4 items-center max-w-full">
     <TimeEntryCalendar bind:date {dates} {timeEntryHours}/>
-    <div class="w-70">
-      <TimeEntryForm bind:timeEntry onSaved={() => loadEntries(date)}/>
-    </div>
-    <div class="px-4 overflow-x-scroll max-w-full">
-      <TimeEntryTable projectId={timeEntry.projectId} {timeEntries} narrow onSaved={() => loadEntries(date)}/>
+    <div class="flex flex-wrap-reverse justify-center gap-3 max-w-full">
+      <div class="px-4 overflow-x-scroll max-w-full">
+        <TimeEntryTable projectId={timeEntry.projectId} {timeEntries} narrow onSaved={() => loadEntries(date)}/>
+      </div>
+      <div class="w-70">
+        <TimeEntryForm bind:timeEntry onSaved={() => loadEntries(date)}/>
+      </div>
     </div>
   </div>
 </MainPageLayout>
