@@ -4,12 +4,13 @@
   export let activity: string|undefined
   export let projectActivities: string[]
   export let required = true
+  export let id: string|undefined = undefined
 
   let focused = false
 
 </script>
-<FormField {label} {required} {...$$restProps} >
-  <input bind:value={activity} onfocus={() => focused = true} onblur={() => focused = false}
+<FormField bind:id {label} {required} {...$$restProps} >
+  <input {id} bind:value={activity} onfocus={() => focused = true} onblur={() => focused = false}
          {required} list="activities">
   {#if focused}
     <datalist id="activities">
