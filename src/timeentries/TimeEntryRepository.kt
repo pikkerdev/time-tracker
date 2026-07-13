@@ -56,7 +56,7 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   ): Map<LocalDate, Map<String, Decimal>> =
     db.query(
       "select date, color, sum(hours) as hours from $table join projects p on projectId = p.id",
-      TimeEntry::userId to userId, TimeEntry::date to Between(from, until), suffix = "group by date, color"
+      TimeEntry::userId to userId, TimeEntry::date to Between(from, until), "p.status" eq ACTIVE, suffix = "group by date, color"
     ){
       Triple(getLocalDate("date"), getString("color"), Decimal(getString("hours")))
     }
