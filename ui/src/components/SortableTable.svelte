@@ -7,22 +7,22 @@
   type Field = Column | ((item: T) => any)
   type T = $$Generic
 
-  export let id: string | undefined = undefined
-  export let items: T[] | undefined
+  export let id: string|undefined = undefined
+  export let items: T[]|undefined
   export let columns: (Column | [string, Field])[]
-  export let rightAlignFrom: keyof T | number | undefined = undefined
+  export let rightAlignFrom: keyof T | undefined = undefined
   export let rightAlign: (Column | string)[] = []
   export let sortedBy: Field = undefined, asc = 1
   export let renderMax = 100
 
   $: fields = columns.map(c => c instanceof Array ? c[1] ?? c[0] : c) as Field[]
-  $: columnLabels = columns.map(c => c instanceof Array ? c[0] : c) as (string | undefined)[]
-  $: if (rightAlignFrom) rightAlign = columnLabels.slice(typeof rightAlignFrom  ===  'number' ? rightAlignFrom : fields.indexOf(rightAlignFrom))
+  $: columnLabels = columns.map(c => c instanceof Array ? c[0] : c) as (string|undefined)[]
+  $: if (rightAlignFrom) rightAlign = columnLabels.slice(fields.indexOf(rightAlignFrom))
   $: rightAlignIndices = new Set(rightAlign.map(c => columnLabels.indexOf(c as string)))
 
   function get(item: T, by: Field) {
     const v = by instanceof Function ? by(item) : by && item[by]
-    return v?.toLowerCase ? v.toLowerCase() : v
+    return v?.toLowerCase ? v.toLowerCase() : v ?? ''
   }
 
   function sortBy(array: T[], by: Field) {
@@ -36,32 +36,20 @@
     })
   }
 
-  function findScrollParent(el: HTMLElement | null): HTMLElement {
-    if (!el) return document.documentElement
-    const overflow = el.computedStyleMap?.().get('overflow-y')
-    return overflow == 'auto' || overflow == 'scroll' ? el : findScrollParent(el.parentElement)
-  }
-
-  let scrollable: HTMLElement
-
-  function renderMoreOnScroll(el: HTMLElement) {
-    scrollable = findScrollParent(el)
-
-    const onScroll = debounce(() => {
-        if (!items || renderMax >= items.length) return
-        const scrollMax = scrollable.scrollHeight - scrollable.clientHeight * 1.2
-        if (scrollable.scrollTop >= scrollMax) {
-          renderMax = items.length
-          queueMicrotask(() => scrollable.scrollTo(0, scrollable.scrollHeight))
-        } else if (scrollable.scrollTop + scrollable.clientHeight > scrollMax) renderMax += 50
-      }, 300)
-
-    ;(scrollable === document.documentElement ? window : scrollable).addEventListener('scroll', onScroll)
-    return {destroy: () => scrollable.removeEventListener('scroll', onScroll)}
+  function onScroll() {
+    if (!items || renderMax >= items.length) return
+    const scrollMax = document.body.scrollHeight - window.innerHeight
+    if (window.scrollY == scrollMax) {
+      renderMax = items.length
+      setTimeout(() => scrollTo(0, document.body.scrollHeight))
+    }
+    else if (window.scrollY > scrollMax - window.innerHeight) renderMax += 50
   }
 </script>
 
-<div class="max-sm:-mx-2 overflow-x-auto lg:mx-0 {$$props.class }" use:renderMoreOnScroll>
+<svelte:window on:scroll={debounce(onScroll, 300)}/>
+
+<div class="-mx-6 overflow-x-auto md:mx-0 md:overflow-visible {$$props.class ?? ''}">
   <div class="min-w-full pb-3">
     <table {id}>
       <thead>
@@ -84,60 +72,54 @@
         <slot name="thead"/>
       {/if}
       </thead>
-      <tbody>
+      <tbody class="divide-y divide-gray-200">
       {#if items}
-        {#each items.slice(0, renderMax) as item, i (i)}
-          <slot {item} {i}>
-            <tr>
-              {#each fields as f, fi}
-                <td class:text-right={rightAlignIndices.has(fi)}>{get(item, f)}</td>
-              {/each}
-            </tr>
-          </slot>
-        {:else}
+        {#if !items.length}
           <tr>
             <td colspan={columns.length} class="text-center">{t.general.noItems}</td>
           </tr>
-        {/each}
-        {#if renderMax < items.length}
-          <tr>
-            <td colspan={columns.length} class="text-center" style="height: {scrollable?.clientHeight}px">
-              <Spinner class="py-24 h-11"/>
-            </td>
-          </tr>
+        {:else}
+          {#each items.slice(0, renderMax) as item, i (item as any['id'] ?? i)}
+            <slot {item} {i}>
+              <tr>
+                {#each fields as f, fi}
+                  <td class:text-right={rightAlignIndices.has(fi)}>{get(item, f)}</td>
+                {/each}
+              </tr>
+            </slot>
+          {/each}
+          {#if renderMax < items.length}
+            <tr>
+              <td colspan={columns.length} class="text-center" style="height: {window.innerHeight}px">
+                <Spinner class="py-24 h-11"/>
+              </td>
+            </tr>
+          {/if}
         {/if}
       {:else}
         <tr>
-          <td colspan={columns.length} class="text-center">
-            <Spinner/>
-          </td>
+          <td colspan={columns.length} class="text-center"><Spinner/></td>
         </tr>
       {/if}
       </tbody>
-      {#if items?.length}
+      {#if items}
         <slot name="tfoot"/>
       {/if}
     </table>
   </div>
 </div>
 
-<style lang="postcss">
-  @reference '../global.css';
-
+<style>
   table {
-    @apply relative bg-white text-black min-w-full md:shadow-sm border-separate border-spacing-0;
+    @apply relative bg-white min-w-full divide-y divide-gray-200 md:rounded-lg md:shadow border-separate border-spacing-0;
   }
 
   table :global(th), table :global(td) {
-    @apply px-4 py-3 border-b border-gray-200 align-middle;
-  }
-
-  table thead {
-    @apply sticky top-0 bg-white;
+    @apply px-4 py-3 border-b border-gray-200;
   }
 
   table thead th {
-    @apply text-xs font-medium uppercase tracking-wider border-b-2 border-gray-200 border-solid;
+    @apply text-xs font-medium uppercase tracking-wider sticky top-0 bg-white border-b-2 border-gray-200 border-solid;
   }
 
   table :global(th:last-child), :global(td:last-child:not(:first-child)) {
