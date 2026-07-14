@@ -29,15 +29,31 @@
       value = ''
     }
   }
+
+  function handlePaste(e: ClipboardEvent) {
+    e.preventDefault()
+    if (!storyIds) storyIds = []
+    const pastedText = e.clipboardData?.getData('text') || ''
+    const pastedValue = pastedText.match(/\d{9}/)
+
+    if (pastedValue) {
+      if (!storyIds.includes(pastedValue[0])){
+        add(pastedValue[0])
+        value = ''
+      }
+      else value = pastedValue[0]
+    }
+  }
+
 </script>
 
 <FormField {label} bind:id {required} >
-  <input {id} {required} type="text" maxlength="9" bind:value on:input={handleInput} {...$$restProps}/>
+  <input {id} {required} type="text" maxlength="9" bind:value oninput={handleInput} onpaste={handlePaste} {...$$restProps}/>
 </FormField>
 <div class="flex flex-wrap gap-1.5">
   {#each storyIds as s, i}
       <div class="bg-blue-200 rounded-md px-1 flex items-center gap-1">
-        <Icon name="storytracker"/> {s} <button type="button" class="ml-1 py-0.5" on:click={() => remove(i)}>✕</button>
+        <Icon name="storytracker"/> {s} <button type="button" class="ml-1 py-0.5" onclick={() => remove(i)}>✕</button>
       </div>
     {/each}
 </div>
