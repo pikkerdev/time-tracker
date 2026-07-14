@@ -109,7 +109,9 @@
   </div>
 </div>
 
-<style>
+<style lang="postcss">
+  @reference '../global.css';
+
   table {
     @apply relative bg-white min-w-full divide-y divide-gray-200 md:rounded-lg md:shadow border-separate border-spacing-0;
   }
