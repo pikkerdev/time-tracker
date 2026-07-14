@@ -8,8 +8,10 @@
   import {user} from 'src/stores/auth'
   import CheckboxField from 'src/forms/CheckboxField.svelte'
 
+  const SHOW_MY_PROJECTS_KEY = 'showMyProjects'
+
   let projects: Project[] = []
-  let isMyProjects: boolean = false
+  let isMyProjects: boolean = localStorage.getItem(SHOW_MY_PROJECTS_KEY) === 'true'
   let showDeleted: boolean = false
   export let customerId: Id<Customer>
 
@@ -22,6 +24,11 @@
     projects = await api.get(url)
   }
 
+  function showMyProjects(myProjects: boolean) {
+    localStorage.setItem(SHOW_MY_PROJECTS_KEY, String(myProjects))
+  }
+
+  $: showMyProjects(isMyProjects)
   $: {load(customerId, isMyProjects, showDeleted)}
 </script>
 
@@ -29,7 +36,8 @@
   <div slot="after-title" class="flex items-center gap-4">
     {#if $user.isAdmin || $user.isInternal}
       {#if !customerId}
-        <CheckboxField label={t.projects.showMyProjects} title={t.projects.showMyProjects} onchange={() => isMyProjects = !isMyProjects}/>
+        <input type="checkbox" title={t.projects.showMyProjects} bind:checked={isMyProjects}>
+        {t.projects.showMyProjects}
       {/if}
       {#if $user.isAdmin}
         {#if !customerId}
