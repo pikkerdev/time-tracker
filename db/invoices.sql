@@ -44,3 +44,9 @@ alter table invoices alter column dueDate set not null;
 
 --changeset invoices:app-can-delete
 grant delete on invoices to app;
+
+--changeset invoices.updatedAt
+alter table invoices add column updatedAt timestamptz not null default now();
+
+--changeset invoices.status
+alter table invoices add column status text not null default 'CREATED';

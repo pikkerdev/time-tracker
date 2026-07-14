@@ -2,7 +2,7 @@
   import {formatAmount, formatDate, t} from 'i18n'
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import SortableTable from 'src/components/SortableTable.svelte'
-  import type {InvoiceId, InvoiceView} from 'src/api/types'
+  import {type InvoiceId, InvoiceStatus, type InvoiceView} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import Button from 'src/components/Button.svelte'
@@ -25,6 +25,18 @@
     }
   }
 
+  async function setStatus(invoiceView: InvoiceView, status: InvoiceStatus) {
+    if (confirm(t.general.deleteConfirm)) {
+      const res = await api.post(`invoices/${invoiceView.invoice.id}`, `"${status}"`)
+      if (res) {
+        invoiceView.invoice.status = status
+        invoices = invoices
+        showToast(`${t.general.statusSetTo}: ${status}`)
+      }
+    }
+  }
+
+
 </script>
 
 <MainPageLayout class="relative spaced" title={t.invoices.title}>
@@ -36,6 +48,7 @@
     [t.invoices.description, i => i.invoice.description],
     [t.invoices.amountWithVat, i => i.invoice.totalAmount],
     [t.invoices.createdBy, i => i.creatorName],
+    [t.general.status, i => i.invoice.status],
     ''
     ]} let:item={i}>
     <tr>
@@ -46,11 +59,19 @@
       <td>{i.invoice.description}</td>
       <td>{formatAmount(i.invoice.amount)} ({formatAmount(i.invoice.totalAmount)})</td>
       <td>{i.creatorName}</td>
+      <td>{i.invoice.status}</td>
       <td>
-        <a class="btn default icon-only" href="/invoices/{i.invoice.id}" target="_blank">
-          <Icon name="eye"/>
-        </a>
-        <Button icon="trash" onclick={() => del(i.invoice.id)}/>
+        <div class="flex gap-2 justify-end">
+          {#if i.invoice.status === 'CREATED'}
+            <Button label={t.invoices.sent} onclick={() => setStatus(i, InvoiceStatus.SENT)}/>
+          {:else if i.invoice.status === 'SENT'}
+            <Button label={t.invoices.paid} onclick={() => setStatus(i, InvoiceStatus.PAID)}/>
+          {/if}
+          <a class="btn default icon-only" href="/invoices/{i.invoice.id}" target="_blank">
+            <Icon name="eye"/>
+          </a>
+          <Button icon="trash" onclick={() => del(i.invoice.id)}/>
+        </div>
       </td>
     </tr>
   </SortableTable>

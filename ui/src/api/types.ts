@@ -5,8 +5,10 @@ export type Entity<T extends Entity<T>> = {id: Id<T>}
 export interface Customer {businessRegistryCode?: string; id: Id<Customer>; invoiceEmail?: Email; legalAddress?: string; legalName?: string; name: string; phone?: Phone; status: Status; updatedAt?: Instant; vatId?: string}
 // class db.Status
 export enum Status {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
+// class invoices.Invoice$Status
+export enum InvoiceStatus {CREATED = 'CREATED', SENT = 'SENT', PAID = 'PAID'}
 // class invoices.Invoice
-export interface Invoice {amount: number; date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; projectId: Id<Project>; totalAmount: number; vatAmount: number}
+export interface Invoice {amount: number; date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; projectId: Id<Project>; status: InvoiceStatus; totalAmount: number; updatedAt?: Instant; vatAmount: number}
 // class invoices.InvoiceCreateRequest
 export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; timeEntryIds: Array<Id<TimeEntry>>}
 // class invoices.InvoiceDetails

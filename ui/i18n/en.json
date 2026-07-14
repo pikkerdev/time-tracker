@@ -23,7 +23,8 @@
     "choosePeriod": "Choose Period",
     "status": "Status",
     "showDeleted": "Show deleted",
-    "setActive": "Set active"
+    "setActive": "Set active",
+    "statusSetTo": "Status set to"
   },
   "errors": {
     "technical": "Technical error, please try again",
@@ -145,7 +146,10 @@
     "hours": "Hours",
     "rate": "Rate",
     "subtotal": "Subtotal",
-    "workingHour": "working hour"
+    "workingHour": "working hour",
+    "created": "Created",
+    "sent": "Sent",
+    "paid": "Paid"
   },
   "company": {
     "name": "Pikker Technology OÜ",

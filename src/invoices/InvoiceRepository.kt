@@ -1,10 +1,12 @@
 package invoices
 
 import db.Id
+import invoices.Invoice.Status
 import klite.jdbc.BaseCrudRepository
 import klite.jdbc.delete
 import klite.jdbc.eq
 import klite.jdbc.select
+import klite.jdbc.update
 import klite.notNullValues
 import projects.Project
 import java.sql.ResultSet
@@ -14,7 +16,7 @@ import javax.sql.DataSource
 class InvoiceRepository(db: DataSource): BaseCrudRepository<Invoice, InvoiceId>(db, "invoices") {
   private val viewFrom = "$table join projects p on projectId = p.id join users u on createdBy = u.id join customers c on p.customerid = c.id"
   private val withCustomer = "$table i join projects p on i.projectId = p.id join customers c on p.customerid = c.id"
-  override val defaultOrder = "order by date desc"
+  override val defaultOrder = "order by invoices.id desc"
 
   fun nextId(date: LocalDate) = InvoiceId(
     date.year * 1000000L + date.monthValue * 10000L + date.dayOfMonth * 100L +
@@ -39,5 +41,9 @@ class InvoiceRepository(db: DataSource): BaseCrudRepository<Invoice, InvoiceId>(
 
   fun delete(id: InvoiceId): Boolean {
     return if (db.delete(table, Invoice::id eq id) == 1) true else throw NoSuchElementException()
+  }
+
+  fun setStatus(id: InvoiceId, status: Status): Boolean{
+    return if (db.update(table, mapOf(Invoice::status to status), Invoice::id to id) == 1) true else throw NoSuchElementException()
   }
 }

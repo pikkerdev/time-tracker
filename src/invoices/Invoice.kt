@@ -3,11 +3,14 @@ package invoices
 import app.vatRate
 import customers.Customer
 import db.Id
+import invoices.Invoice.Status.CREATED
 import klite.Converter
 import klite.Decimal
 import klite.jdbc.BaseEntity
+import klite.jdbc.UpdatableEntity
 import projects.Project
 import projects.ProjectMember.Role
+import java.time.Instant
 import java.time.LocalDate
 
 data class Invoice(
@@ -18,8 +21,14 @@ data class Invoice(
   val vatAmount: Decimal,
   val description: String,
   val dueDate: LocalDate,
-): BaseEntity<InvoiceId> {
+  val status: Status = CREATED,
+  override var updatedAt: Instant? = null,
+): BaseEntity<InvoiceId>, UpdatableEntity {
   val totalAmount: Decimal get() = amount + vatAmount
+
+  enum class Status {
+    CREATED, SENT, PAID
+  }
 }
 
 data class InvoiceView(
