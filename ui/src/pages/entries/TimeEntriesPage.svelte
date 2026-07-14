@@ -38,7 +38,6 @@
   $: totalAmount = timeEntries?.filter(e => selectedEntryIds.includes(e.entry.id) && !e.entry.invoiceId)
     .sum(e => e.entry.hourlyRate * e.entry.hours)
 
-  // TODO you can click on invoiceId on an entry that opens an invoice
 </script>
 
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>

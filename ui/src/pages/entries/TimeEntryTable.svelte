@@ -65,7 +65,7 @@
     {#if !narrow}
       <td>
         {#if e.entry.invoiceId}
-          {e.entry.invoiceId}
+          <a href="/invoices/{e.entry.invoiceId}">{e.entry.invoiceId}</a>
         {:else if projectId}
             <input type="checkbox" checked={selectedEntryIds.includes(e.entry.id)} onchange={() => toggleEntry(e.entry.id)} class="h-4 w-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500">
         {/if}
