@@ -18,8 +18,8 @@
 
   let timeEntries: TimeEntryView[]
   let myTimeEntries = false
-  let from = toISODate(new Date(), d => d.setDate(d.getDate() - 29))
-  let to = toISODate(new Date())
+  let from = toISODate(today, d => d.setDate(d.getDate() - 29))
+  let to = today
   let show = false
 
   async function loadEntries(from: string, to: string, myTimeEntries: boolean, projectId: Id<Project>) {
