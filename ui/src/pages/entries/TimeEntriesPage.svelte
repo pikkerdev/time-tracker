@@ -2,7 +2,7 @@
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import {type Id, type Project, type TimeEntryView} from 'src/api/types'
   import api from 'src/api/api'
-  import {formatAmount, t, today,} from 'i18n'
+  import {formatAmount, t, today, toISODate,} from 'i18n'
   import TimeEntryTable from 'src/pages/entries/TimeEntryTable.svelte'
   import {user} from 'src/stores/auth'
   import FormField from 'src/forms/FormField.svelte'
@@ -18,8 +18,8 @@
 
   let timeEntries: TimeEntryView[]
   let myTimeEntries = false
-  let from: string
-  let to: string
+  let from = toISODate(today, d => d.setDate(d.getDate() - 29))
+  let to = today
   let show = false
 
   async function loadEntries(from: string, to: string, myTimeEntries: boolean, projectId: Id<Project>) {
@@ -38,7 +38,6 @@
   $: totalAmount = timeEntries?.filter(e => selectedEntryIds.includes(e.entry.id) && !e.entry.invoiceId)
     .sum(e => e.entry.hourlyRate * e.entry.hours)
 
-  // TODO you can click on invoiceId on an entry that opens an invoice
 </script>
 
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>

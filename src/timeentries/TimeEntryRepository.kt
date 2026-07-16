@@ -2,6 +2,7 @@ package timeentries
 
 import db.CrudRepository
 import db.Id
+import db.Status.ACTIVE
 import invoices.InvoiceId
 import invoices.RoleHoursEntry
 import klite.Decimal
@@ -35,7 +36,7 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
         TimeEntry::projectId eq projectId,
         TimeEntry::date gte queryFrom,
         TimeEntry::date lte queryTo,
-        Project::status eq Project.Status.ACTIVE
+        "p.status" eq ACTIVE
       ), suffix = defaultOrder
     ) { viewMapper() }
   }
@@ -55,7 +56,7 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   ): Map<LocalDate, Map<String, Decimal>> =
     db.query(
       "select date, color, sum(hours) as hours from $table join projects p on projectId = p.id",
-      TimeEntry::userId to userId, TimeEntry::date to Between(from, until), suffix = "group by date, color"
+      TimeEntry::userId to userId, TimeEntry::date to Between(from, until), "p.status" eq ACTIVE, suffix = "group by date, color"
     ){
       Triple(getLocalDate("date"), getString("color"), Decimal(getString("hours")))
     }
@@ -86,4 +87,7 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
       from $table""".trimIndent(),
       TimeEntry::projectId eq id
     ).first()
+
+  fun delete(id: Id<TimeEntry>) =
+    db.delete(table, TimeEntry::id to id, TimeEntry::invoiceId to null)
 }

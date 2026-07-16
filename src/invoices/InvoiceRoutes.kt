@@ -4,6 +4,9 @@ import app.vatRate
 import auth.Access
 import customers.CustomerRepository
 import db.Id
+import invoices.Invoice.Status
+import invoices.Invoice.Status.CREATED
+import klite.ForbiddenException
 import klite.annotations.*
 import klite.sumOf
 import projects.Project
@@ -40,7 +43,12 @@ class InvoiceRoutes(
     return invoice
   }
 
-  @DELETE("/:id") fun delete(@PathParam id: InvoiceId) = repository.delete(id)
+  @DELETE("/:id") fun delete(@PathParam id: InvoiceId) =
+    if (repository.get(id).status == CREATED) repository.delete(id)
+    else throw ForbiddenException()
+
+  @POST("/:id")
+  fun setStatus(@PathParam id: InvoiceId, status: Status) = repository.setStatus(id, status)
 }
 
 data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>, val description: String, val dueDate: LocalDate)

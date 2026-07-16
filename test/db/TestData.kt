@@ -1,11 +1,11 @@
 package db
 
 import customers.Customer
+import db.Status.DELETED
 import invoices.*
 import klite.Email
 import klite.d
 import projects.*
-import projects.Project.Status.DELETED
 import projects.ProjectMember.Role.DEVELOPER
 import timeentries.TimeEntry
 import timeentries.TimeEntryView
@@ -28,6 +28,7 @@ object TestData {
   val user = User("User", "User", Email("user@test.ee"), authRole = EXTERNAL, createdAt = now)
 
   val customer = Customer("Customer1")
+  val customer2 = Customer("Customer2", status = DELETED)
   val project = Project(customer.id, "Project1", hourlyRates = mapOf(DEVELOPER to 88.d), customerName = customer.name)
   val project2 = Project(customer.id, "Project2", hourlyRates = mapOf(DEVELOPER to 44.d), customerName = customer.name)
   val project3 = Project(customer.id, "Project3", hourlyRates = mapOf(DEVELOPER to 44.d), customerName = customer.name, status = DELETED)

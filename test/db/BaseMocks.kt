@@ -68,6 +68,7 @@ abstract class BaseMocks {
 
     invoiceRepository.apply {
       every {nextId(invoice.date)} returns invoice.id
+      every {get(invoice.id)} returns invoice
     }
 
   }

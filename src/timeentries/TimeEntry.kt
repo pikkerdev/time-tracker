@@ -19,9 +19,9 @@ data class TimeEntry(
   val hours: Decimal,
   val hourlyRate: Decimal = ZERO,
   val role: Role = DEVELOPER,
-  val storyId: Set<Long> = emptySet(),
+  val storyIds: Set<String> = emptySet(),
   val description: String? = null,
-  val activity: String? = null,
+  val activity: String = "Development",
   override val id: Id<TimeEntry> = Id()
 ): Entity<TimeEntry>
 

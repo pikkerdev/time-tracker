@@ -1,17 +1,17 @@
 <script lang="ts">
   import FormField from 'src/forms/FormField.svelte'
-  import {t} from 'i18n'
-
   export let label: string|undefined = undefined
   export let activity: string|undefined
   export let projectActivities: string[]
+  export let required = true
+  export let id: string|undefined = undefined
 
   let focused = false
 
 </script>
-<FormField {label} {...$$restProps} required={false}>
-  <input bind:value={activity} on:focus={() => focused = true} on:blur={() => focused = false}
-         required={false} list="activities">
+<FormField bind:id {label} {required} {...$$restProps} >
+  <input {id} bind:value={activity} onfocus={() => focused = true} onblur={() => focused = false}
+         {required} list="activities">
   {#if focused}
     <datalist id="activities">
       {#each projectActivities as t}

@@ -6,6 +6,8 @@
   export let from: string | undefined
   export let to: string | undefined
 
+  let value = ''
+
   const d = new Date()
   d.setDate(1)
   const monthOptions = Object.fromEntries(
@@ -17,8 +19,6 @@
         return [key, label]
       })
   )
-  let value = Object.keys(monthOptions)[0]
-  valueChanged()
 
   function onchange(e: FormEvent) {
     value = e.currentTarget.value

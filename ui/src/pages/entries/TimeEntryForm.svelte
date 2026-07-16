@@ -9,7 +9,7 @@
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
   import ProjectSelect from 'src/pages/projects/ProjectSelect.svelte'
-  import EntryActivityEditor from 'src/pages/entries/EntryActivityEditor.svelte'
+  import EntryActivityEditor from 'src/pages/entries/entry/EntryActivityEditor.svelte'
   import TimeEntryStoryIdField from 'src/pages/entries/entry/TimeEntryStoryIdField.svelte'
 
   const LAST_PROJECT_KEY = 'lastProjectId'
@@ -43,7 +43,7 @@
     <FormField label={t.timeEntries.date} type="date" bind:value={timeEntry.date} max={today}/>
   {/if}
   <EntryActivityEditor label={t.timeEntries.activity} bind:activity={timeEntry.activity} projectActivities={project?.activities}/>
-  <TimeEntryStoryIdField label={t.timeEntries.storyId} required={false} bind:storyIds={timeEntry.storyId}/>
+  <TimeEntryStoryIdField label={t.timeEntries.storyIds} required={false} bind:storyIds={timeEntry.storyIds}/>
   <TextAreaField label={t.timeEntries.description} required={false} bind:value={timeEntry.description}/>
   <Button type="submit" label={t.general.save} class="primary"/>
 </Form>

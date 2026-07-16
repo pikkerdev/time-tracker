@@ -46,3 +46,19 @@ update time_entry te set role = pm.role from project_members pm where te.project
 --changeset time_entry.modify-storyId-to-array
 alter table time_entry alter column storyId type bigint[] using case when storyId is null then '{}'::bigint[] else ARRAY[storyId] end,
 alter column storyId set default '{}', alter column storyId set not null;
+
+--changeset time_entry:grant-delete
+grant delete on time_entry to app;
+
+--changeset time_entry.activity-default-development
+alter table time_entry alter column activity type text using case when activity is null then 'Development' else activity end;
+alter table time_entry alter column activity set default 'Development';
+alter table time_entry alter column activity set not null;
+
+--changeset time_entry:rename-storyId-to-storyIds
+alter table time_entry rename column storyId to storyIds;
+
+--changeset time_entry.modify-storyId-to-text-array
+alter table time_entry alter column storyIds type text[] using storyIds::text[];
+alter table time_entry alter column storyIds set default '{}';
+

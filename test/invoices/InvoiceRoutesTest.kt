@@ -14,8 +14,12 @@ import db.TestData.invoiceWithCustomer
 import db.TestData.rolesHoursEntry
 import db.TestData.timeEntry
 import db.TestData.timeEntry2
+import invoices.Invoice.Status.CREATED
+import invoices.Invoice.Status.PAID
+import invoices.Invoice.Status.SENT
 import io.mockk.every
 import io.mockk.verify
+import io.mockk.verifySequence
 import klite.Decimal
 import org.junit.jupiter.api.Test
 
@@ -76,5 +80,21 @@ class InvoiceRoutesTest: BaseMocks() {
     verify {
       invoiceRepository.delete(invoice.id)
     }
+  }
+
+  @Test fun setStatus() {
+    routes.setStatus(invoice.id, CREATED)
+    routes.setStatus(invoice.id, SENT)
+    routes.setStatus(invoice.id, PAID)
+
+    verifySequence {
+      invoiceRepository.setStatus(invoice.id, CREATED)
+      invoiceRepository.setStatus(invoice.id, SENT)
+      invoiceRepository.setStatus(invoice.id, PAID)
+    }
+
+    every { invoiceRepository.setStatus(invoice.id, SENT) } returns true
+
+    expect(routes.setStatus(invoice.id, SENT)).toEqual(true)
   }
 }

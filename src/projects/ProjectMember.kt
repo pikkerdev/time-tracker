@@ -2,10 +2,11 @@ package projects
 
 import db.Entity
 import db.Id
+import db.Status
+import db.Status.ACTIVE
 import klite.jdbc.UpdatableEntity
 import klite.jdbc.nowSec
 import projects.ProjectMember.Role.DEVELOPER
-import projects.ProjectMember.Status.ACTIVE
 import users.User
 import java.time.Instant
 
@@ -23,11 +24,6 @@ data class ProjectMember(
     ARCHITECT,
     INTERN,
     CUSTOMER
-  }
-
-  enum class Status {
-    ACTIVE,
-    DELETED
   }
 }
 

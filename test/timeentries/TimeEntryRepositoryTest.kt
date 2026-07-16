@@ -23,7 +23,6 @@ import db.TestData.user
 import db.TestData.yesterday
 import invoices.InvoiceRepository
 import invoices.RoleHoursEntry
-import klite.Decimal
 import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -65,10 +64,12 @@ class TimeEntryRepositoryTest: DBTest() {
     val entry = timeEntry.copy(date = yesterday, hours = 3.d, id = Id())
     val entry2 = timeEntry.copy(date = yesterday, hours = 4.d, id = Id())
     val entry3 = timeEntry.copy(date = twoDaysAgo, hours = 2.d, id = Id())
+    val entry4 = timeEntry3.copy(date = twoDaysAgo)
 
     repository.save(entry)
     repository.save(entry2)
     repository.save(entry3)
+    repository.save(entry4)
 
     expect(repository.userTimes(user.id, from = today, until = today)).toBeEmpty()
     expect(repository.userTimes(user.id, from = yesterday, until = yesterday)).toEqual(mapOf(yesterday to mapOf("#D7A262" to 7.d)))
@@ -99,5 +100,11 @@ class TimeEntryRepositoryTest: DBTest() {
       RoleHoursEntry(DEVELOPER, 4.d, 60.d),
       RoleHoursEntry(ARCHITECT, 4.d, 100.d),
     )
+  }
+
+  @Test fun delete() {
+    repository.save(timeEntry)
+    repository.delete((timeEntry.id))
+    expect(repository.list()).toBeEmpty()
   }
 }

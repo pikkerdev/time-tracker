@@ -1,6 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser, ProjectStatus} from 'src/api/types'
+  import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser, Status} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {formatAmount, formatCurrency, t} from 'i18n'
@@ -38,7 +38,7 @@
   <div slot="title">
     <div class="flex items-center gap-2">
       <h1>{ctx?.project?.customerName} - {ctx?.project?.name}</h1>
-      {#if ctx?.project?.status === ProjectStatus.DELETED}
+      {#if ctx?.project?.status ===  Status.DELETED}
         <span class="text-muted">({t.general.deleted.toUpperCase()})</span>
       {/if}
     </div>

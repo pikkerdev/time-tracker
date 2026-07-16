@@ -14,7 +14,6 @@ import db.TestData.today
 import db.TestData.user
 import io.mockk.every
 import io.mockk.verify
-import klite.Decimal
 import klite.d
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
@@ -33,7 +32,7 @@ class TimeEntryRoutesTest: BaseMocks() {
     every { projectMemberRepository.find(project.id, user.id) } returns projectMember
     val rate = project.hourlyRates.getValue(projectMember.role)
     val timeEntry =(timeEntry.copy( hours = 3.5.d))
-    routes.editTimeEntry(timeEntry.id, timeEntry)
+    routes.editTimeEntry(user, timeEntry.id, timeEntry)
     verify { timeEntryRepository.save(timeEntry.copy(userId = user.id, hourlyRate = rate)) }
   }
 
@@ -62,5 +61,10 @@ class TimeEntryRoutesTest: BaseMocks() {
     val singleDay = LocalDate.now()
     every { timeEntryRepository.userTimes(user.id, singleDay) } returns userTime
     expect(routes.userTimes(user, singleDay)).toEqual(userTime)
+  }
+
+  @Test fun delete() {
+    routes.delete(user, timeEntry.id)
+    verify { timeEntryRepository.delete(timeEntry.id) }
   }
 }

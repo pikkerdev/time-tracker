@@ -20,7 +20,11 @@
     "add": "Add",
     "choose": "Choose",
     "withId": "with ID",
-    "choosePeriod": "Choose Period"
+    "choosePeriod": "Choose Period",
+    "status": "Status",
+    "showDeleted": "Show deleted",
+    "setActive": "Set active",
+    "statusSetTo": "Status set to"
   },
   "errors": {
     "technical": "Technical error, please try again",
@@ -102,6 +106,7 @@
     "hours": "Hours",
     "invoiceId": "Invoice",
     "storyId": "Story",
+    "storyIds": "Stories",
     "description": "Description",
     "showMyTimeEntries": "Show my time entries",
     "fromDate": "From",
@@ -141,7 +146,10 @@
     "hours": "Hours",
     "rate": "Rate",
     "subtotal": "Subtotal",
-    "workingHour": "working hour"
+    "workingHour": "working hour",
+    "created": "Created",
+    "sent": "Sent",
+    "paid": "Paid"
   },
   "company": {
     "name": "Pikker Technology OÜ",
