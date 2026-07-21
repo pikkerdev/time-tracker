@@ -5,11 +5,7 @@ import db.CrudRepository
 import db.Id
 import db.Status
 import db.Status.DELETED
-import db.json
-import klite.Decimal
-import klite.i18n.Lang.jsonMapper
 import klite.jdbc.*
-import klite.json.parse
 import klite.toValues
 import users.User
 import java.sql.ResultSet
@@ -24,10 +20,9 @@ class ProjectRepository(db: DataSource): CrudRepository<Project>(db, "projects")
   private val notDeleted = "$table.status" neq DELETED
 
   override fun ResultSet.mapper() = create(
-    Project::hourlyRates to jsonMapper.parse<Map<ProjectMember.Role, Decimal>>(getString("hourlyRates")),
     Project::customerName to getString("c.name")
   )
-  override fun Project.persister() = toValues(Project::hourlyRates to json(hourlyRates), skip = listOf(Project::customerName))
+  override fun Project.persister() = toDBValues(skip = setOf(Project::customerName.name))
 
   fun forMember(userId: Id<User>, includeDeleted: Boolean = false): List<Project> =
     db.select("$selectFrom join project_members pm on $table.id = pm.projectId",

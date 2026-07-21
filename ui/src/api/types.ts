@@ -1,4 +1,3 @@
-export type Id<T extends Entity<T>> = string & {_of?: T}
 export type Entity<T extends Entity<T>> = {id: Id<T>}
 
 // class customers.Customer
@@ -66,6 +65,8 @@ export enum AuthRole {ADMIN = 'ADMIN', INTERNAL = 'INTERNAL', EXTERNAL = 'EXTERN
 // class users.User
 export interface User {authRole: AuthRole; avatarUrl?: URI; createdAt: Instant; email: Email; firstName: string; id: Id<User>; isAdmin: boolean; isCustomer: boolean; isExternal: boolean; isInternal: boolean; lastName: string; name: string; updatedAt?: Instant}
 
+// klite.Id
+export type Id<T> = string & {_of?: T}
 // java.time.LocalDate
 export type LocalDate = `${number}-${number}-${number}`
 // java.time.Instant
