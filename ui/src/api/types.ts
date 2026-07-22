@@ -7,13 +7,15 @@ export enum Status {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class invoices.Invoice$Status
 export enum InvoiceStatus {CREATED = 'CREATED', SENT = 'SENT', PAID = 'PAID'}
 // class invoices.Invoice
-export interface Invoice {amount: number; date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; projectId: Id<Project>; status: InvoiceStatus; totalAmount: number; updatedAt?: Instant; vatAmount: number}
+export interface Invoice {amount: number; date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; projectId: Id<Project>; rows: Array<InvoiceRow>; status: InvoiceStatus; totalAmount: number; updatedAt?: Instant; vatAmount: number}
 // class invoices.InvoiceCreateRequest
-export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; timeEntryIds: Array<Id<TimeEntry>>}
+export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; rows: Array<InvoiceRow>; timeEntryIds: Array<Id<TimeEntry>>}
 // class invoices.InvoiceDetails
 export interface InvoiceDetails {customer: Customer; entries: Array<RoleHoursEntry>; invoice: Invoice; vat: number}
 // class invoices.InvoiceId
 export type InvoiceId = number
+// class invoices.InvoiceRow
+export interface InvoiceRow {amount: number; description: string; hours?: number; rate?: number}
 // class invoices.InvoiceView
 export interface InvoiceView {creatorName: string; customerName: string; invoice: Invoice; projectName: string}
 // class invoices.InvoiceWithCustomer
