@@ -149,7 +149,9 @@
     "workingHour": "töötund",
     "created": "Loodud",
     "sent": "Saadetud",
-    "paid": "Makstud"
+    "paid": "Makstud",
+    "customRows": "Lisa read",
+    "addRow": "Lisa rida"
   },
   "company": {
     "name": "Pikker Technology OÜ",

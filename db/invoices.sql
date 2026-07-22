@@ -50,3 +50,35 @@ alter table invoices add column updatedAt timestamptz not null default now();
 
 --changeset invoices.status
 alter table invoices add column status text not null default 'CREATED';
+
+--changeset invoices.rows-jsonb
+alter table invoices add column rows jsonb not null default '[]';
+
+--changeset invoices.migrate-rows-from-time-entries
+update invoices i
+set rows = agg.items_json
+  from (
+  select
+    invoiceId,
+    jsonb_agg(
+      jsonb_build_object(
+        'description', role,
+        'hours', total_hours,
+        'rate', hourlyRate,
+        'amount', total_amount
+      )
+    ) as items_json
+  from (
+    select
+      invoiceId,
+      role,
+      hourlyRate,
+      sum(hours) as total_hours,
+      cast(sum(hours * hourlyRate) as numeric(10, 2)) as total_amount
+    from time_entry
+    where invoiceId is not null
+    group by invoiceId, role, hourlyRate
+  ) raw_sums
+  group by invoiceId
+) agg
+where i.id = agg.invoiceId;

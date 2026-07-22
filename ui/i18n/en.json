@@ -149,7 +149,9 @@
     "workingHour": "working hour",
     "created": "Created",
     "sent": "Sent",
-    "paid": "Paid"
+    "paid": "Paid",
+    "customRows": "Custom rows",
+    "addRow": "Add row"
   },
   "company": {
     "name": "Pikker Technology OÜ",

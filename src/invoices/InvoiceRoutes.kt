@@ -37,7 +37,7 @@ class InvoiceRoutes(
     require(timeEntries.all { it.invoiceId == null }) { "Already Invoiced" }
     val netAmount = timeEntries.sumOf { it.hours * it.hourlyRate }
     val vatAmount = netAmount * vatRate
-    val invoice = Invoice(repository.nextId(req.date), projectId, req.date, netAmount, vatAmount, req.description, req.dueDate)
+    val invoice = Invoice(repository.nextId(req.date), projectId, req.date, netAmount, vatAmount, req.description, req.dueDate, req.rows)
     repository.save(invoice)
     timeEntryRepository.updateInvoiceId(req.timeEntryIds, invoice.id)
     return invoice
@@ -51,5 +51,5 @@ class InvoiceRoutes(
   fun setStatus(@PathParam id: InvoiceId, status: Status) = repository.setStatus(id, status)
 }
 
-data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>, val description: String, val dueDate: LocalDate)
+data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>, val description: String, val dueDate: LocalDate, val rows: List<InvoiceRow> )
 

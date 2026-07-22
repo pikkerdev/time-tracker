@@ -7,6 +7,7 @@ import invoices.Invoice.Status.CREATED
 import klite.Converter
 import klite.Decimal
 import klite.jdbc.BaseEntity
+import klite.jdbc.JsonColumn
 import klite.jdbc.UpdatableEntity
 import projects.Project
 import projects.ProjectMember.Role
@@ -21,6 +22,7 @@ data class Invoice(
   val vatAmount: Decimal,
   val description: String,
   val dueDate: LocalDate,
+  @JsonColumn val rows: List<InvoiceRow> = emptyList(),
   val status: Status = CREATED,
   override var updatedAt: Instant? = null,
 ): BaseEntity<InvoiceId>, UpdatableEntity {
@@ -28,6 +30,21 @@ data class Invoice(
 
   enum class Status {
     CREATED, SENT, PAID
+  }
+}
+
+data class InvoiceRow(
+  val description: String,
+  val amount: Decimal,
+  val hours: Decimal? = null,
+  val rate: Decimal? = null
+) {
+  init {
+    if (hours != null && rate != null) {
+      require(hours * rate == amount) {
+        "Amount does not match hours and rate"
+      }
+    }
   }
 }
 
