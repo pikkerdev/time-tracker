@@ -37,7 +37,8 @@ class InvoiceRoutes(
     require(timeEntries.all { it.invoiceId == null }) { "Already Invoiced" }
     val netAmount = timeEntries.sumOf { it.hours * it.hourlyRate }
     val vatAmount = netAmount * vatRate
-    val invoice = Invoice(repository.nextId(req.date), projectId, req.date, netAmount, vatAmount, req.description, req.dueDate, req.rows)
+    val initialRows = timeEntryRepository.initialRows(req.timeEntryIds)
+    val invoice = Invoice(repository.nextId(req.date), projectId, req.date, netAmount, vatAmount, req.description, req.dueDate, req.rows + initialRows)
     repository.save(invoice)
     timeEntryRepository.updateInvoiceId(req.timeEntryIds, invoice.id)
     return invoice
