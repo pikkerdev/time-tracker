@@ -50,7 +50,7 @@
     <p class="block text-sm font-medium text-gray-700">{t.projects.hourlyRates}</p>
     <div class="ml-4 spaced">
       {#each billedRoles as role}
-        <NumberField label={t.members.roles[role]} bind:value={newProject.hourlyRates[role]} unit={formatCurrency(newProject.currency)}/>
+        <NumberField label={t.members.roles[role]} bind:value={newProject.hourlyRates[role]} unit={formatCurrency(newProject.currency)} step="0.01"/>
       {/each}
     </div>
     <ColorField label={t.projects.color} bind:value={newProject.color} />
