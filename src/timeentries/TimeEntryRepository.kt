@@ -5,12 +5,10 @@ import db.Id
 import db.Status.ACTIVE
 import invoices.InvoiceId
 import invoices.InvoiceRow
-import invoices.RoleHoursEntry
 import klite.Decimal
 import klite.jdbc.*
 import klite.notNullValues
 import projects.Project
-import projects.ProjectMember.Role
 import projects.ProjectStats
 import users.User
 import java.sql.ResultSet
@@ -66,14 +64,6 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
 
   fun listByIds(ids: List<Id<TimeEntry>>): List<TimeEntry> =
     list(TimeEntry::id to ids)
-
-  fun sumHoursByRoleForInvoice(id: InvoiceId): List<RoleHoursEntry> =
-    db.query(
-      "select role, sum(hours) as hours, hourlyRate from $table",
-      TimeEntry::invoiceId eq id, suffix = "group by role, hourlyRate order by role"
-    ) {
-      RoleHoursEntry(Role.valueOf(getString("role")), Decimal(getString("hours")), Decimal(getString("hourlyRate")))
-    }
 
   fun initialRows(ids: List<Id<TimeEntry>>): List<InvoiceRow> =
     db.query(

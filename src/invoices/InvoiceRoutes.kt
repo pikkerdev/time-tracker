@@ -1,6 +1,5 @@
 package invoices
 
-import app.vatRate
 import auth.Access
 import customers.CustomerRepository
 import db.Id
@@ -8,7 +7,6 @@ import invoices.Invoice.Status
 import invoices.Invoice.Status.CREATED
 import klite.ForbiddenException
 import klite.annotations.*
-import klite.sumOf
 import projects.Project
 import timeentries.TimeEntry
 import timeentries.TimeEntryRepository
@@ -26,8 +24,7 @@ class InvoiceRoutes(
   @GET("/:id") fun getDetails(@PathParam id: InvoiceId): InvoiceDetails {
     val withCustomer = repository.getWithCustomerId(id)
     val customer = customerRepository.get(withCustomer.customerId)
-    val sumHoursByRole = timeEntryRepository.sumHoursByRoleForInvoice(id)
-    return InvoiceDetails(withCustomer.invoice, customer,sumHoursByRole)
+    return InvoiceDetails(withCustomer.invoice, customer)
   }
 
   @POST fun create(req: InvoiceCreateRequest): Invoice {
@@ -35,10 +32,8 @@ class InvoiceRoutes(
     val projectId = timeEntries.first().projectId
     if (timeEntries.any { it.projectId != projectId }) throw IllegalArgumentException("timeEntries.timeEntriesMustBelongToSameProject")
     require(timeEntries.all { it.invoiceId == null }) { "Already Invoiced" }
-    val netAmount = timeEntries.sumOf { it.hours * it.hourlyRate }
-    val vatAmount = netAmount * vatRate
     val initialRows = timeEntryRepository.initialRows(req.timeEntryIds)
-    val invoice = Invoice(repository.nextId(req.date), projectId, req.date, netAmount, vatAmount, req.description, req.dueDate, req.rows + initialRows)
+    val invoice = Invoice(repository.nextId(req.date), projectId, req.date, req.description, req.dueDate, req.rows + initialRows)
     repository.save(invoice)
     timeEntryRepository.updateInvoiceId(req.timeEntryIds, invoice.id)
     return invoice

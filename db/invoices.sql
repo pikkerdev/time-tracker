@@ -53,3 +53,11 @@ alter table invoices add column status text not null default 'CREATED';
 
 --changeset invoices.rows-jsonb
 alter table invoices add column rows jsonb not null default '[]';
+
+--changeset invoices:amount
+alter table invoices drop column amount;
+
+--changeset invoices:vatAmount
+alter table invoices drop column vatAmount;
+
+

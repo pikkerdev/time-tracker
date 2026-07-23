@@ -11,7 +11,6 @@ import db.TestData.invoiceCreateRequest
 import db.TestData.invoiceDetails
 import db.TestData.invoiceView
 import db.TestData.invoiceWithCustomer
-import db.TestData.rolesHoursEntry
 import db.TestData.timeEntry
 import db.TestData.timeEntry2
 import invoices.Invoice.Status.CREATED
@@ -20,7 +19,6 @@ import invoices.Invoice.Status.SENT
 import io.mockk.every
 import io.mockk.verify
 import io.mockk.verifySequence
-import klite.Decimal
 import org.junit.jupiter.api.Test
 
 
@@ -38,22 +36,17 @@ class InvoiceRoutesTest: BaseMocks() {
   @Test fun getDetails() {
     every { invoiceRepository.getWithCustomerId(invoice.id) } returns invoiceWithCustomer
     every { customerRepository.get(customer.id) } returns customer
-    every { timeEntryRepository.sumHoursByRoleForInvoice(invoice.id) } returns listOf(rolesHoursEntry)
-
     expect(routes.getDetails(invoice.id)).toEqual(invoiceDetails)
 
     verify {
       invoiceRepository.getWithCustomerId(invoice.id)
       customerRepository.get(customer.id)
-      timeEntryRepository.sumHoursByRoleForInvoice(invoice.id)
     }
   }
 
   @Test fun create() {
     val timeEntryIds = listOf(timeEntry.id, timeEntry2.id)
-    val amount = (timeEntry.hours * timeEntry.hourlyRate) + (timeEntry2.hours * timeEntry2.hourlyRate)
-    val vat = (amount * Decimal(app.vatRate.toString()))
-    val invoiceToSave = invoice.copy(amount = amount, vatAmount = vat)
+    val invoiceToSave = invoice.copy()
 
     every { timeEntryRepository.listByIds(timeEntryIds) } returns listOf(timeEntry, timeEntry2)
 

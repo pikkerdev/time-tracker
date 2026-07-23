@@ -37,7 +37,7 @@ object TestData {
   val projectMember = ProjectMember(project.id, user.id, DEVELOPER, createdAt = now)
   val projectMember2 = ProjectMember(project2.id, user.id, DEVELOPER, createdAt = now)
   val projectMemberUser = ProjectMemberUser(projectMember, user)
-  val invoice = Invoice(InvoiceId(2026060101), project.id, LocalDate.of(2026, 6, 1), 760.d, 240.d, description = "development", dueDate = LocalDate.of(2026, 6, 14), rows = listOf(
+  val invoice = Invoice(InvoiceId(2026060101), project.id, LocalDate.of(2026, 6, 1), description = "development", dueDate = LocalDate.of(2026, 6, 14), rows = listOf(
     InvoiceRow(description = "Invoice row", hours = 3.d, rate = 5.d, amount = 15.d )))
   val timeEntry = TimeEntry(project.id, user.id, invoiceId = null, date, 7.5.d, hourlyRate = 88.d, DEVELOPER)
   val timeEntry2 = TimeEntry(project.id, user.id, hours = 4.d, hourlyRate = 60.d, role = DEVELOPER)
@@ -47,6 +47,5 @@ object TestData {
     InvoiceRow(description = "Invoice row", hours = 3.d, rate = 5.d, amount = 15.d )))
   val invoiceView = InvoiceView(invoice, user.name, customer.name, project.name)
   val invoiceWithCustomer = InvoiceWithCustomer(invoice, customer.id)
-  val rolesHoursEntry = RoleHoursEntry(DEVELOPER, 10.d, 100.d)
-  val invoiceDetails = InvoiceDetails(invoice, customer, listOf(rolesHoursEntry), 0.24.d)
+  val invoiceDetails = InvoiceDetails(invoice, customer, 0.24.d)
 }

@@ -36,6 +36,10 @@
     }
   }
 
+  function amount(invoiceView: InvoiceView): number {
+    return invoiceView.invoice.rows?.reduce((sum, row) => sum + row.amount, 0) ?? 0
+  }
+
 
 </script>
 
@@ -46,7 +50,7 @@
     [t.invoices.date, i => i.invoice.date],
     [t.invoices.dueDate, i => i.invoice.dueDate],
     [t.invoices.description, i => i.invoice.description],
-    [t.invoices.amountWithVat, i => i.invoice.totalAmount],
+    [t.invoices.amount, i => amount(i)],
     [t.invoices.createdBy, i => i.creatorName],
     [t.general.status, i => i.invoice.status],
     ''
@@ -57,7 +61,7 @@
       <td>{formatDate(i.invoice.date)}</td>
       <td>{formatDate(i.invoice.dueDate)}</td>
       <td>{i.invoice.description}</td>
-      <td>{formatAmount(i.invoice.amount)} ({formatAmount(i.invoice.totalAmount)})</td>
+      <td>{formatAmount(amount(i))}</td>
       <td>{i.creatorName}</td>
       <td>{i.invoice.status}</td>
       <td>

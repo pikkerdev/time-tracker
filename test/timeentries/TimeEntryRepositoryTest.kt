@@ -22,12 +22,11 @@ import db.TestData.twoDaysAgo
 import db.TestData.user
 import db.TestData.yesterday
 import invoices.InvoiceRepository
-import invoices.RoleHoursEntry
+import invoices.InvoiceRow
 import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import projects.ProjectMember.Role.ARCHITECT
-import projects.ProjectMember.Role.DEVELOPER
 import projects.ProjectRepository
 import users.UserRepository
 
@@ -90,15 +89,15 @@ class TimeEntryRepositoryTest: DBTest() {
     expect(repository.get(timeEntry.id).invoiceId).toEqual(invoice.id)
   }
 
-  @Test fun `sum hours by role for invoices`() {
+  @Test fun `initial rows`() {
     repository.save(timeEntry.copy(invoiceId = invoice.id))
     repository.save(timeEntry2.copy(invoiceId = invoice.id))
-    repository.save(timeEntry2.copy(id = Id(), invoiceId = invoice.id, hourlyRate = 100.d, role = ARCHITECT))
+    repository.save(timeEntry3.copy(invoiceId = invoice.id, projectId = project.id, hours = 4.d, hourlyRate = 100.d, role = ARCHITECT))
 
-    expect(repository.sumHoursByRoleForInvoice(invoice.id)).toContain(
-      RoleHoursEntry(DEVELOPER, 7.5.d, 88.d),
-      RoleHoursEntry(DEVELOPER, 4.d, 60.d),
-      RoleHoursEntry(ARCHITECT, 4.d, 100.d),
+    expect(repository.initialRows(listOf(timeEntry.id, timeEntry2.id, timeEntry3.id))).toContain(
+      InvoiceRow("DEVELOPER", 660.d, 7.5.d, 88.d),
+      InvoiceRow("DEVELOPER", 240.d, 4.d, 60.d),
+      InvoiceRow("ARCHITECT", 400.d, 4.d, 100.d),
     )
   }
 

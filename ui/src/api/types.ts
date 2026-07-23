@@ -7,11 +7,11 @@ export enum Status {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class invoices.Invoice$Status
 export enum InvoiceStatus {CREATED = 'CREATED', SENT = 'SENT', PAID = 'PAID'}
 // class invoices.Invoice
-export interface Invoice {amount: number; date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; projectId: Id<Project>; rows: Array<InvoiceRow>; status: InvoiceStatus; totalAmount: number; updatedAt?: Instant; vatAmount: number}
+export interface Invoice {date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; projectId: Id<Project>; rows: Array<InvoiceRow>; status: InvoiceStatus; updatedAt?: Instant}
 // class invoices.InvoiceCreateRequest
 export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; rows: Array<InvoiceRow>; timeEntryIds: Array<Id<TimeEntry>>}
 // class invoices.InvoiceDetails
-export interface InvoiceDetails {customer: Customer; entries: Array<RoleHoursEntry>; invoice: Invoice; vat: number}
+export interface InvoiceDetails {customer: Customer; invoice: Invoice; vat: number}
 // class invoices.InvoiceId
 export type InvoiceId = number
 // class invoices.InvoiceRow
@@ -20,8 +20,6 @@ export interface InvoiceRow {amount: number; description: string; hours?: number
 export interface InvoiceView {creatorName: string; customerName: string; invoice: Invoice; projectName: string}
 // class invoices.InvoiceWithCustomer
 export interface InvoiceWithCustomer {customerId: Id<Customer>; invoice: Invoice}
-// class invoices.RoleHoursEntry
-export interface RoleHoursEntry {hours: number; rate: number; role: ProjectMemberRole}
 // class merit.CountryCode
 export enum CountryCode {EE = 'EE'}
 // class merit.MeritInvoice$Customer
