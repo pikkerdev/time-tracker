@@ -41,6 +41,7 @@
   <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours} step={0.1}/>
   {#if !isNew}
     <FormField label={t.timeEntries.date} type="date" bind:value={timeEntry.date} max={today}/>
+    <NumberField label={t.projects.hourlyRate} bind:value={timeEntry.hourlyRate} step="0.01"/>
   {/if}
   <EntryActivityEditor label={t.timeEntries.activity} bind:activity={timeEntry.activity} projectActivities={project?.activities}/>
   <TimeEntryStoryIdField label={t.timeEntries.storyIds} required={false} bind:storyIds={timeEntry.storyIds}/>
