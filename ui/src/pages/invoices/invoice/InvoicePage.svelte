@@ -8,9 +8,11 @@
 
   export let id: InvoiceId
 
+  let amount: number
   let details: InvoiceDetails
   onMount(async () => {
     details = await api.get(`invoices/${id}`)
+    amount = details.invoice.rows.reduce((sum, row) => sum + row.amount, 0)
   })
 
   function print() {
@@ -79,28 +81,32 @@
       </tr>
       </thead>
       <tbody>
-      {#each details?.entries ?? [] as entry}
+      {#each details?.invoice.rows ?? [] as row}
         <tr>
-          <td class="td">{entry.role.toTitleCase()} {t.invoices.workingHour}</td>
-          <td class="td td-num">{entry.hours}</td>
-          <td class="td td-num">{formatAmount(entry.rate)}</td>
-          <td class="td td-num">{formatAmount(entry.hours * entry.rate)}</td>
+          <td class="td">{row.description.toTitleCase()} {['DEVELOPER', 'INTERN', 'ARCHITECT'].includes(row.description) ? ` ${t.invoices.workingHour}` : ''}</td>
+          <td class="td td-num">{row.hours}</td>
+          {#if row.rate}
+          <td class="td td-num">{formatAmount(row.rate)}</td>
+          {:else }
+            <td></td>
+          {/if}
+          <td class="td td-num">{formatAmount(row.amount)}</td>
         </tr>
       {/each}
       </tbody>
       <tfoot>
       <tr>
         <td class="tfoot-label" colspan="3">{t.invoices.subtotal}</td>
-        <td class="tfoot-value">{formatAmount(details?.invoice.amount ?? 0)}</td>
+        <td class="tfoot-value">{formatAmount(amount ?? 0)}</td>
       </tr>
       <tr>
         <td class="tfoot-label" colspan="3">{t.invoices.vat} ({details?.vat * 100}%)</td>
-        <td class="tfoot-value">{formatAmount(details?.invoice.vatAmount ?? 0)}</td>
+        <td class="tfoot-value">{formatAmount(amount * details?.vat)}</td>
       </tr>
       <tr>
         <td class="tfoot-label tfoot-label-total" colspan="3">{t.invoices.totalAmount}</td>
         <td
-          class="tfoot-value tfoot-value-total">{formatAmount((details?.invoice.amount ?? 0) + (details?.invoice.vatAmount ?? 0))}</td>
+          class="tfoot-value tfoot-value-total">{formatAmount((amount ?? 0) + (amount * details?.vat))}</td>
       </tr>
       </tfoot>
     </table>
