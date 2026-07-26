@@ -6,7 +6,6 @@ import db.Id
 import db.Status
 import db.Status.DELETED
 import klite.jdbc.*
-import klite.toValues
 import users.User
 import java.sql.ResultSet
 import javax.sql.DataSource
@@ -19,10 +18,8 @@ class ProjectRepository(db: DataSource): CrudRepository<Project>(db, "projects")
   private val notDeletedMember = "pm.status" neq DELETED
   private val notDeleted = "$table.status" neq DELETED
 
-  override fun ResultSet.mapper() = create(
-    Project::customerName to getString("c.name")
-  )
-  override fun Project.persister() = toDBValues(skip = setOf(Project::customerName.name))
+  override fun ResultSet.mapper() = create(Project::customerName to getString("c.name"))
+  override fun Project.persister() = toDBValues(skip = setOf(Project::customerName))
 
   fun forMember(userId: Id<User>, includeDeleted: Boolean = false): List<Project> =
     db.select("$selectFrom join project_members pm on $table.id = pm.projectId",
