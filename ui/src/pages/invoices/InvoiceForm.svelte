@@ -13,7 +13,7 @@
   export let selectedEntryIds: string[] = []
   export let show: boolean
 
-  let description: string = ''
+  let description: string
   let date = today
   let dueDate: LocalDate = toISODate(today, d => {d.setDate(d.getDate() + 14)
   })
@@ -28,10 +28,10 @@
   }</script>
 
 <Form {submit}>
-  <FormField label={t.invoices.description} bind:value={description}></FormField>
-  <FormField label={t.invoices.date} type="date" bind:value={date}></FormField>
-  <FormField label={t.invoices.dueDate} type="date" bind:value={dueDate}></FormField>
+  <FormField label={t.invoices.description} bind:value={description}/>
+  <FormField label={t.invoices.date} type="date" bind:value={date}/>
+  <FormField label={t.invoices.dueDate} type="date" bind:value={dueDate}/>
   <InvoiceRowField label={t.invoices.customRows} bind:rows/>
-  <Button class="primary" label={t.invoices.create} onclick={submit}/>
+  <Button class="primary" label={t.invoices.create} type="submit"/>
 </Form>
 
