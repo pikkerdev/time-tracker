@@ -20,6 +20,11 @@
   }
 </script>
 
+<svelte:head>
+  <title>{details?.invoice.description}</title>
+</svelte:head>
+
+
 <div class="fixed top-2 left-2 flex items-center gap-2 no-print">
   <Button class="rounded-full! size-12! bg-white" icon="arrowhead-left" iconClass="size-6!"
           onclick={() => window.close()}/>
