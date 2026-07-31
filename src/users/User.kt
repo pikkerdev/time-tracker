@@ -3,6 +3,7 @@ package users
 import db.Entity
 import db.Id
 import klite.Email
+import klite.Phone
 import klite.jdbc.UpdatableEntity
 import klite.jdbc.nowSec
 import klite.oauth.OAuthUser
@@ -21,6 +22,7 @@ data class User(
   val avatarUrl: URI? = null,
   val createdAt: Instant = nowSec(),
   override var updatedAt: Instant? = null,
+  val phone: Phone? = null,
   override val id: Id<User> = Id()
 ): Entity<User>, OAuthUser, UpdatableEntity {
   val isInternal get() = authRole == AuthRole.INTERNAL

@@ -32,15 +32,17 @@
 
 <MainPageLayout class="relative flex flex-col gap-4" title={t.users.title}>
   <SortableTable columns={[
-    [t.users.name, u => u.name],
-    [t.users.email, 'email'],
-    [t.users.role, 'authRole'],
+    'name',
+    'email',
+    'phone',
+    [t.users.role, u => u.authRole],
     ['', '']
   ]} items={users} let:item>
     {@const isCurrentUser = $user.id === item.id}
     <tr>
       <td>{item.name}</td>
       <td>{item.email}</td>
+      <td>{item.phone}</td>
       <td>
         {#if !isCurrentUser}
           <SelectField bind:value={item.authRole} options={authRoles}/>

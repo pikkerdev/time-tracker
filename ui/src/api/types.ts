@@ -64,7 +64,7 @@ export interface TimeEntryView {customerName: string; entry: TimeEntry; projectN
 // class users.AuthRole
 export enum AuthRole {ADMIN = 'ADMIN', INTERNAL = 'INTERNAL', EXTERNAL = 'EXTERNAL', CUSTOMER = 'CUSTOMER'}
 // class users.User
-export interface User {authRole: AuthRole; avatarUrl?: URI; createdAt: Instant; email: Email; firstName: string; id: Id<User>; isAdmin: boolean; isCustomer: boolean; isExternal: boolean; isInternal: boolean; lastName: string; name: string; updatedAt?: Instant}
+export interface User {authRole: AuthRole; avatarUrl?: URI; createdAt: Instant; email: Email; firstName: string; id: Id<User>; isAdmin: boolean; isCustomer: boolean; isExternal: boolean; isInternal: boolean; lastName: string; name: string; phone?: Phone; updatedAt?: Instant}
 
 // klite.Id
 export type Id<T> = string & {_of?: T}
