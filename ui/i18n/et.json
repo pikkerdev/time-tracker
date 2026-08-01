@@ -85,6 +85,7 @@
     "firstName": "Eesnimi",
     "lastName": "Perekonnanimi",
     "email": "E-post",
+    "phone": "Telefon",
     "role": "Roll"
   },
   "members": {
