@@ -40,8 +40,7 @@
 </script>
 
 <SortableTable labels={t.timeEntries} columns={[
-      [t.customers.customer, e => e.customerName],
-      [t.projects.project, e => e.projectName],
+      [t.projects.project, e => `${e.customerName} - ${e.projectName}`],
       !narrow && [t.users.name, e => e.userName],
       !narrow && [t.timeEntries.date, e => e.entry.date],
       [t.timeEntries.hours, e => e.entry.hours],
@@ -53,8 +52,7 @@
     ]} rightAlign={[t.timeEntries.hours, t.projects.hourlyRate]}
    items={timeEntries} let:item={e}>
   <tr>
-    <td>{e.customerName}</td>
-    <td>{e.projectName}</td>
+    <td>{e.customerName} - {e.projectName}</td>
     {#if !narrow}
       <td>{e.userName}</td>
       <td>{formatDate(e.entry.date)}</td>
