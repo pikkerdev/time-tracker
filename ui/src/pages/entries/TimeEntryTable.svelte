@@ -7,6 +7,7 @@
   import Button from 'src/components/Button.svelte'
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
+  import Icon from 'src/icons/Icon.svelte'
 
   export let timeEntries: TimeEntryView[]
   export let narrow = false
@@ -47,7 +48,6 @@
       [t.timeEntries.activity, e => e.entry.activity],
       [t.timeEntries.description, e => e.entry.description],
       !narrow && [t.projects.hourlyRate, e => e.entry.hourlyRate],
-      !narrow && [t.timeEntries.invoiceId, e => e.entry.invoiceId],
       ''
     ]} rightAlign={[t.timeEntries.hours, t.projects.hourlyRate]}
    items={timeEntries} let:item={e}>
@@ -63,15 +63,13 @@
     {#if !narrow}
       <td class="text-right">{formatAmount(e.entry.hourlyRate)}</td>
     {/if}
-    {#if !narrow}
-      <td>
-        {#if e.entry.invoiceId}
-          <a href="/invoices/{e.entry.invoiceId}">{e.entry.invoiceId}</a>
-        {/if}
-      </td>
-      {/if}
       <td>
         <div class="flex gap-3 justify-end items-center">
+          {#if e.entry.invoiceId && !narrow}
+            <a class="btn default icon-only" href="/invoices/{e.entry.invoiceId}" target="_blank">
+              <Icon name="eye"/>
+            </a>
+          {/if}
           {#if selectEntries && !e.entry.invoiceId}
             <input type="checkbox" checked={selectedEntryIds.includes(e.entry.id)} onchange={() => toggleEntry(e.entry.id)} class="h-4 w-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500">
           {/if}
