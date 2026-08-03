@@ -9,6 +9,7 @@ import db.TestData.date
 import db.TestData.project
 import db.TestData.projectMember
 import db.TestData.timeEntry
+import db.TestData.timeEntry2
 import db.TestData.timeEntryView
 import db.TestData.today
 import db.TestData.user
@@ -66,5 +67,14 @@ class TimeEntryRoutesTest: BaseMocks() {
   @Test fun delete() {
     routes.delete(user, timeEntry.id)
     verify { timeEntryRepository.delete(timeEntry.id) }
+  }
+
+  @Test fun `update hourly rates`() {
+    val req = UpdateHourlyRatesRequest(4.5.d, listOf(timeEntry.id))
+    routes.updateHourlyRates(req)
+    verify { timeEntryRepository.updateHourlyRates(listOf(timeEntry.id), 4.5.d) }
+
+    every {timeEntryRepository.listViewByIds(listOf(timeEntry.id))} returns listOf(timeEntryView)
+    expect(routes.updateHourlyRates(req)).toEqual(listOf(timeEntryView))
   }
 }

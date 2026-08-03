@@ -65,6 +65,11 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   fun listByIds(ids: List<Id<TimeEntry>>): List<TimeEntry> =
     list(TimeEntry::id to ids)
 
+  fun listViewByIds(ids: List<Id<TimeEntry>>): List<TimeEntryView> =
+    db.select(
+      viewFrom, notNullValues("time_entry.id" eq ids,), suffix = defaultOrder
+    ) { viewMapper() }
+
   fun initialRows(ids: List<Id<TimeEntry>>): List<InvoiceRow> =
     db.query(
       "select role, sum(hours * hourlyRate) as amount, sum(hours) as hours, hourlyRate from $table",
@@ -89,4 +94,8 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
 
   fun delete(id: Id<TimeEntry>) =
     db.delete(table, TimeEntry::id to id, TimeEntry::invoiceId to null)
+
+  fun updateHourlyRates(ids: List<Id<TimeEntry>>, rate: Decimal) {
+    db.update(table, mapOf(TimeEntry::hourlyRate to rate), TimeEntry::id to ids)
+  }
 }

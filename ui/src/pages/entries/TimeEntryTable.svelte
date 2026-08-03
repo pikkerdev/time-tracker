@@ -12,20 +12,23 @@
   export let narrow = false
   export let onSaved: () => void = () => {}
   export let selectedEntryIds: string[] = []
-  export let projectId: string | undefined = undefined
+  export let selectEntries = false
 
   let timeEntry: TimeEntryView
   let show = false
 
-  $: if (!narrow && timeEntries && projectId) {
+  $: if (!narrow && timeEntries && selectEntries) {
     selectedEntryIds = timeEntries.filter(e => !e.entry.invoiceId).map(e => e.entry.id)
+  }
+  $: if (!selectEntries){
+    selectedEntryIds = []
   }
 
   async function deleteEntry(id: Id<TimeEntry>){
     if (confirm(t.general.deleteConfirm)) {
       await api.delete(`timeentries/${id}`)
       showToast(`${t.general.deleted}`)
-      onSaved()
+      timeEntries = timeEntries.filter(i => i.entry.id !== id)
     }
   }
 
@@ -66,13 +69,14 @@
       <td>
         {#if e.entry.invoiceId}
           <a href="/invoices/{e.entry.invoiceId}">{e.entry.invoiceId}</a>
-        {:else if projectId}
-            <input type="checkbox" checked={selectedEntryIds.includes(e.entry.id)} onchange={() => toggleEntry(e.entry.id)} class="h-4 w-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500">
         {/if}
       </td>
       {/if}
       <td>
-        <div class="flex gap-3 justify-end">
+        <div class="flex gap-3 justify-end items-center">
+          {#if selectEntries && !e.entry.invoiceId}
+            <input type="checkbox" checked={selectedEntryIds.includes(e.entry.id)} onchange={() => toggleEntry(e.entry.id)} class="h-4 w-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500">
+          {/if}
           <Button label={t.general.edit} disabled={!!e.entry.invoiceId} onclick={() => {timeEntry = e; show = true}}/>
           <Button icon="trash" disabled={!!e.entry.invoiceId} onclick={() => {deleteEntry(e.entry.id)}}/>
         </div>

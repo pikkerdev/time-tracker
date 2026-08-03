@@ -114,7 +114,9 @@
     "toDate": "Kuni",
     "activity": "Tegevus",
     "activities": "Tegevused",
-    "selected": "Valitud"
+    "selected": "Valitud",
+    "editEntries": "Muuda ajaandeid",
+    "selectEntries": "Vali ajaandeid"
   },
   "invoices": {
     "title": "Arved",

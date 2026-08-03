@@ -68,4 +68,18 @@ class TimeEntryRoutes(
     require(timeEntryRepository.get(id).invoiceId == null) {"Can not delete time entry that is in invoice"}
     timeEntryRepository.delete(id)
   }
+
+  @POST("/hourlyRates") @Access(ADMIN)
+  fun updateHourlyRates(req: UpdateHourlyRatesRequest): List<TimeEntryView> {
+    val timeEntries = timeEntryRepository.listViewByIds(req.timeEntryIds)
+    require(timeEntries.all { it.entry.invoiceId == null }) {"Can not edit time entry that is in invoice"}
+    timeEntryRepository.updateHourlyRates(req.timeEntryIds, req.rate)
+    return timeEntryRepository.listViewByIds(req.timeEntryIds)
+  }
+
 }
+
+data class UpdateHourlyRatesRequest(
+  val rate: Decimal,
+  val timeEntryIds: List<Id<TimeEntry>>
+)
