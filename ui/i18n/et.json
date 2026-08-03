@@ -154,7 +154,8 @@
     "sent": "Saadetud",
     "paid": "Makstud",
     "customRows": "Lisa read",
-    "addRow": "Lisa rida"
+    "addRow": "Lisa rida",
+    "setInvoiceStatusTo": "Muuda arve staatus"
   },
   "company": {
     "name": "Pikker Technology OÜ",
