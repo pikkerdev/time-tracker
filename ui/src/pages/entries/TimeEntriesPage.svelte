@@ -59,7 +59,7 @@
       <CheckboxField label={t.timeEntries.showMyTimeEntries} title={t.timeEntries.showMyTimeEntries} bind:checked={myTimeEntries} />
     {/if}
   </div>
-  <TimeEntryTable bind:selectedEntryIds={selectedEntryIds} {selectEntries} {timeEntries} {projectId} onSaved={() => from && to && loadEntries(from, to, myTimeEntries, projectId)}/>
+  <TimeEntryTable bind:selectedEntryIds={selectedEntryIds} {selectEntries} {timeEntries} onSaved={() => from && to && loadEntries(from, to, myTimeEntries, projectId)}/>
   {#if selectedEntryIds.length > 0}
     <div class="bg-white shadow-lg border border-b-black fixed bottom-2 left-2 justify-items-center space-y-1 px-2 py-2 rounded-md">
       <div class="font-bold">{t.invoices.totalAmount}: {formatAmount(totalAmount)}</div>
