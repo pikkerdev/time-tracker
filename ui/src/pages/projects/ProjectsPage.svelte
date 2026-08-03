@@ -49,9 +49,9 @@
   </div>
   <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 my-3 text-lg">
     {#each projects ?? [] as project}
-      <Link to="/projects/{project.id}" class="border border-gray-300 rounded-lg px-4 py-3 bg-white hover:bg-stone-50">
+      <Link to="/projects/{project.id}" class="flex flex-col border border-gray-300 rounded-lg px-4 py-3 bg-white hover:bg-stone-50">
         <h4>{project.customerName} - {project.name}</h4>
-        <div class="flex justify-end gap-4 text-sm">
+        <div class="flex justify-end gap-4 text-sm mt-auto">
           {#if project.status == 'DELETED'}
             <p><span class="font-medium text-red-700">{project.status}</span></p>
           {/if}
