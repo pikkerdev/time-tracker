@@ -7,8 +7,6 @@ import ch.tutteli.atrium.api.fluent.en_GB.toThrow
 import ch.tutteli.atrium.api.verbs.expect
 import customers.CustomerRepository
 import db.DBTest
-import db.Status.ACTIVE
-import db.Status.DELETED
 import db.TestData.customer
 import db.TestData.invoice
 import db.TestData.project
@@ -47,10 +45,11 @@ class InvoiceRepositoryTest: DBTest() {
     expect(repository.nextId(invoice.date)).toEqual(InvoiceId(invoice.id.value + 1))
   }
 
-  @Test fun `get invoice with customer ID`() {
+  @Test fun `get invoice with IDs`() {
     repository.save(invoice)
 
-    expect(repository.getWithCustomerId(invoice.id).customerId).toEqual(customer.id)
+    expect(repository.getWithIds(invoice.id).customerId).toEqual(customer.id)
+    expect(repository.getWithIds(invoice.id).creatorId).toEqual(user.id)
   }
 
   @Test fun `list view`() {
