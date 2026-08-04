@@ -20,8 +20,10 @@ export interface InvoiceRow {amount: number; description: string; hours?: number
 export interface InvoiceView {creatorName: string; customerName: string; invoice: Invoice; projectName: string}
 // class invoices.InvoiceWithCustomer
 export interface InvoiceWithCustomer {customerId: Id<Customer>; invoice: Invoice}
-// class merit.CountryCode
-export enum CountryCode {EE = 'EE'}
+// class locations.CountryCode
+export type CountryCode = string
+// class locations.CountryConfig
+export interface CountryConfig {phoneAreaCode: string}
 // class merit.MeritInvoice$Customer
 export interface MeritInvoiceCustomer {countryCode: CountryCode; email?: Email; name: string; notTDCustomer: boolean; phoneNo?: Phone; regNo?: string}
 // class merit.MeritInvoice$InvoiceRequest
