@@ -86,7 +86,8 @@
     "lastName": "Last name",
     "email": "Email",
     "phone": "Phone",
-    "role": "Role"
+    "role": "Role",
+    "user": "User"
   },
   "members": {
     "title": "Members",

@@ -1,6 +1,10 @@
 import type en from './en.json'
 import langs from './langs.json'
 import type {LocalDate} from 'src/api/types'
+import countriesData from './countries.json'
+import type {CountryCode} from 'src/api/types'
+
+export const countries: Record<CountryCode, {vatRate: number, currency: string, phoneAreaCode: string}> = countriesData
 
 export function changeLang(lang: typeof langs[number]) {
   localStorage['lang'] = lang

@@ -86,7 +86,8 @@
     "lastName": "Perekonnanimi",
     "email": "E-post",
     "phone": "Telefon",
-    "role": "Roll"
+    "role": "Roll",
+    "user": "Kasutaja"
   },
   "members": {
     "title": "Liikmed",
