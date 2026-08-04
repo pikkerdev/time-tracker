@@ -5,7 +5,6 @@
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import { type User} from 'src/api/types'
-  import {showToast, ToastType} from 'src/stores/toasts'
   import Button from 'src/components/Button.svelte'
   import Modal from 'src/components/Modal.svelte'
   import UserForm from 'src/pages/users/UserForm.svelte'
@@ -13,26 +12,15 @@
   let users: User[] = []
   let edit: User|false = false
 
-  async function save(user: User) {
-    try {
-      const newUser: User = await api.post(`users/${user.id}`, user)
-      const userIndex = users.findIndex(u => u.id === newUser.id)
-      users[userIndex] = newUser
-      showToast(t.general.saved)
-    } catch (e) {
-      users = await api.get('users')
-      showToast(t.errors.cannotModifyInitialAdminRole, { type: ToastType.ERROR })
-    }
-  }
+  onMount(
+    async () => users = await api.get('users')
+  )
 
   function onSaved(user: User) {
     users = users.replaceById(user)
     edit = false
   }
 
-  onMount(
-    async () => users = await api.get('users')
-  )
 </script>
 
 <MainPageLayout class="relative flex flex-col gap-4" title={t.users.title}>
