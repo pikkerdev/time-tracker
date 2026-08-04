@@ -126,7 +126,7 @@
       </div>
       <div>
         <h4 class="section-label">{t.invoices.contact}</h4>
-        <p class="section-text">{details?.creator.firstName} {details?.creator.lastName}</p>
+        <p class="section-text">{(details?.creator.firstName + ' ' + details?.creator.lastName).toTitleCase()}</p>
         <p class="section-text">{details?.creator.phone}</p>
         <p class="section-text">{details?.creator.email}</p>
       </div>
