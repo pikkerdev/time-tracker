@@ -114,7 +114,9 @@
     "toDate": "Kuni",
     "activity": "Tegevus",
     "activities": "Tegevused",
-    "selected": "Valitud"
+    "selected": "Valitud",
+    "editEntries": "Muuda ajaandeid",
+    "selectEntries": "Vali ajaandeid"
   },
   "invoices": {
     "title": "Arved",
@@ -152,7 +154,8 @@
     "sent": "Saadetud",
     "paid": "Makstud",
     "customRows": "Lisa read",
-    "addRow": "Lisa rida"
+    "addRow": "Lisa rida",
+    "setInvoiceStatusTo": "Muuda arve staatus"
   },
   "company": {
     "name": "Pikker Technology OÜ",

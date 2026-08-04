@@ -29,7 +29,7 @@
     <TimeEntryCalendar bind:date {dates} {timeEntryHours}/>
     <div class="flex flex-wrap-reverse justify-center gap-3 max-w-full">
       <div class="px-4 overflow-x-scroll max-w-full">
-        <TimeEntryTable projectId={timeEntry.projectId} {timeEntries} narrow onSaved={() => loadEntries(date)}/>
+        <TimeEntryTable {timeEntries} narrow onSaved={() => loadEntries(date)}/>
       </div>
       <div class="w-70">
         <TimeEntryForm bind:timeEntry onSaved={() => loadEntries(date)}/>

@@ -114,7 +114,9 @@
     "toDate": "To",
     "activity": "Activity",
     "activities": "Activities",
-    "selected": "Selected"
+    "selected": "Selected",
+    "editEntries": "Edit entries",
+    "selectEntries": "Select entries"
   },
   "invoices": {
     "title": "Invoices",
@@ -152,7 +154,8 @@
     "sent": "Sent",
     "paid": "Paid",
     "customRows": "Custom rows",
-    "addRow": "Add row"
+    "addRow": "Add row",
+    "setInvoiceStatusTo": "Set invoice status to"
   },
   "company": {
     "name": "Pikker Technology OÜ",

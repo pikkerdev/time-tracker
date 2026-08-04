@@ -60,6 +60,8 @@ export interface ProjectView {project: Project; stats: ProjectStats}
 export interface TimeEntry {activity: string; date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; invoiceId?: InvoiceId; projectId: Id<Project>; role: ProjectMemberRole; storyIds: Array<string>; userId: Id<User>}
 // class timeentries.TimeEntryView
 export interface TimeEntryView {customerName: string; entry: TimeEntry; projectName: string; userName: string}
+// class timeentries.UpdateHourlyRatesRequest
+export interface UpdateHourlyRatesRequest {rate: number; timeEntryIds: Array<Id<TimeEntry>>}
 // class users.AuthRole
 export enum AuthRole {ADMIN = 'ADMIN', INTERNAL = 'INTERNAL', EXTERNAL = 'EXTERNAL', CUSTOMER = 'CUSTOMER'}
 // class users.User

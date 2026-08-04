@@ -83,6 +83,11 @@ class TimeEntryRepositoryTest: DBTest() {
     expect(repository.listByIds(listOf(timeEntry.id))).toContainExactly(timeEntry)
   }
 
+  @Test fun `list view by ids`(){
+    repository.save(timeEntry)
+    expect(repository.listViewByIds(listOf(timeEntry.id))).toContainExactly(timeEntryView)
+  }
+
   @Test fun `update invoice id`() {
     repository.save(timeEntry)
     repository.updateInvoiceId(listOf(timeEntry.id), invoice.id)
@@ -105,5 +110,13 @@ class TimeEntryRepositoryTest: DBTest() {
     repository.save(timeEntry)
     repository.delete((timeEntry.id))
     expect(repository.list()).toBeEmpty()
+  }
+
+  @Test fun `update hourly rates`(){
+    repository.save(timeEntry)
+    repository.save(timeEntry2)
+    repository.updateHourlyRates(listOf(timeEntry.id, timeEntry2.id), 10.d)
+    expect(repository.get(timeEntry.id).hourlyRate).toEqual(10.d)
+    expect(repository.get(timeEntry2.id).hourlyRate).toEqual(10.d)
   }
 }

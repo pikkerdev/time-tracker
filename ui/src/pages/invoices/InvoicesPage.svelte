@@ -26,7 +26,7 @@
   }
 
   async function setStatus(invoiceView: InvoiceView, status: InvoiceStatus) {
-    if (confirm(t.general.deleteConfirm)) {
+    if (confirm(`${t.invoices.setInvoiceStatusTo} ${status.toLowerCase()}?`)) {
       const res = await api.post(`invoices/${invoiceView.invoice.id}`, `"${status}"`)
       if (res) {
         invoiceView.invoice.status = status
