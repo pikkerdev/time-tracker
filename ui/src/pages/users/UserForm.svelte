@@ -23,7 +23,7 @@
 </script>
 
 <Form {submit}>
-  <PhoneField label={t.users.phone} bind:value={user.phone} countryCode={COUNTRY_CODE}/>
+  <PhoneField label={t.users.phone} bind:value={user.phone} countryCode={COUNTRY_CODE} required={false}/>
   <SelectField label={t.users.role} bind:value={user.authRole} options={authRoles}/>
   <Button type="submit" label={t.general.save} class="primary"/>
 </Form>
