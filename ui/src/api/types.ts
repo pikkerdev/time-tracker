@@ -7,9 +7,9 @@ export enum Status {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class invoices.Invoice$Status
 export enum InvoiceStatus {CREATED = 'CREATED', SENT = 'SENT', PAID = 'PAID'}
 // class invoices.Invoice
-export interface Invoice {date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; projectId: Id<Project>; rows: Array<InvoiceRow>; status: InvoiceStatus; updatedAt?: Instant}
+export interface Invoice {date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; projectId: Id<Project>; rows: Array<InvoiceRow>; status: InvoiceStatus; title: string; updatedAt?: Instant}
 // class invoices.InvoiceCreateRequest
-export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; rows: Array<InvoiceRow>; timeEntryIds: Array<Id<TimeEntry>>}
+export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; rows: Array<InvoiceRow>; timeEntryIds: Array<Id<TimeEntry>>; title: string}
 // class invoices.InvoiceDetails
 export interface InvoiceDetails {creator: User; customer: Customer; invoice: Invoice; vat: number}
 // class invoices.InvoiceId

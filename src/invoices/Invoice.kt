@@ -18,6 +18,7 @@ data class Invoice(
   override val id: InvoiceId,
   val projectId: Id<Project>,
   val date: LocalDate,
+  val title: String,
   val description: String,
   val dueDate: LocalDate,
   @JsonColumn val rows: List<InvoiceRow> = emptyList(),

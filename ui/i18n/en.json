@@ -133,6 +133,7 @@
     "amountWithVat": "Amount (with VAT)",
     "invoiced": "Invoiced",
     "preview": "Invoice preview",
+    "title": "Invoice title",
     "description": "Invoice description",
     "dueDate": "Due date",
     "date": "Date",

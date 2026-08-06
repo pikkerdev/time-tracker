@@ -60,4 +60,6 @@ alter table invoices drop column amount;
 --changeset invoices:vatAmount
 alter table invoices drop column vatAmount;
 
+--changeset invoices.title
+alter table invoices add column title text not null default '';
 
