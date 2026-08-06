@@ -77,7 +77,8 @@
     "unbilledHours": "Arveldamata tunnid",
     "totalRevenue": "Kogukäive",
     "unbilledRevenue": "Arveldamata käive",
-    "color": "Värv"
+    "color": "Värv",
+    "monthlyHours": "Tunnid kuude kaupa"
   },
   "users": {
     "title": "Kasutajad",

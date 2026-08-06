@@ -9,7 +9,6 @@ import db.TestData.date
 import db.TestData.project
 import db.TestData.projectMember
 import db.TestData.timeEntry
-import db.TestData.timeEntry2
 import db.TestData.timeEntryView
 import db.TestData.today
 import db.TestData.user
@@ -76,5 +75,11 @@ class TimeEntryRoutesTest: BaseMocks() {
 
     every {timeEntryRepository.listViewByIds(listOf(timeEntry.id))} returns listOf(timeEntryView)
     expect(routes.updateHourlyRates(req)).toEqual(listOf(timeEntryView))
+  }
+
+  @Test fun `project times`() {
+    val projectTimes = mapOf(today.withDayOfMonth(1) to 7.d, today.withDayOfMonth(1).withYear(2024) to 2.d)
+    every { timeEntryRepository.projectTimes(project.id) } returns projectTimes
+    expect(routes.projectTimes(project.id)).toEqual(projectTimes)
   }
 }

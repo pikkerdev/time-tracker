@@ -1,6 +1,6 @@
 <script lang="ts">
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
-  import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser, Status} from 'src/api/types'
+  import {type Id, type LocalDate, type Project, ProjectMemberRole, type ProjectMemberUser, Status} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import {formatAmount, formatCurrency, t} from 'i18n'
@@ -13,16 +13,19 @@
   import {showToast} from 'src/stores/toasts'
   import {navigate} from '@keksworks/svelte-tiny-router'
   import Icon from 'src/icons/Icon.svelte'
+  import ProjectBarChart from 'src/pages/projects/project/ProjectBarChart.svelte'
 
   export let id: Id<Project>
 
   let ctx: ProjectContext | undefined
+  let projectTimes: Record<LocalDate, number>
 
   onMount(async () => {
     ctx = await api.get('projects/' + id)
     api.get<ProjectMemberUser[]>(`projects/${id}/members`).then(r => {
       ctx!.members = r.indexBy(m => m.user.id)
     })
+    projectTimes = await api.get(`timeentries/projects/` + id)
   })
 
   async function deleteProject(Id: Id<Project>) {
@@ -58,10 +61,10 @@
       <Button type="button" icon="trash" title={t.members.deleteMember} onclick={() => deleteProject(id)}/>
     {/if}
   </div>
-  <div class="flex flex-col gap-2 mt-4">
-    <p class="text-lg">{ctx?.project?.description}</p>
-    <div class="flex flex-col flex-wrap gap-x-16 gap-y-4 md:flex-row">
-      <div class="flex flex-col w-fit">
+  <div class="flex flex-wrap gap-2 mt-4">
+    <div class="grid grid-cols-1 gap-x-16 gap-y-4">
+      <p class="text-lg">{ctx?.project?.description}</p>
+      <div class="flex flex-col">
         <span class="text-lg font-semibold">{t.projects.overview}</span>
         <hr class="text-pikker-gold border-t-3">
         <div class="grid grid-cols-2 gap-x-4">
@@ -82,7 +85,7 @@
           {/if}
             </div>
       </div>
-      <div class="flex flex-col w-fit">
+      <div class="flex flex-col">
         <span class="text-lg font-semibold">{t.projects.hourlyRates}</span>
         <hr class="text-pikker-gold border-t-3">
         <div class="grid grid-cols-2 gap-x-4">
@@ -106,11 +109,14 @@
           </div>
         </div>
       {/if}
-      <div class="flex flex-col max-w-110">
+      <div class="flex flex-col max-w-80">
         <span class="text-lg font-semibold">{t.timeEntries.activities}</span>
         <hr class="text-pikker-gold border-t-3">
         <p>{ctx?.project?.activities?.map(a => a.split(',')).join(", ")}</p>
       </div>
+    </div>
+    <div class="grow" >
+      <ProjectBarChart label="Monthly hours" data={projectTimes}/>
     </div>
   </div>
 </MainPageLayout>

@@ -77,7 +77,8 @@
     "unbilledHours": "Unbilled hours",
     "totalRevenue": "Total revenue",
     "unbilledRevenue": "Unbilled revenue",
-    "color": "Color"
+    "color": "Color",
+    "monthlyHours": "Monthly hours"
   },
   "users": {
     "title": "Users",

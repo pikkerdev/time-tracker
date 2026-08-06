@@ -98,4 +98,15 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   fun updateHourlyRates(ids: List<Id<TimeEntry>>, rate: Decimal) {
     db.update(table, mapOf(TimeEntry::hourlyRate to rate), TimeEntry::id to ids)
   }
+
+  fun projectTimes(
+    projectId: Id<Project>,
+  ): Map<LocalDate, Decimal> =
+    db.query(
+      "select date_trunc('month', date)::date as month, sum(hours) as hours from $table join projects p on projectId = p.id",
+      "p.id" eq projectId,
+      suffix = "group by month"
+    ) {
+      getLocalDate("month") to Decimal(getString("hours"))
+    }.toMap()
 }

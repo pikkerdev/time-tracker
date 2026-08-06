@@ -119,4 +119,24 @@ class TimeEntryRepositoryTest: DBTest() {
     expect(repository.get(timeEntry.id).hourlyRate).toEqual(10.d)
     expect(repository.get(timeEntry2.id).hourlyRate).toEqual(10.d)
   }
+
+  @Test fun projectTimes() {
+    val entry = timeEntry.copy(date = yesterday, hours = 3.d, id = Id())
+    val entry2 = timeEntry.copy(date = yesterday, hours = 4.d, id = Id())
+    val entry3 = timeEntry.copy(date = twoDaysAgo, hours = 2.d, id = Id())
+    val entry4 = timeEntry3.copy(date = today, hours = 6.d, id = Id())
+    val entry5 = timeEntry.copy(date = today.withYear(2024), hours = 2.d, id = Id())
+
+    val projectTimes = mapOf(today.withDayOfMonth(1) to 9.d, today.withYear(2024).withDayOfMonth(1) to 2.d)
+
+    repository.save(entry)
+    repository.save(entry2)
+    repository.save(entry3)
+    repository.save(entry4)
+    repository.save(entry5)
+
+    expect(repository.projectTimes(project.id)).toEqual(projectTimes)
+    expect(repository.projectTimes(project3.id)).toEqual(mapOf(today.withDayOfMonth(1) to 6.d))
+
+  }
 }
