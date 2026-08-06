@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { InvoiceRow } from 'src/api/types';
+  import type {InvoiceRow} from 'src/api/types'
   import FormField from 'src/forms/FormField.svelte'
   import {t} from 'i18n'
   import Button from 'src/components/Button.svelte'
@@ -34,21 +34,12 @@
       {label}
     </label>
   {/if}
-  {#if rows.length > 0}
-    <div class="flex flex-row items-center gap-2 text-xs font-semibold text-gray-500 mb-1">
-      <span class="flex-1">{t.timeEntries.description}</span>
-      <span class="flex-1">{t.invoices.hours}</span>
-      <span class="flex-1">{t.invoices.rate}</span>
-      <span class="flex-1">{t.invoices.amount}</span>
-      <div class="w-8 shrink-0"></div>
-    </div>
-  {/if}
   {#each rows as row, i (i)}
-    <div class="flex flex-row items-center gap-2">
-      <FormField bind:value={row.description} required={true}/>
-      <FormField bind:value={row.hours} oninput={() => updateAmount(i)}/>
-      <FormField bind:value={row.rate} oninput={() => updateAmount(i)}/>
-      <FormField bind:value={row.amount} required={true} />
+    <div class="flex flex-row items-end gap-2">
+      <FormField class="w-full" label={t.timeEntries.description} bind:value={row.description}/>
+      <FormField label={t.invoices.hours} bind:value={row.hours} oninput={() => updateAmount(i)} required={!!row.rate}/>
+      <FormField label={t.invoices.rate} bind:value={row.rate} oninput={() => updateAmount(i)} required={!!row.hours}/>
+      <FormField label={t.invoices.amount} bind:value={row.amount} disabled={!!row.rate || !!row.hours}/>
       <Button icon="trash" onclick={() => removeRow(i)}/>
     </div>
   {/each}
