@@ -37,13 +37,13 @@ object TestData {
   val projectMember = ProjectMember(project.id, user.id, DEVELOPER, createdAt = now)
   val projectMember2 = ProjectMember(project2.id, user.id, DEVELOPER, createdAt = now)
   val projectMemberUser = ProjectMemberUser(projectMember, user)
-  val invoice = Invoice(InvoiceId(2026060101), project.id, LocalDate.of(2026, 6, 1), description = "development", dueDate = LocalDate.of(2026, 6, 14), rows = listOf(
+  val invoice = Invoice(InvoiceId(2026060101), project.id, LocalDate.of(2026, 6, 1),"Invoice 1", description = "development", dueDate = LocalDate.of(2026, 6, 14), rows = listOf(
     InvoiceRow(description = "Invoice row", hours = 3.d, rate = 5.d, amount = 15.d )))
   val timeEntry = TimeEntry(project.id, user.id, invoiceId = null, date, 7.5.d, hourlyRate = 88.d, DEVELOPER)
   val timeEntry2 = TimeEntry(project.id, user.id, hours = 4.d, hourlyRate = 60.d, role = DEVELOPER)
   val timeEntry3 = TimeEntry(project3.id, user.id, hours = 4.5.d, hourlyRate = 60.d, role = DEVELOPER)
   val timeEntryView = TimeEntryView(timeEntry, customer.name, project.name, user.name)
-  val invoiceCreateRequest = InvoiceCreateRequest(LocalDate.of(2026, 6, 1), listOf(timeEntry.id, timeEntry2.id), description= "development", dueDate = LocalDate.of(2026, 6, 14), rows = listOf(
+  val invoiceCreateRequest = InvoiceCreateRequest(LocalDate.of(2026, 6, 1), listOf(timeEntry.id, timeEntry2.id),"Invoice 1", description= "development", dueDate = LocalDate.of(2026, 6, 14), rows = listOf(
     InvoiceRow(description = "Invoice row", hours = 3.d, rate = 5.d, amount = 15.d )))
   val invoiceView = InvoiceView(invoice, user.name, customer.name, project.name)
   val invoiceWithIds = InvoiceWithIds(invoice, customer.id, user.id)
