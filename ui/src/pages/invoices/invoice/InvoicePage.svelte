@@ -21,7 +21,7 @@
 </script>
 
 <svelte:head>
-  <title>{details?.invoice.description}</title>
+  <title>{t.invoices.invoice}-{details?.invoice.id}</title>
 </svelte:head>
 
 
