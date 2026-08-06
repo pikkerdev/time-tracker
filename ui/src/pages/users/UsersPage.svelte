@@ -4,30 +4,23 @@
   import {t} from 'i18n'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
-  import {AuthRole, type User} from 'src/api/types'
-  import SelectField from 'src/forms/SelectField.svelte'
-  import {showToast, ToastType} from 'src/stores/toasts'
+  import { type User} from 'src/api/types'
   import Button from 'src/components/Button.svelte'
-  import {user} from 'src/stores/auth'
+  import Modal from 'src/components/Modal.svelte'
+  import UserForm from 'src/pages/users/UserForm.svelte'
 
   let users: User[] = []
-  let authRoles = AuthRole
-
-  async function save(user: User) {
-    try {
-      const newUser: User = await api.post(`users/${user.id}`, user)
-      const userIndex = users.findIndex(u => u.id === newUser.id)
-      users[userIndex] = newUser
-      showToast(t.general.saved)
-    } catch (e) {
-      users = await api.get('users')
-      showToast(t.errors.cannotModifyInitialAdminRole, { type: ToastType.ERROR })
-    }
-  }
+  let edit: User|false = false
 
   onMount(
     async () => users = await api.get('users')
   )
+
+  function onSaved(user: User) {
+    users = users.replaceById(user)
+    edit = false
+  }
+
 </script>
 
 <MainPageLayout class="relative flex flex-col gap-4" title={t.users.title}>
@@ -38,22 +31,20 @@
     [t.users.role, u => u.authRole],
     ['', '']
   ]} items={users} let:item>
-    {@const isCurrentUser = $user.id === item.id}
     <tr>
       <td>{item.name}</td>
       <td>{item.email}</td>
       <td>{item.phone}</td>
+      <td>{item.authRole}</td>
       <td>
-        {#if !isCurrentUser}
-          <SelectField bind:value={item.authRole} options={authRoles}/>
-        {:else}<span>{item.authRole}</span>
-        {/if}
-      </td>
-      <td>
-        {#if !isCurrentUser}
-          <Button onclick={() => save(item)} type="submit" label={t.general.save} class="primary"/>
-        {/if}
+        <Button label={t.general.edit} onclick={() => edit = structuredClone(item)}/>
       </td>
     </tr>
   </SortableTable>
 </MainPageLayout>
+
+<Modal title={t.users.user} bind:show={edit}>
+  {#if edit}
+    <UserForm user={edit} {onSaved}/>
+  {/if}
+</Modal>

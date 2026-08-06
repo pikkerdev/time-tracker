@@ -11,20 +11,23 @@ import projects.Project
 import timeentries.TimeEntry
 import timeentries.TimeEntryRepository
 import users.AuthRole.ADMIN
+import users.UserRepository
 import java.time.LocalDate
 
 @Access(ADMIN)
 class InvoiceRoutes(
   val repository: InvoiceRepository,
   val customerRepository: CustomerRepository,
-  val timeEntryRepository: TimeEntryRepository
+  val timeEntryRepository: TimeEntryRepository,
+  val userRepository: UserRepository
 ) {
   @GET fun get(@QueryParam projectId: Id<Project>?) = repository.listView(projectId)
 
   @GET("/:id") fun getDetails(@PathParam id: InvoiceId): InvoiceDetails {
-    val withCustomer = repository.getWithCustomerId(id)
+    val withCustomer = repository.getWithIds(id)
     val customer = customerRepository.get(withCustomer.customerId)
-    return InvoiceDetails(withCustomer.invoice, customer)
+    val user = userRepository.get(withCustomer.creatorId)
+    return InvoiceDetails(withCustomer.invoice, customer, user)
   }
 
   @POST fun create(req: InvoiceCreateRequest): Invoice {

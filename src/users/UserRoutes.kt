@@ -8,8 +8,9 @@ import klite.annotations.POST
 import klite.annotations.PathParam
 import klite.annotations.AttrParam
 import klite.Config
+import users.AuthRole.ADMIN
 
-@Access(AuthRole.ADMIN)
+@Access(ADMIN)
 class UserRoutes(
   val userRepository: UserRepository,
 ){
@@ -23,8 +24,8 @@ class UserRoutes(
   fun save(userToSave: User, @PathParam id: Id<User>, @AttrParam user: User): User {
     val email = userToSave.email.toString()
     require(id == userToSave.id) { "Wrong id" }
-    if (user.id == id) throw BadRequestException("errors.cannotModifyYourRole")
-    else if (email in initialAdmins) throw BadRequestException("errors.cannotModifyInitialAdminRole")
+    if (user.id == id && user.authRole !== userToSave.authRole) throw BadRequestException("errors.cannotModifyYourRole")
+    else if (email in initialAdmins && user.authRole !== userToSave.authRole) throw BadRequestException("errors.cannotModifyInitialAdminRole")
     else userRepository.save(userToSave)
     return userToSave
   }

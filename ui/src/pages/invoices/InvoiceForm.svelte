@@ -20,7 +20,7 @@
   let rows: InvoiceRow[] = []
 
   async function submit() {
-    const invoiceCreateRequest: InvoiceCreateRequest = {date: today, timeEntryIds: selectedEntryIds, description, dueDate, rows: rows}
+    const invoiceCreateRequest: InvoiceCreateRequest = {date: date, timeEntryIds: selectedEntryIds, description, dueDate, rows: rows}
     await api.post('invoices', invoiceCreateRequest)
     show = false
     navigate('/invoices')

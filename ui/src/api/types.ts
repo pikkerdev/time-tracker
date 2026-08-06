@@ -11,17 +11,19 @@ export interface Invoice {date: LocalDate; description: string; dueDate: LocalDa
 // class invoices.InvoiceCreateRequest
 export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; rows: Array<InvoiceRow>; timeEntryIds: Array<Id<TimeEntry>>}
 // class invoices.InvoiceDetails
-export interface InvoiceDetails {customer: Customer; invoice: Invoice; vat: number}
+export interface InvoiceDetails {creator: User; customer: Customer; invoice: Invoice; vat: number}
 // class invoices.InvoiceId
 export type InvoiceId = number
 // class invoices.InvoiceRow
 export interface InvoiceRow {amount: number; description: string; hours?: number; rate?: number}
 // class invoices.InvoiceView
 export interface InvoiceView {creatorName: string; customerName: string; invoice: Invoice; projectName: string}
-// class invoices.InvoiceWithCustomer
-export interface InvoiceWithCustomer {customerId: Id<Customer>; invoice: Invoice}
-// class merit.CountryCode
-export enum CountryCode {EE = 'EE'}
+// class invoices.InvoiceWithIds
+export interface InvoiceWithIds {creatorId: Id<User>; customerId: Id<Customer>; invoice: Invoice}
+// class locations.CountryCode
+export type CountryCode = string
+// class locations.CountryConfig
+export interface CountryConfig {phoneAreaCode: string}
 // class merit.MeritInvoice$Customer
 export interface MeritInvoiceCustomer {countryCode: CountryCode; email?: Email; name: string; notTDCustomer: boolean; phoneNo?: Phone; regNo?: string}
 // class merit.MeritInvoice$InvoiceRequest

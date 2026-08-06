@@ -10,6 +10,7 @@ import klite.jdbc.BaseEntity
 import klite.jdbc.JsonColumn
 import klite.jdbc.UpdatableEntity
 import projects.Project
+import users.User
 import java.time.Instant
 import java.time.LocalDate
 
@@ -50,14 +51,16 @@ data class InvoiceView(
   val projectName: String,
 )
 
-data class InvoiceWithCustomer(
+data class InvoiceWithIds(
   val invoice: Invoice,
   val customerId: Id<Customer>,
+  val creatorId: Id<User>
 )
 
 data class InvoiceDetails(
   val invoice: Invoice,
   val customer: Customer,
+  val creator: User,
   val vat: Decimal = vatRate
 )
 

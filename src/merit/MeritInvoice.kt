@@ -3,6 +3,7 @@ package merit
 import klite.Config
 import klite.Email
 import klite.Phone
+import locations.CountryCode
 import projects.EUR
 import java.math.BigDecimal
 import java.time.LocalDate

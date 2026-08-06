@@ -10,9 +10,10 @@ import db.TestData.invoice
 import db.TestData.invoiceCreateRequest
 import db.TestData.invoiceDetails
 import db.TestData.invoiceView
-import db.TestData.invoiceWithCustomer
+import db.TestData.invoiceWithIds
 import db.TestData.timeEntry
 import db.TestData.timeEntry2
+import db.TestData.user
 import invoices.Invoice.Status.CREATED
 import invoices.Invoice.Status.PAID
 import invoices.Invoice.Status.SENT
@@ -34,13 +35,15 @@ class InvoiceRoutesTest: BaseMocks() {
   }
 
   @Test fun getDetails() {
-    every { invoiceRepository.getWithCustomerId(invoice.id) } returns invoiceWithCustomer
+    every { invoiceRepository.getWithIds(invoice.id) } returns invoiceWithIds
     every { customerRepository.get(customer.id) } returns customer
+    every { userRepository.get(user.id) } returns user
     expect(routes.getDetails(invoice.id)).toEqual(invoiceDetails)
 
     verify {
-      invoiceRepository.getWithCustomerId(invoice.id)
+      invoiceRepository.getWithIds(invoice.id)
       customerRepository.get(customer.id)
+      userRepository.get(user.id)
     }
   }
 
