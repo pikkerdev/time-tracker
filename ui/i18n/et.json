@@ -122,6 +122,7 @@
   },
   "invoices": {
     "title": "Arved",
+    "invoiceTitle": "Arve nimi",
     "id": "Arve number",
     "invoiceNo": "Arve nr",
     "project": "Projekt",
