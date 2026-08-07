@@ -118,7 +118,8 @@
     "activities": "Tegevused",
     "selected": "Valitud",
     "editEntries": "Muuda ajaandeid",
-    "selectEntries": "Vali ajaandeid"
+    "selectEntries": "Vali ajaandeid",
+    "noEntries": "Sissekanded puuduvad"
   },
   "invoices": {
     "title": "Arved",

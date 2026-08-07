@@ -118,7 +118,8 @@
     "activities": "Activities",
     "selected": "Selected",
     "editEntries": "Edit entries",
-    "selectEntries": "Select entries"
+    "selectEntries": "Select entries",
+    "noEntries": "No Entries"
   },
   "invoices": {
     "title": "Invoices",
