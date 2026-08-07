@@ -27,7 +27,7 @@
 </script>
 
 <Form {submit}>
-  <FormField bind:value={req.title} label={t.invoices.title}/>
+  <FormField bind:value={req.title} label={t.invoices.invoiceTitle}/>
   <FormField bind:value={req.description} label={t.invoices.description}/>
   <FormField bind:value={req.date} label={t.invoices.date} type="date"/>
   <FormField bind:value={req.dueDate} label={t.invoices.dueDate} type="date"/>
