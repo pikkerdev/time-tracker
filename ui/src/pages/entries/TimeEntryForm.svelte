@@ -38,12 +38,14 @@
 
 <Form {submit}>
   <ProjectSelect bind:projectId={timeEntry.projectId} bind:project showLastProject={true} localStorageKey={LAST_PROJECT_KEY}/>
-  <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours} step={0.1}/>
   {#if !isNew}
     <FormField label={t.timeEntries.date} type="date" bind:value={timeEntry.date} max={today}/>
     <NumberField label={t.projects.hourlyRate} bind:value={timeEntry.hourlyRate} step="0.01"/>
   {/if}
-  <EntryActivityEditor label={t.timeEntries.activity} bind:activity={timeEntry.activity} projectActivities={project?.activities}/>
+  <div class="grid grid-cols-2 gap-2">
+    <EntryActivityEditor label={t.timeEntries.activity} bind:activity={timeEntry.activity} projectActivities={project?.activities}/>
+    <NumberField label={t.timeEntries.hours} bind:value={timeEntry.hours} step={0.1}/>
+  </div>
   <TimeEntryStoryIdField label={t.timeEntries.storyIds} required={false} bind:storyIds={timeEntry.storyIds}/>
   <TextAreaField label={t.timeEntries.description} required={false} bind:value={timeEntry.description}/>
   <Button type="submit" label={t.general.save} class="primary"/>

@@ -54,7 +54,7 @@
             <Button title={t.general.delete} iconClass="text-red-500" icon="trash" onclick={() => handleDelete(entry.entry.id)}/>
           </TimeEntryCard>
         {:else}
-          <div class="text-center py-4 text-muted">{t.general.noItems}</div>
+          <div class="text-center py-4 text-muted">{t.timeEntries.noEntries}</div>
         {/each}
       </div>
       <div class="max-lg:w-130 lg:col-span-2">
