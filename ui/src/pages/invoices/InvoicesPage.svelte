@@ -74,7 +74,7 @@
           <a class="btn default icon-only" href="/invoices/{i.invoice.id}" target="_blank">
             <Icon name="eye"/>
           </a>
-          <Button icon="trash" disabled={!(i.invoice.status === 'CREATED')} onclick={() => del(i.invoice.id)}/>
+          <Button icon="trash" disabled={i.invoice.status === 'PAID'} onclick={() => del(i.invoice.id)}/>
         </div>
       </td>
     </tr>
