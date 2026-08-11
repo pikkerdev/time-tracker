@@ -67,7 +67,7 @@
         <div class="flex gap-3 justify-end items-center">
           {#if e.entry.invoiceId && !narrow}
             <a class="btn default icon-only" href="/invoices/{e.entry.invoiceId}" target="_blank">
-              <Icon name="eye"/>
+              <Icon name="document"/>
             </a>
           {/if}
           {#if selectEntries && !e.entry.invoiceId}
