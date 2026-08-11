@@ -20,9 +20,8 @@ services:
       - caddy.reverse_proxy={{upstreams 8080}}
       - caddy.reverse_proxy.lb_retries=10
       - caddy.reverse_proxy.lb_try_interval=500ms
-      - caddy.log=
       - caddy.log.output=file /data/time-access.log
-      - caddy.log.format=json
+      - caddy.log.format=console
 
 networks:
   proxy:
