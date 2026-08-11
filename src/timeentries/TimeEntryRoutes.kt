@@ -76,11 +76,6 @@ class TimeEntryRoutes(
     timeEntryRepository.updateHourlyRates(req.timeEntryIds, req.rate)
     return timeEntryRepository.listViewByIds(req.timeEntryIds)
   }
-
-  @GET("/projects/:id") @Access(ADMIN, INTERNAL, EXTERNAL, CUSTOMER)
-  fun projectTimes(@PathParam id: Id<Project>): Map<LocalDate, Decimal> =
-    timeEntryRepository.projectTimes(id)
-
 }
 
 data class UpdateHourlyRatesRequest(

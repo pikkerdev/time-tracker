@@ -77,9 +77,4 @@ class TimeEntryRoutesTest: BaseMocks() {
     expect(routes.updateHourlyRates(req)).toEqual(listOf(timeEntryView))
   }
 
-  @Test fun `project times`() {
-    val projectTimes = mapOf(today.withDayOfMonth(1) to 7.d, today.withDayOfMonth(1).withYear(2024) to 2.d)
-    every { timeEntryRepository.projectTimes(project.id) } returns projectTimes
-    expect(routes.projectTimes(project.id)).toEqual(projectTimes)
-  }
 }

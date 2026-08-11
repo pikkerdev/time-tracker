@@ -4,8 +4,10 @@ import auth.Access
 import db.Id
 import db.Status.ACTIVE
 import db.Status.DELETED
+import invoices.InvoiceRepository
 import klite.ForbiddenException
 import klite.annotations.*
+import klite.d
 import projects.ProjectMember.Role
 import projects.ProjectMember.Role.DEVELOPER
 import timeentries.TimeEntryRepository
@@ -18,12 +20,33 @@ class ProjectRoutes(
   val projectMemberRepository: ProjectMemberRepository,
   val timeEntryRepository: TimeEntryRepository,
   val userRepository: UserRepository,
+  val invoiceRepository: InvoiceRepository
 ) {
   @GET("/:id") @Access(ADMIN, INTERNAL, EXTERNAL, CUSTOMER)
-  fun get(@PathParam id: Id<Project>, @AttrParam user: User) =
+  fun get(@PathParam id: Id<Project>, @AttrParam user: User): ProjectView {
     if (user.authRole == ADMIN || projectMemberRepository.isMember(id, user.id)) {
-      ProjectView(projectRepository.get(id), timeEntryRepository.statsForProject(id))
+      val timeStats = timeEntryRepository.statsForProject(id)
+      val invoiceStats = invoiceRepository.statsForProject(id)
+      val allMonths = timeStats.keys + invoiceStats.keys
+
+      val combinedStats = allMonths.associateWith { month ->
+        val time = timeStats[month]
+        val invoice = invoiceStats[month]
+
+        MonthlyStats(
+          billedHours = (time?.billedHours ?: 0.d) + (invoice?.billedHours ?: 0.d),
+          unbilledHours = (time?.unbilledHours ?: 0.d) + (invoice?.unbilledHours ?: 0.d),
+          billedRevenue = (time?.billedRevenue ?: 0.d) + (invoice?.billedRevenue ?: 0.d),
+          unbilledRevenue = (time?.unbilledRevenue ?: 0.d) + (invoice?.unbilledRevenue ?: 0.d)
+        )
+      }
+
+      return ProjectView(
+        project = projectRepository.get(id),
+        stats = combinedStats
+      )
     } else throw ForbiddenException()
+  }
 
   @POST @Access(ADMIN)
   fun create(@AttrParam user: User, project: Project): Project {

@@ -10,6 +10,7 @@ import klite.jdbc.JsonColumn
 import klite.jdbc.UpdatableEntity
 import klite.json.JsonProperty
 import java.time.Instant
+import java.time.LocalDate
 import java.util.*
 
 val EUR: Currency = Currency.getInstance("EUR")
@@ -29,14 +30,14 @@ data class Project(
   override val id: Id<Project> = Id()
 ): Entity<Project>, UpdatableEntity
 
-data class ProjectStats(
-  val totalHours: Decimal,
+data class MonthlyStats(
+  val billedHours: Decimal,
   val unbilledHours: Decimal,
-  val totalRevenue: Decimal,
+  val billedRevenue: Decimal,
   val unbilledRevenue: Decimal,
 )
 
 data class ProjectView(
   val project: Project,
-  val stats: ProjectStats,
+  @JsonColumn val stats: Map<LocalDate, MonthlyStats>
 )

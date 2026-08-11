@@ -10,14 +10,18 @@ import db.DBTest
 import db.TestData.customer
 import db.TestData.invoice
 import db.TestData.project
+import db.TestData.project3
 import db.TestData.user
 import invoices.Invoice.Status.CREATED
 import invoices.Invoice.Status.PAID
 import invoices.Invoice.Status.SENT
+import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import projects.MonthlyStats
 import projects.ProjectRepository
 import users.UserRepository
+import java.time.LocalDate
 
 class InvoiceRepositoryTest: DBTest() {
   val repository = InvoiceRepository(db)
@@ -78,5 +82,26 @@ class InvoiceRepositoryTest: DBTest() {
     expect(repository.get(invoice.id).status).toEqual(PAID)
     repository.setStatus(invoice.id, CREATED)
     expect(repository.get(invoice.id).status).toEqual(CREATED)
+  }
+
+  @Test fun `stats for project`() {
+    val invoice1 = invoice.copy(id = InvoiceId(2026060101))
+    val invoice2 = invoice.copy(id = InvoiceId(2026060102))
+    val invoice3 = invoice.copy(id = InvoiceId(2026060103), revenueMonth = LocalDate.of(2024, 5, 1))
+    val invoice4 = invoice.copy(id = InvoiceId(2026060104), projectId = project3.id)
+
+    val projectStats1 = mapOf(LocalDate.of(2026, 5, 1) to MonthlyStats(6.d, 0.d, 30.d, 0.d),
+      LocalDate.of(2024, 5, 1) to MonthlyStats(3.d, 0.d, 15.d, 0.d))
+    val projectStats2 = mapOf(LocalDate.of(2026, 5, 1) to MonthlyStats(3.d, 0.d, 15.d, 0.d))
+
+    ProjectRepository(db).save(project3)
+    repository.save(invoice1)
+    repository.save(invoice2)
+    repository.save(invoice3)
+    repository.save(invoice4)
+
+    expect(repository.statsForProject(project.id)).toEqual(projectStats1)
+    expect(repository.statsForProject(project3.id)).toEqual(projectStats2)
+
   }
 }

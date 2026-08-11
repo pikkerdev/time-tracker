@@ -24,7 +24,8 @@
     "status": "Status",
     "showDeleted": "Show deleted",
     "setActive": "Set active",
-    "statusSetTo": "Status set to"
+    "statusSetTo": "Status set to",
+    "last12Months": "Last 12 months "
   },
   "errors": {
     "technical": "Technical error, please try again",
@@ -160,7 +161,8 @@
     "customRows": "Custom rows",
     "addRow": "Add row",
     "setInvoiceStatusTo": "Set invoice status to",
-    "revenueMonth": "Revenue month"
+    "revenueMonth": "Revenue month",
+    "revenue": "Revenue"
   },
   "company": {
     "name": "Pikker Technology OÜ",

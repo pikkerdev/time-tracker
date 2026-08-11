@@ -6,10 +6,11 @@ import db.Status.ACTIVE
 import invoices.InvoiceId
 import invoices.InvoiceRow
 import klite.Decimal
+import klite.d
 import klite.jdbc.*
 import klite.notNullValues
 import projects.Project
-import projects.ProjectStats
+import projects.MonthlyStats
 import users.User
 import java.sql.ResultSet
 import java.time.LocalDate
@@ -82,15 +83,25 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
     db.update(table, mapOf(TimeEntry::invoiceId to invoiceId), TimeEntry::id to ids)
   }
 
-  fun statsForProject(id: Id<Project>) =
-    db.query<ProjectStats>("""select
-      coalesce(sum(hours), 0) as totalHours,
+  fun statsForProject(
+    projectId: Id<Project>,
+  ): Map<LocalDate, MonthlyStats> =
+    db.query(
+      """select
+      date_trunc('month', date)::date as month,
       coalesce(sum(case when invoiceId is null then hours else 0 end), 0) as unbilledHours,
-      coalesce(sum(hours * hourlyRate), 0) as totalRevenue,
       coalesce(sum(case when invoiceId is null then hours * hourlyRate else 0 end), 0) as unbilledRevenue
       from $table""".trimIndent(),
-      TimeEntry::projectId eq id
-    ).first()
+      TimeEntry::projectId eq projectId,
+      suffix = "group by month order by month"
+    ) {
+      getLocalDate("month") to MonthlyStats(
+        billedHours = 0.d,
+        unbilledHours = Decimal(getString("unbilledHours")),
+        billedRevenue = 0.d,
+        unbilledRevenue = Decimal(getString("unbilledRevenue"))
+      )
+    }.toMap()
 
   fun delete(id: Id<TimeEntry>) =
     db.delete(table, TimeEntry::id to id, TimeEntry::invoiceId to null)
@@ -98,15 +109,4 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
   fun updateHourlyRates(ids: List<Id<TimeEntry>>, rate: Decimal) {
     db.update(table, mapOf(TimeEntry::hourlyRate to rate), TimeEntry::id to ids)
   }
-
-  fun projectTimes(
-    projectId: Id<Project>,
-  ): Map<LocalDate, Decimal> =
-    db.query(
-      "select date_trunc('month', date)::date as month, sum(hours) as hours from $table join projects p on projectId = p.id",
-      "p.id" eq projectId,
-      suffix = "group by month"
-    ) {
-      getLocalDate("month") to Decimal(getString("hours"))
-    }.toMap()
 }

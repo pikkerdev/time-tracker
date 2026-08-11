@@ -2,13 +2,17 @@ package invoices
 
 import db.Id
 import invoices.Invoice.Status
+import klite.Decimal
 import klite.jdbc.BaseCrudRepository
 import klite.jdbc.delete
 import klite.jdbc.eq
+import klite.jdbc.getLocalDate
+import klite.jdbc.query
 import klite.jdbc.select
 import klite.jdbc.update
 import klite.notNullValues
 import projects.Project
+import projects.MonthlyStats
 import java.sql.ResultSet
 import java.time.LocalDate
 import javax.sql.DataSource
@@ -46,4 +50,30 @@ class InvoiceRepository(db: DataSource): BaseCrudRepository<Invoice, InvoiceId>(
   fun setStatus(id: InvoiceId, status: Status): Boolean{
     return if (db.update(table, mapOf(Invoice::status to status), Invoice::id to id) == 1) true else throw NoSuchElementException()
   }
+
+  fun statsForProject(
+    projectId: Id<Project>,
+  ): Map<LocalDate, MonthlyStats> =
+    db.query(
+      """select
+      coalesce(revenueMonth, date_trunc('month', date)::date) as month,
+      coalesce(sum(invoice.hours), 0) as billedHours,
+      coalesce(sum(invoice.total), 0) as billedRevenue
+      from $table,
+      lateral (
+        select
+          coalesce(sum((r->>'hours')::numeric), 0) as hours,
+          coalesce(sum((r->>'amount')::numeric), 0) as total
+        from jsonb_array_elements(rows) r
+      ) invoice""".trimIndent(),
+      Invoice::projectId eq projectId,
+      suffix = "group by month order by month"
+    ) {
+      getLocalDate("month") to MonthlyStats(
+        billedHours = Decimal(getString("billedHours")),
+        unbilledHours = Decimal("0"),
+        billedRevenue = Decimal(getString("billedRevenue")),
+        unbilledRevenue = Decimal("0")
+      )
+    }.toMap()
 }

@@ -24,7 +24,8 @@
     "status": "Staatus",
     "showDeleted": "Näita kustutatuid",
     "setActive": "Aktiveeri",
-    "statusSetTo": "Staatus muudetud"
+    "statusSetTo": "Staatus muudetud",
+    "last12Months": "Viimased 12 kuud"
   },
   "errors": {
     "technical": "Tehniline viga, palun proovi uuesti",
@@ -160,7 +161,8 @@
     "customRows": "Lisa read",
     "addRow": "Lisa rida",
     "setInvoiceStatusTo": "Muuda arve staatus",
-    "revenueMonth": "Käibe kuu"
+    "revenueMonth": "Käibe kuu",
+    "revenue": "Käive"
   },
   "company": {
     "name": "Pikker Technology OÜ",

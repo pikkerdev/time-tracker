@@ -24,6 +24,7 @@ class ProjectRoutesTest: BaseMocks() {
 
   @Test fun get() {
     every { timeEntryRepository.statsForProject(project.id) } returns projectStats
+    every { invoiceRepository.statsForProject(project.id) } returns projectStats
 
     expect(routes.get(project.id, admin)).toEqual(projectView)
     every { projectMemberRepository.isMember(project.id, user.id) } returns true

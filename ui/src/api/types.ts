@@ -44,6 +44,8 @@ export interface MeritInvoiceRow {amount: number; item: MeritInvoiceItem; price:
 export interface MeritInvoiceTaxAmount {amount?: number; taxId: string}
 // class merit.MeritInvoice
 export interface MeritInvoice {currencyCode: string; customer: MeritInvoiceCustomer; docDate: LocalDate; dueDate: LocalDate; fComment: string; invoiceNo: string; invoiceRow: Array<MeritInvoiceRow>; taxAmount: Array<MeritInvoiceTaxAmount>; totalAmount: number; transactionDate: LocalDate}
+// class projects.MonthlyStats
+export interface MonthlyStats {billedHours: number; billedRevenue: number; unbilledHours: number; unbilledRevenue: number}
 // class projects.Project
 export interface Project {activities: Array<string>; color: string; currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; status: Status; storyTrackerId?: number; updatedAt?: Instant}
 // class projects.ProjectMember$Role
@@ -54,10 +56,8 @@ export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; proje
 export interface ProjectMemberRequest {role: ProjectMemberRole; userId: Id<User>}
 // class projects.ProjectMemberUser
 export interface ProjectMemberUser {member: ProjectMember; user: User}
-// class projects.ProjectStats
-export interface ProjectStats {totalHours: number; totalRevenue: number; unbilledHours: number; unbilledRevenue: number}
 // class projects.ProjectView
-export interface ProjectView {project: Project; stats: ProjectStats}
+export interface ProjectView {project: Project; stats: Record<LocalDate, MonthlyStats>}
 // class timeentries.TimeEntry
 export interface TimeEntry {activity: string; date: LocalDate; description?: string; hourlyRate: number; hours: number; id: Id<TimeEntry>; invoiceId?: InvoiceId; projectId: Id<Project>; role: ProjectMemberRole; storyIds: Array<string>; userId: Id<User>}
 // class timeentries.TimeEntryView

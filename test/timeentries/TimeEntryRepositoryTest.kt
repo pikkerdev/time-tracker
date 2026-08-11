@@ -26,6 +26,7 @@ import invoices.InvoiceRow
 import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import projects.MonthlyStats
 import projects.ProjectMember.Role.ARCHITECT
 import projects.ProjectRepository
 import users.UserRepository
@@ -120,23 +121,26 @@ class TimeEntryRepositoryTest: DBTest() {
     expect(repository.get(timeEntry2.id).hourlyRate).toEqual(10.d)
   }
 
-  @Test fun projectTimes() {
+  @Test fun `stats for project`() {
     val entry = timeEntry.copy(date = yesterday, hours = 3.d, id = Id())
-    val entry2 = timeEntry.copy(date = yesterday, hours = 4.d, id = Id())
+    val entry2 = timeEntry.copy(date = yesterday, hours = 4.d, id = Id(), invoiceId = invoice.id)
     val entry3 = timeEntry.copy(date = twoDaysAgo, hours = 2.d, id = Id())
     val entry4 = timeEntry3.copy(date = today, hours = 6.d, id = Id())
     val entry5 = timeEntry.copy(date = today.withYear(2024), hours = 2.d, id = Id())
 
-    val projectTimes = mapOf(today.withDayOfMonth(1) to 9.d, today.withYear(2024).withDayOfMonth(1) to 2.d)
+    val projectStats1 = mapOf(today.withDayOfMonth(1) to MonthlyStats(0.d, 5.d, 0.d, 5.d.times(timeEntry.hourlyRate)),
+      today.withYear(2024).withDayOfMonth(1) to MonthlyStats(0.d, 2.d, 0.d, 2.d.times(timeEntry.hourlyRate)))
+    val projectStats2 = mapOf(today.withDayOfMonth(1) to MonthlyStats(0.d, 6.d, 0.d, 6.d.times(timeEntry3.hourlyRate)))
 
+    invoiceRepository.save(invoice)
     repository.save(entry)
     repository.save(entry2)
     repository.save(entry3)
     repository.save(entry4)
     repository.save(entry5)
 
-    expect(repository.projectTimes(project.id)).toEqual(projectTimes)
-    expect(repository.projectTimes(project3.id)).toEqual(mapOf(today.withDayOfMonth(1) to 6.d))
+    expect(repository.statsForProject(project.id)).toEqual(projectStats1)
+    expect(repository.statsForProject(project3.id)).toEqual(projectStats2)
 
   }
 }
