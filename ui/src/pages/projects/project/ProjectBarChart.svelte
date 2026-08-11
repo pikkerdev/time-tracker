@@ -51,7 +51,7 @@
 </script>
 
 <div class="flex flex-col gap-y-3">
-  <div class="relative flex items-center justify-between gap-x-2">
+  <div class="relative flex items-center justify-between px-10 gap-x-2">
     <span class="text-xl">{label ?? ''}</span>
     <div class="ml-auto flex items-center gap-x-2">
       <SelectField bind:value={mode} options={modeOptions} />
