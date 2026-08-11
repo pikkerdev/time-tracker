@@ -159,7 +159,8 @@
     "paid": "Makstud",
     "customRows": "Lisa read",
     "addRow": "Lisa rida",
-    "setInvoiceStatusTo": "Muuda arve staatus"
+    "setInvoiceStatusTo": "Muuda arve staatus",
+    "revenueMonth": "Käibe kuu"
   },
   "company": {
     "name": "Pikker Technology OÜ",

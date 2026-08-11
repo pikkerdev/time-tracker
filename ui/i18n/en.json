@@ -159,7 +159,8 @@
     "paid": "Paid",
     "customRows": "Custom rows",
     "addRow": "Add row",
-    "setInvoiceStatusTo": "Set invoice status to"
+    "setInvoiceStatusTo": "Set invoice status to",
+    "revenueMonth": "Revenue month"
   },
   "company": {
     "name": "Pikker Technology OÜ",

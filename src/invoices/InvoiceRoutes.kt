@@ -36,7 +36,7 @@ class InvoiceRoutes(
     if (timeEntries.any { it.projectId != projectId }) throw IllegalArgumentException("timeEntries.timeEntriesMustBelongToSameProject")
     require(timeEntries.all { it.invoiceId == null }) { "Already Invoiced" }
     val initialRows = timeEntryRepository.initialRows(req.timeEntryIds)
-    val invoice = Invoice(repository.nextId(req.date), projectId, req.date, req.title, req.description, req.dueDate, req.rows + initialRows)
+    val invoice = Invoice(repository.nextId(req.date), projectId, req.date, req.title, req.description, req.dueDate, req.revenueMonth, req.rows + initialRows)
     repository.save(invoice)
     timeEntryRepository.updateInvoiceId(req.timeEntryIds, invoice.id)
     return invoice
@@ -50,5 +50,5 @@ class InvoiceRoutes(
   fun setStatus(@PathParam id: InvoiceId, status: Status) = repository.setStatus(id, status)
 }
 
-data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>, val title: String, val description: String, val dueDate: LocalDate, val rows: List<InvoiceRow> )
+data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>, val title: String, val description: String, val dueDate: LocalDate, val revenueMonth: LocalDate, val rows: List<InvoiceRow> )
 
