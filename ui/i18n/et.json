@@ -79,7 +79,8 @@
     "totalRevenue": "Kogukäive",
     "unbilledRevenue": "Arveldamata käive",
     "color": "Värv",
-    "monthlyHours": "Tunnid kuude kaupa"
+    "monthlyHours": "Tunnid kuude kaupa",
+    "monthlyHoursAndRevenue": "Tunnid ja käive kuude kaupa"
   },
   "users": {
     "title": "Kasutajad",

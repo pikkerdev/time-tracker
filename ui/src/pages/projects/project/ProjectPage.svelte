@@ -117,7 +117,7 @@
       </div>
       <div class="grow" >
         {#if ctx}
-          <ProjectBarChart label="Monthly hours" data={ctx.stats}/>
+          <ProjectBarChart label={t.projects.monthlyHoursAndRevenue} data={ctx.stats}/>
           {/if}
       </div>
     </div>
