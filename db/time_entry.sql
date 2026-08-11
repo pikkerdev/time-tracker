@@ -90,3 +90,10 @@ set rows = agg.items_json
   group by invoiceId
 ) agg
 where i.id = agg.invoiceId;
+
+--changeset invoices.revenueMonth:migrate
+update invoices set revenueMonth = (
+  select date_trunc('month', MAX(time_entry.date))::date
+  from time_entry
+  where invoices.id = time_entry.invoiceId
+);

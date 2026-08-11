@@ -1,8 +1,8 @@
 <script lang="ts">
-  import {formatAmount, formatDate, t} from 'i18n'
+  import {formatAmount, formatDate, lang, t} from 'i18n'
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import SortableTable from 'src/components/SortableTable.svelte'
-  import {type InvoiceId, InvoiceStatus, type InvoiceView} from 'src/api/types'
+  import {type InvoiceId, InvoiceStatus, type InvoiceView, type LocalDate} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import Button from 'src/components/Button.svelte'
@@ -40,6 +40,9 @@
     return invoiceView.invoice.rows?.reduce((sum, row) => sum + row.amount, 0) ?? 0
   }
 
+  function formatDateMonth(date: LocalDate) {
+    return new Date(date).toLocaleDateString(lang, {year: 'numeric', month: 'short'})
+  }
 
 </script>
 
@@ -53,6 +56,7 @@
     [t.invoices.amount, i => amount(i)],
     [t.invoices.createdBy, i => i.creatorName],
     [t.general.status, i => i.invoice.status],
+    [t.invoices.revenueMonth, i => i.invoice.revenueMonth],
     ''
     ]} let:item={i}>
     <tr>
@@ -64,6 +68,7 @@
       <td>{formatAmount(amount(i))}</td>
       <td>{i.creatorName}</td>
       <td>{i.invoice.status}</td>
+      <td>{formatDateMonth(i.invoice.revenueMonth)}</td>
       <td>
         <div class="flex gap-2 justify-end">
           {#if i.invoice.status === 'CREATED'}

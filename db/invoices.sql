@@ -63,3 +63,5 @@ alter table invoices drop column vatAmount;
 --changeset invoices.title
 alter table invoices add column title text not null default '';
 
+--changeset invoices.revenueMonth
+alter table invoices add column revenueMonth date;

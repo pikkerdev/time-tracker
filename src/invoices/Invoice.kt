@@ -21,6 +21,7 @@ data class Invoice(
   val title: String,
   val description: String,
   val dueDate: LocalDate,
+  val revenueMonth: LocalDate,
   @JsonColumn val rows: List<InvoiceRow> = emptyList(),
   val status: Status = CREATED,
   override var updatedAt: Instant? = null,

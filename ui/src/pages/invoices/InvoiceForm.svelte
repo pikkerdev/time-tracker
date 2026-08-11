@@ -8,6 +8,7 @@
   import Form from 'src/forms/Form.svelte'
   import {navigate} from '@keksworks/svelte-tiny-router'
   import InvoiceRowField from 'src/pages/invoices/invoice/InvoiceRowField.svelte'
+  import MonthSelectField from 'src/forms/MonthSelectField.svelte'
 
   export let selectedEntryIds: string[] = []
   export let show: boolean
@@ -15,6 +16,7 @@
   let req = {
     date: today,
     dueDate: toISODate(today, d => { d.setDate(d.getDate() + 14) }),
+    revenueMonth: toISODate(today, d => { d.setDate(1) }),
     timeEntryIds: selectedEntryIds
   } as InvoiceCreateRequest
 
@@ -31,6 +33,7 @@
   <FormField bind:value={req.description} label={t.invoices.description}/>
   <FormField bind:value={req.date} label={t.invoices.date} type="date"/>
   <FormField bind:value={req.dueDate} label={t.invoices.dueDate} type="date"/>
+  <MonthSelectField bind:from={req.revenueMonth} to={undefined} label={t.invoices.revenueMonth}/>
   <InvoiceRowField bind:rows={req.rows} label={t.invoices.customRows}/>
   <Button class="primary" label={t.invoices.create} type="submit"/>
 </Form>
