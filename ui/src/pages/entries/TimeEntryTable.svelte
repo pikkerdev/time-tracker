@@ -8,6 +8,7 @@
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
   import Icon from 'src/icons/Icon.svelte'
+  import {user} from 'src/stores/auth'
 
   export let timeEntries: TimeEntryView[]
   export let narrow = false
@@ -65,7 +66,7 @@
     {/if}
       <td>
         <div class="flex gap-3 justify-end items-center">
-          {#if e.entry.invoiceId && !narrow}
+          {#if e.entry.invoiceId && !narrow && $user.isAdmin}
             <a class="btn default icon-only" href="/invoices/{e.entry.invoiceId}" target="_blank">
               <Icon name="document"/>
             </a>
