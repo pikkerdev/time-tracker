@@ -46,7 +46,7 @@
 <MainPageLayout class="flex flex-col gap-4 lg:gap-8">
   <div class="flex flex-col gap-4 items-center max-w-full">
     <TimeEntryCalendar bind:date {dates} {timeEntryHours}/>
-    <div class="w-full flex justify-center flex-wrap-reverse gap-4 lg:grid lg:grid-cols-5 lg:gap-22 px-6">
+    <div class="w-full flex flex-col-reverse items-center gap-4 lg:grid lg:grid-cols-5 lg:items-start lg:gap-22 px-6">
       <div class="flex flex-col gap-2 lg:col-span-3 pb-3">
         {#each timeEntries as entry (entry.entry.id)}
           <TimeEntryCard {entry}>
@@ -57,7 +57,7 @@
           <div class="text-center py-4 text-muted">{t.timeEntries.noEntries}</div>
         {/each}
       </div>
-      <div class="max-lg:w-130 lg:col-span-2">
+      <div class="max-lg:max-w-130 lg:col-span-2">
         <TimeEntryForm bind:timeEntry onSaved={() => loadEntries(date)}/>
       </div>
     </div>
