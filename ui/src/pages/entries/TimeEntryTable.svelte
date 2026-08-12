@@ -71,11 +71,13 @@
               <Icon name="document"/>
             </a>
           {/if}
-          {#if selectEntries && !e.entry.invoiceId}
-            <input type="checkbox" checked={selectedEntryIds.includes(e.entry.id)} onchange={() => toggleEntry(e.entry.id)} class="h-4 w-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500">
+          {#if !$user.isCustomer}
+            {#if selectEntries && !e.entry.invoiceId}
+              <input type="checkbox" checked={selectedEntryIds.includes(e.entry.id)} onchange={() => toggleEntry(e.entry.id)} class="h-4 w-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500">
+            {/if}
+            <Button label={t.general.edit} disabled={!!e.entry.invoiceId} onclick={() => {timeEntry = e; show = true}}/>
+            <Button icon="trash" disabled={!!e.entry.invoiceId} onclick={() => {deleteEntry(e.entry.id)}}/>
           {/if}
-          <Button label={t.general.edit} disabled={!!e.entry.invoiceId} onclick={() => {timeEntry = e; show = true}}/>
-          <Button icon="trash" disabled={!!e.entry.invoiceId} onclick={() => {deleteEntry(e.entry.id)}}/>
         </div>
       </td>
   </tr>
