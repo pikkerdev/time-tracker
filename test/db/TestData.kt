@@ -10,6 +10,7 @@ import projects.ProjectMember.Role.DEVELOPER
 import timeentries.TimeEntry
 import timeentries.TimeEntryView
 import users.AuthRole.ADMIN
+import users.AuthRole.CUSTOMER
 import users.AuthRole.EXTERNAL
 import users.User
 import java.time.LocalDate
@@ -26,6 +27,7 @@ object TestData {
 
   val admin = User("Admin", "Admin", Email("admin@test.ee"), authRole = ADMIN , createdAt = now)
   val user = User("User", "User", Email("user@test.ee"), authRole = EXTERNAL, createdAt = now)
+  val customerUser = User("Customer", "Customer", Email("customer@test.ee"), authRole = CUSTOMER, createdAt = now)
 
   val customer = Customer("Customer1")
   val customer2 = Customer("Customer2", status = DELETED)

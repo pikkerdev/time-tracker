@@ -49,6 +49,25 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
       getString("u.firstName") + " " + getString("u.lastName")
     )
 
+  fun listViewForCustomer(
+    userId: Id<User>,
+    projectId: Id<Project>? = null,
+    from: LocalDate? = null,
+    to: LocalDate? = null
+  ): List<TimeEntryView> {
+    val queryFrom = from ?: to
+    val queryTo = to ?: from
+    return db.select(
+      "$viewFrom join project_members pm on p.id = pm.projectId", notNullValues(
+        projectId?.let { "time_entry.projectId" eq it },
+        TimeEntry::date gte queryFrom,
+        TimeEntry::date lte queryTo,
+        "pm.userId" eq userId,
+        "p.status" eq ACTIVE
+      ), suffix = defaultOrder
+    ) { viewMapper() }
+  }
+
   fun userTimes(
     userId: Id<User>,
     from: LocalDate = LocalDate.now().minusDays(30),

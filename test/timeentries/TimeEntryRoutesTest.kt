@@ -5,6 +5,7 @@ import ch.tutteli.atrium.api.fluent.en_GB.toEqual
 import ch.tutteli.atrium.api.verbs.expect
 import db.BaseMocks
 import db.TestData.admin
+import db.TestData.customerUser
 import db.TestData.date
 import db.TestData.project
 import db.TestData.projectMember
@@ -49,6 +50,14 @@ class TimeEntryRoutesTest: BaseMocks() {
     expect(routes.timeEntries(user, myTimeEntries = true, to = today)).toEqual(timeEntries)
     expect(routes.timeEntries(user, myTimeEntries = false, project.id, from = date, to = today)).toEqual(timeEntries)
     expect(routes.timeEntries(admin, myTimeEntries = false, project.id, from = date, to = today)).toEqual(timeEntries)
+
+    every { timeEntryRepository.listViewForCustomer(customerUser.id) } returns listOf(timeEntryView)
+    every { timeEntryRepository.listViewForCustomer(customerUser.id, to = today) } returns listOf(timeEntryView)
+    every { timeEntryRepository.listViewForCustomer(customerUser.id, projectId = project.id, from = date, to = today) } returns listOf(timeEntryView)
+
+    expect(routes.timeEntries(customerUser)).toContainExactly(timeEntryView)
+    expect(routes.timeEntries(customerUser, to = today)).toEqual(timeEntries)
+    expect(routes.timeEntries(customerUser, projectId = project.id, from = date, to = today)).toEqual(timeEntries)
   }
 
   @Test fun `user times`() {

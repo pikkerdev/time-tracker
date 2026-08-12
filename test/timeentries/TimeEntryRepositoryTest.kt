@@ -9,10 +9,12 @@ import customers.CustomerRepository
 import db.DBTest
 import db.Id
 import db.TestData.customer
+import db.TestData.customerUser
 import db.TestData.date
 import db.TestData.invoice
 import db.TestData.project
 import db.TestData.project3
+import db.TestData.projectMember
 import db.TestData.timeEntry
 import db.TestData.timeEntry2
 import db.TestData.timeEntry3
@@ -27,7 +29,9 @@ import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import projects.MonthlyStats
+import projects.ProjectMember
 import projects.ProjectMember.Role.ARCHITECT
+import projects.ProjectMemberRepository
 import projects.ProjectRepository
 import users.UserRepository
 
@@ -37,6 +41,7 @@ class TimeEntryRepositoryTest: DBTest() {
   val userRepository = UserRepository(db)
   val customerRepository = CustomerRepository(db)
   val invoiceRepository = InvoiceRepository(db)
+  val projectMemberRepository = ProjectMemberRepository(db)
 
   @BeforeEach fun before() {
     userRepository.save(user)
@@ -58,6 +63,16 @@ class TimeEntryRepositoryTest: DBTest() {
     expect(repository.listView(user.id, from = date)).toContainExactly(timeEntryView)
     expect(repository.listView(user.id, project.id, from = date, to = today)).toContainExactly(timeEntryView)
     expect(repository.listView(user.id, from = today.plusDays(3))).toBeEmpty()
+  }
+
+  @Test fun listViewForCustomer() {
+    userRepository.save(customerUser)
+    projectMemberRepository.save(projectMember.copy(userId = customerUser.id, role = ProjectMember.Role.CUSTOMER))
+    repository.save(timeEntry)
+    repository.save(timeEntry3)
+    expect(repository.listViewForCustomer(customerUser.id, from = date)).toContainExactly(timeEntryView)
+    expect(repository.listViewForCustomer(customerUser.id, project.id, from = date, to = today)).toContainExactly(timeEntryView)
+    expect(repository.listViewForCustomer(customerUser.id, from = today.plusDays(3))).toBeEmpty()
   }
 
   @Test fun userTimes() {

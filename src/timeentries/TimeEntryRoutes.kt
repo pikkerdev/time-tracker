@@ -27,12 +27,13 @@ class TimeEntryRoutes(
     else throw ForbiddenException()
   }
 
-  @GET() @Access(ADMIN, INTERNAL, EXTERNAL, CUSTOMER)
+  @GET @Access(ADMIN, INTERNAL, EXTERNAL, CUSTOMER)
   fun timeEntries(@AttrParam user: User, @QueryParam myTimeEntries: Boolean? = false, @QueryParam projectId: Id<Project>? = null, @QueryParam from: LocalDate? = null, @QueryParam to: LocalDate? = null) =
     if (myTimeEntries == true || user.isInternal || user.isExternal) timeEntryRepository.listView(user.id, projectId, from, to)
+    else if (user.isCustomer) timeEntryRepository.listViewForCustomer(user.id, projectId, from, to)
     else timeEntryRepository.listView(projectId = projectId, from = from, to = to)
 
-  @POST() @Access(ADMIN, INTERNAL, EXTERNAL)
+  @POST @Access(ADMIN, INTERNAL, EXTERNAL)
   fun saveTimeEntry(@AttrParam user: User, timeEntry: TimeEntry): TimeEntry {
     val project = projectRepository.get(timeEntry.projectId)
     val member = projectMemberRepository.find(timeEntry.projectId, user.id) ?: throw NoSuchElementException("member")
