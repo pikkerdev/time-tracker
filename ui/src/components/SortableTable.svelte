@@ -121,7 +121,7 @@
   }
 
   table thead th {
-    @apply text-xs font-medium uppercase tracking-wider sticky top-0 bg-white border-b-2 border-gray-200 border-solid;
+    @apply text-xs font-medium uppercase tracking-wider sticky top-0 bg-white border-b-2 border-gray-200 border-solid z-1;
   }
 
   table :global(th:last-child), :global(td:last-child:not(:first-child)) {
