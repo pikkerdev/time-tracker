@@ -19,13 +19,6 @@
   let timeEntry: TimeEntryView
   let show = false
 
-  $: if (!narrow && timeEntries && selectEntries) {
-    selectedEntryIds = timeEntries.filter(e => !e.entry.invoiceId).map(e => e.entry.id)
-  }
-  $: if (!selectEntries){
-    selectedEntryIds = []
-  }
-
   async function deleteEntry(id: Id<TimeEntry>){
     if (confirm(t.general.deleteConfirm)) {
       await api.delete(`timeentries/${id}`)
@@ -38,6 +31,13 @@
     selectedEntryIds = selectedEntryIds.includes(entryId)
       ? selectedEntryIds.filter(id => id !== entryId)
       : [...selectedEntryIds, entryId]
+  }
+
+  $: if (!narrow && timeEntries && selectEntries) {
+    selectedEntryIds = timeEntries.filter(e => !e.entry.invoiceId).map(e => e.entry.id)
+  }
+  $: if (!selectEntries){
+    selectedEntryIds = []
   }
 </script>
 

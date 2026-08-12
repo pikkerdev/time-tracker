@@ -46,11 +46,16 @@
   $: totalAmount = timeEntries?.filter(e => selectedEntryIds.includes(e.entry.id) && !e.entry.invoiceId)
     .sum(e => e.entry.hourlyRate * e.entry.hours)
 
+  $: if (!projectId){
+    selectedEntryIds = []
+    selectEntries = false
+  }
+
 </script>
 
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>
   <div slot="after-title" class="flex flex-wrap items-center gap-4 ">
-    {#if $user.isAdmin}
+    {#if $user.isAdmin && projectId}
       <Button class="primary" label={t.timeEntries.selectEntries} onclick={() => selectEntries = !selectEntries}/>
     {/if}
     <ProjectSelect bind:projectId/>
