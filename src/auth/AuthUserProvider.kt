@@ -28,7 +28,11 @@ class AuthUserProvider(
         else -> AuthRole.EXTERNAL
       }
       user = User(profile.firstName, profile.lastName, profile.email, authRole, profile.avatarUrl)
-    } else {
+    }
+    else if (user.avatarUrl !== profile.avatarUrl) {
+      user = user.copy(firstName = profile.firstName, lastName =  profile.lastName, avatarUrl = profile.avatarUrl)
+    }
+    else {
       user = user.copy(authRole = user.authRole)
     }
     userRepository.save(user)

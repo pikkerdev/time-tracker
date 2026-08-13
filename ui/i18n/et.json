@@ -103,7 +103,8 @@
       "ARCHITECT": "Arhitekt",
       "INTERN": "Praktikant",
       "CUSTOMER": "Klient"
-    }
+    },
+    "newMember": "Lisa uus liige"
   },
   "timeEntries": {
     "title": "Ajaanded",

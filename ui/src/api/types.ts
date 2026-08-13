@@ -53,7 +53,7 @@ export enum ProjectMemberRole {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT',
 // class projects.ProjectMember
 export interface ProjectMember {createdAt: Instant; id: Id<ProjectMember>; projectId: Id<Project>; role: ProjectMemberRole; status: Status; updatedAt?: Instant; userId: Id<User>}
 // class projects.ProjectMemberRequest
-export interface ProjectMemberRequest {role: ProjectMemberRole; userId: Id<User>}
+export interface ProjectMemberRequest {email: Email; firstName?: string; lastName?: string; role: ProjectMemberRole}
 // class projects.ProjectMemberUser
 export interface ProjectMemberUser {member: ProjectMember; user: User}
 // class projects.ProjectView

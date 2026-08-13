@@ -103,7 +103,8 @@
       "ARCHITECT": "Architect",
       "INTERN": "Intern",
       "CUSTOMER": "Customer"
-    }
+    },
+    "newMember": "New member"
   },
   "timeEntries": {
     "title": "Time entries",

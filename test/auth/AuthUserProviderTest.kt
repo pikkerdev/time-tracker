@@ -10,6 +10,7 @@ import klite.oauth.OAuthTokenResponse
 import klite.oauth.UserProfile
 import org.junit.jupiter.api.Test
 import users.User
+import java.net.URI
 
 class AuthUserProviderTest: BaseMocks() {
   val profile = UserProfile("GOOGLE", "123", user.email, user.firstName, user.lastName)
@@ -28,5 +29,13 @@ class AuthUserProviderTest: BaseMocks() {
     val user = provider.provide(profile, tokenResponse, exchange) as User
     expect(user.email).toEqual(user.email)
     verify { userRepository.save(user) }
+  }
+
+  @Test fun `updates existing user`() {
+    every { userRepository.by(User::email to user.email) } returns user
+    val updatedUser = provider.provide(profile.copy(avatarUrl = URI("1")), tokenResponse, exchange) as User
+
+    expect(updatedUser).toEqual(user.copy(avatarUrl = URI("1")))
+    verify { userRepository.save(updatedUser) }
   }
 }

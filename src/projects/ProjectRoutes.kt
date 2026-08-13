@@ -5,9 +5,11 @@ import db.Id
 import db.Status.ACTIVE
 import db.Status.DELETED
 import invoices.InvoiceRepository
+import klite.Email
 import klite.ForbiddenException
 import klite.annotations.*
 import klite.d
+import klite.jdbc.eq
 import projects.ProjectMember.Role
 import projects.ProjectMember.Role.DEVELOPER
 import timeentries.TimeEntryRepository
@@ -67,16 +69,23 @@ class ProjectRoutes(
     projectRepository.setStatus(id, DELETED)
 
   @POST("/:id/members") @Access(ADMIN)
-  fun saveMember(@PathParam id: Id<Project>, member: ProjectMemberRequest): ProjectMemberUser {
-    val user = userRepository.get(member.userId)
+  fun saveMember(@PathParam id: Id<Project>, req: ProjectMemberRequest): ProjectMemberUser {
+    val user = userRepository.by(User::email eq req.email)
+      ?: User(
+        firstName = req.firstName ?: "",
+        lastName = req.lastName ?: "",
+        email = req.email,
+        authRole = EXTERNAL
+      ).also { userRepository.save(it) }
+
     val role = when {
       user.isCustomer -> Role.CUSTOMER
-      member.role == Role.CUSTOMER -> throw IllegalArgumentException("Cannot assign customer role to a non-customer user")
-      else -> member.role
+      req.role == Role.CUSTOMER -> throw IllegalArgumentException("Cannot assign customer role to a non-customer user")
+      else -> req.role
     }
-    val projectMember = projectMemberRepository.find(id, member.userId, active = false)
+    val projectMember = projectMemberRepository.find(id, user.id, active = false)
       ?.copy(role = role, status = ACTIVE)
-      ?: ProjectMember(id, member.userId, role = role)
+      ?: ProjectMember(id, user.id, role = role)
     projectMemberRepository.save(projectMember)
     return ProjectMemberUser(projectMember, user)
   }
@@ -96,4 +105,4 @@ class ProjectRoutes(
     projectMemberRepository.delete(id)
 }
 
-data class ProjectMemberRequest(val userId: Id<User>, val role: Role = DEVELOPER)
+data class ProjectMemberRequest(val email: Email, val firstName: String? = null, val lastName: String? = null, val role: Role = DEVELOPER)

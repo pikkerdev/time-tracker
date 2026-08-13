@@ -18,15 +18,17 @@
   import api from 'src/api/api'
   import {showToast} from 'src/stores/toasts'
   import Form from 'src/forms/Form.svelte'
+  import ProjectMemberForm from 'src/pages/projects/project/ProjectMemberForm.svelte'
 
   export let members: Members
   export let projectId: Id<Project>
 
   let users: User[] = []
   let show = false
-  let userId: Id<User>
+  let email: `${string}@${string}`
   let role: ProjectMemberRole
   let userRole: AuthRole | undefined = undefined
+  let addMember = false
   const roleOptions = Object.fromEntries(Object.values(ProjectMemberRole).filter(e => e !== ProjectMemberRole.CUSTOMER).map(e => [e,e]))
 
   async function onclick() {
@@ -36,11 +38,11 @@
 
   async function submit() {
     userRole = undefined
-    return save({userId, role})
+    return save({email, role})
   }
 
-  async function changeMemberRole(m: ProjectMember) {
-    return save({userId: m.userId, role: m.role})
+  async function changeMemberRole(m: ProjectMemberUser) {
+    return save({email: m.user.email, role: m.member.role})
   }
 
   async function save(req: Partial<ProjectMemberRequest>) {
@@ -62,7 +64,12 @@
     showToast(t.general.deleted)
   }
 
-  $: if (userId) userRole = users.find(u => u.id === userId)?.authRole
+  function onSaved(member: ProjectMemberUser){
+    members[member.user.id] = member
+    addMember = false
+  }
+
+  $: if (email) userRole = users.find(u => u.email === email)?.authRole
 </script>
 
 <Button label={t.members.title} {onclick}/>
@@ -78,10 +85,10 @@
       <td>{m.user.name}</td>
       <td>{m.user.email}</td>
       {#if m.user.isCustomer}
-        <td>{t.members.roles.CUSTOMER}</td>
+        <td>{m.member.role}</td>
       {:else}
         <td>
-          <SelectField title={t.members.roles} bind:value={m.member.role} options={roleOptions} onchange={() => changeMemberRole(m.member)}/>
+          <SelectField title={t.members.roles} bind:value={m.member.role} options={roleOptions} onchange={() => changeMemberRole(m)}/>
         </td>
       {/if}
       <td>
@@ -91,13 +98,20 @@
   </SortableTable>
   <div class="">
     <h6 class ="mb-4">{t.members.addMember}</h6>
-    <Form {submit} class="flex gap-4">
-      <SelectField bind:value={userId} placeholder={t.members.chooseMember}
-                   options={users.filter(u => !members[u.id]).indexBy(u => u.id, u => `${u.name} (${u.email})`)}/>
-      {#if !(userRole == 'CUSTOMER' || userRole == undefined)}
-        <SelectField bind:value={role} placeholder={t.members.chooseRole} options={roleOptions}/>
-      {/if}
-      <Button type="submit" label={t.general.add}/>
-    </Form>
+    <div class="flex gap-4">
+      <Form {submit} class="flex gap-4">
+        <SelectField bind:value={email} placeholder={t.members.chooseMember}
+                     options={users.filter(u => !members[u.id]).indexBy(u => u.email, u => `${u.name} (${u.email})`)}/>
+        {#if !(userRole == 'CUSTOMER' || userRole == undefined)}
+          <SelectField bind:value={role} placeholder={t.members.chooseRole} options={roleOptions}/>
+        {/if}
+        <Button type="submit" label={t.general.add}/>
+      </Form>
+      <Button label={t.members.newMember} onclick={() => addMember = !addMember}/>
+    </div>
   </div>
+</Modal>
+
+<Modal title={t.members.newMember} bind:show={addMember}>
+  <ProjectMemberForm {projectId} {onSaved}/>
 </Modal>

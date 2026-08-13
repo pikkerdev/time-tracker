@@ -18,6 +18,7 @@ import io.mockk.every
 import io.mockk.verify
 import klite.ForbiddenException
 import org.junit.jupiter.api.Test
+import users.User
 
 class ProjectRoutesTest: BaseMocks() {
   val routes = create<ProjectRoutes>()
@@ -79,7 +80,8 @@ class ProjectRoutesTest: BaseMocks() {
 
     @Test fun `save member creates new`() {
       every { projectMemberRepository.find(project.id, user.id, active = false) } returns null
-      val result = routes.saveMember(project.id, ProjectMemberRequest(user.id))
+      every { userRepository.by(User::email to user.email) } returns user
+      val result = routes.saveMember(project.id, ProjectMemberRequest(user.email))
       expect(result.user).toEqual(user)
       expect(result.member.projectId).toEqual(project.id)
       expect(result.member.userId).toEqual(user.id)
@@ -88,9 +90,21 @@ class ProjectRoutesTest: BaseMocks() {
 
    @Test fun `save member updates existing`() {
     every { projectMemberRepository.find(project.id, user.id, active = false) } returns projectMember
-    expect(routes.saveMember(project.id, ProjectMemberRequest(user.id, projectMember.role))).toEqual(projectMemberUser)
+     every { userRepository.by(User::email to user.email) } returns user
+     expect(routes.saveMember(project.id, ProjectMemberRequest(user.email, role = projectMember.role))).toEqual(projectMemberUser)
     verify { projectMemberRepository.save(projectMember.copy(role = projectMember.role, status = ACTIVE)) }
    }
+
+  @Test
+  fun `save member creates new user`() {
+    every { userRepository.by(User::email to user.email) } returns null
+    every { projectMemberRepository.find(any(), any(), any()) } returns null
+
+    val result = routes.saveMember(project.id, ProjectMemberRequest(user.email, user.firstName, user.lastName, role = projectMember.role))
+    verify { userRepository.save(any()) }
+    verify { projectMemberRepository.save(any()) }
+    expect(result).toEqual(ProjectMemberUser(projectMember.copy(id = result.member.id, userId = result.user.id, createdAt = result.member.createdAt), user.copy(id = result.user.id, createdAt = result.user.createdAt)))
+  }
 
    @Test fun `delete member`() {
       routes.deleteMember(projectMember.id)
