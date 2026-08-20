@@ -164,7 +164,8 @@
     "addRow": "Lisa rida",
     "setInvoiceStatusTo": "Muuda arve staatus",
     "revenueMonth": "Käibe kuu",
-    "revenue": "Käive"
+    "revenue": "Käive",
+    "dueDateBeforeDate": "Tähtaeg ei tohi olla enne arve kuupäeva"
   },
   "company": {
     "name": "Pikker Technology OÜ",

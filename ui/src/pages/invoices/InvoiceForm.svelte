@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {showToast} from 'src/stores/toasts'
+  import {showToast, ToastType} from 'src/stores/toasts'
   import api from 'src/api/api'
   import {t, today, toISODate} from 'i18n'
   import type {InvoiceCreateRequest} from 'src/api/types'
@@ -21,6 +21,10 @@
   } as InvoiceCreateRequest
 
   async function submit() {
+    if (req.dueDate < req.date) {
+      showToast(t.invoices.dueDateBeforeDate, {type: ToastType.ERROR})
+      return
+    }
     await api.post('invoices', {...req, title: req.title.replaceAll(' ', '_')})
     show = false
     navigate('/invoices')
@@ -32,7 +36,7 @@
   <FormField bind:value={req.title} label={t.invoices.invoiceTitle}/>
   <FormField bind:value={req.description} label={t.invoices.description}/>
   <FormField bind:value={req.date} label={t.invoices.date} type="date"/>
-  <FormField bind:value={req.dueDate} label={t.invoices.dueDate} type="date"/>
+  <FormField bind:value={req.dueDate} label={t.invoices.dueDate} type="date" min={req.date}/>
   <MonthSelectField bind:from={req.revenueMonth} to={undefined} label={t.invoices.revenueMonth}/>
   <InvoiceRowField bind:rows={req.rows} label={t.invoices.customRows}/>
   <Button class="primary" label={t.invoices.create} type="submit"/>

@@ -164,7 +164,8 @@
     "addRow": "Add row",
     "setInvoiceStatusTo": "Set invoice status to",
     "revenueMonth": "Revenue month",
-    "revenue": "Revenue"
+    "revenue": "Revenue",
+    "dueDateBeforeDate": "Due date cannot be before invoice date"
   },
   "company": {
     "name": "Pikker Technology OÜ",
