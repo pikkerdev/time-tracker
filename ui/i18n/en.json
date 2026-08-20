@@ -122,6 +122,7 @@
     "selected": "Selected",
     "editEntries": "Edit entries",
     "selectEntries": "Select entries",
+    "stopSelecting": "Stop selecting",
     "noEntries": "No Entries"
   },
   "invoices": {

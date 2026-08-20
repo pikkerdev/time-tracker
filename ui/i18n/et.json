@@ -122,6 +122,7 @@
     "selected": "Valitud",
     "editEntries": "Muuda ajaandeid",
     "selectEntries": "Vali ajaandeid",
+    "stopSelecting": "Lõpeta valimine",
     "noEntries": "Sissekanded puuduvad"
   },
   "invoices": {

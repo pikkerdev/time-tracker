@@ -56,7 +56,7 @@
 <MainPageLayout class="relative spaced" title={t.timeEntries.title}>
   <div slot="after-title" class="flex flex-wrap items-center gap-4 ">
     {#if $user.isAdmin && projectId}
-      <Button class="primary" label={t.timeEntries.selectEntries} onclick={() => selectEntries = !selectEntries}/>
+      <Button class={!selectEntries ? "primary" : "danger"} label={!selectEntries ? t.timeEntries.selectEntries : t.timeEntries.stopSelecting} onclick={() => selectEntries = !selectEntries}/>
     {/if}
     <ProjectSelect bind:projectId/>
     <MonthSelectField bind:from bind:to emptyOption={t.general.choosePeriod}/>
