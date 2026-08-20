@@ -9,6 +9,8 @@
   import {showToast} from 'src/stores/toasts'
   import Icon from 'src/icons/Icon.svelte'
 
+  const todayStr = new Date().toISOString().slice(0, 10)
+
   let invoices: InvoiceView[]
 
   onMount(async () => {
@@ -44,6 +46,10 @@
     return new Date(date).toLocaleDateString(lang, {year: 'numeric', month: 'short'})
   }
 
+  function isOverdue(invoice: InvoiceView): boolean {
+    return invoice.invoice.dueDate < todayStr && invoice.invoice.status !== InvoiceStatus.PAID
+  }
+
 </script>
 
 <MainPageLayout class="relative spaced" title={t.invoices.title}>
@@ -63,7 +69,7 @@
       <td>{i.invoice.id}</td>
       <td>{i.customerName} - {i.projectName}</td>
       <td>{formatDate(i.invoice.date)}</td>
-      <td>{formatDate(i.invoice.dueDate)}</td>
+      <td class:text-red-500={isOverdue(i)}>{formatDate(i.invoice.dueDate)}</td>
       <td>{i.invoice.description}</td>
       <td>{formatAmount(amount(i))}</td>
       <td>{i.creatorName}</td>
