@@ -37,5 +37,7 @@
 <style>
   select {
     padding-right: 2em !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>
