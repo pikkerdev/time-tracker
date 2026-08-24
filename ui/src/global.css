@@ -6,6 +6,7 @@
     font-optical-sizing: auto;
     font-weight: 400;
     font-variation-settings: "wdth" 100;
+    overflow-x: hidden;
   }
 
   h1, .h1 {
