@@ -37,5 +37,6 @@
 <style>
   select {
     padding-right: 2em !important;
+    text-overflow: clip;
   }
 </style>
