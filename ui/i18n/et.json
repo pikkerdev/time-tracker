@@ -133,6 +133,8 @@
     "project": "Projekt",
     "invoice": "Arve",
     "create": "Loo arve",
+    "edit": "Muuda arvet",
+    "save": "Salvesta",
     "timeEntriesMustBelongToSameProject": "Kõik ajaanded peavad kuuluma samasse projekti",
     "chooseProject": "Vali projekt arve loomiseks",
     "totalAmount": "Kokku",

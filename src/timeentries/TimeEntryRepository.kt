@@ -5,12 +5,13 @@ import db.Id
 import db.Status.ACTIVE
 import invoices.InvoiceId
 import invoices.InvoiceRow
+import invoices.InvoiceRow.Type.TIMEENTRY
 import klite.Decimal
 import klite.d
 import klite.jdbc.*
 import klite.notNullValues
-import projects.Project
 import projects.MonthlyStats
+import projects.Project
 import users.User
 import java.sql.ResultSet
 import java.time.LocalDate
@@ -95,8 +96,11 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
       "select role, sum(hours * hourlyRate) as amount, sum(hours) as hours, hourlyRate from $table",
       TimeEntry::id eq ids, suffix = "group by role, hourlyRate order by role"
     ) {
-      InvoiceRow(getString("role"),Decimal(getString("amount")), Decimal(getString("hours")), Decimal(getString("hourlyRate")))
+      InvoiceRow(getString("role"), Decimal(getString("amount")), Decimal(getString("hours")), Decimal(getString("hourlyRate")), TIMEENTRY)
     }
+
+  fun invoiceRows(invoiceId: InvoiceId): List<InvoiceRow> =
+    initialRows(list(TimeEntry::invoiceId to invoiceId).map { it.id })
 
   fun updateInvoiceId(ids: List<Id<TimeEntry>>, invoiceId: InvoiceId) {
     db.update(table, mapOf(TimeEntry::invoiceId to invoiceId), TimeEntry::id to ids)

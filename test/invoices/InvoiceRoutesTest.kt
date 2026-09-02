@@ -9,14 +9,13 @@ import db.TestData.customer
 import db.TestData.invoice
 import db.TestData.invoiceCreateRequest
 import db.TestData.invoiceDetails
+import db.TestData.invoiceRow
 import db.TestData.invoiceView
 import db.TestData.invoiceWithIds
 import db.TestData.timeEntry
 import db.TestData.timeEntry2
 import db.TestData.user
-import invoices.Invoice.Status.CREATED
-import invoices.Invoice.Status.PAID
-import invoices.Invoice.Status.SENT
+import invoices.Invoice.Status.*
 import io.mockk.every
 import io.mockk.verify
 import io.mockk.verifySequence
@@ -76,6 +75,37 @@ class InvoiceRoutesTest: BaseMocks() {
     verify {
       invoiceRepository.delete(invoice.id)
     }
+  }
+
+  @Test fun update() {
+    val request = InvoiceUpdateRequest(
+      invoice.id,
+      invoice.date.plusDays(1),
+      "Updated title",
+      "Updated description",
+      invoice.dueDate.plusDays(1),
+      invoice.revenueMonth.plusMonths(1),
+      invoice.rows
+    )
+    val updated = invoice.copy(
+      date = request.date,
+      title = request.title,
+      description = request.description,
+      dueDate = request.dueDate,
+      revenueMonth = request.revenueMonth,
+      rows = request.rows
+    )
+
+    expect(routes.update(invoice.id, request)).toEqual(updated)
+
+    verify { invoiceRepository.get(invoice.id); invoiceRepository.save(updated) }
+  }
+
+  @Test fun `update does not remove time entry rows`() {
+    every { timeEntryRepository.invoiceRows(invoice.id) } returns listOf(invoiceRow)
+    val request = InvoiceUpdateRequest(invoice.id, invoice.date, invoice.title, invoice.description, invoice.dueDate, invoice.revenueMonth, emptyList())
+
+    expect { routes.update(invoice.id, request) }.toThrow<IllegalArgumentException>()
   }
 
   @Test fun setStatus() {

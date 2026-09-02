@@ -44,13 +44,33 @@ class InvoiceRoutes(
     return invoice
   }
 
+  @POST("/:id")
+  fun update(@PathParam id: InvoiceId, req: InvoiceUpdateRequest): Invoice {
+    require(id == req.id) { "Wrong id" }
+    val lockedRows = timeEntryRepository.invoiceRows(id)
+    require(lockedRows.all { row -> req.rows.count { it == row } >= lockedRows.count { it == row } }) {
+      "Can not remove rows created from time entries"
+    }
+    val invoice = repository.get(id).copy(
+      date = req.date,
+      title = req.title,
+      description = req.description,
+      dueDate = req.dueDate,
+      revenueMonth = req.revenueMonth,
+      rows = req.rows
+    )
+    repository.save(invoice)
+    return invoice
+  }
+
   @DELETE("/:id") fun delete(@PathParam id: InvoiceId) =
     if (repository.get(id).status == PAID) throw ForbiddenException()
     else repository.delete(id)
 
-  @POST("/:id")
+  @POST("/:id/status")
   fun setStatus(@PathParam id: InvoiceId, status: Status) = repository.setStatus(id, status)
 }
 
 data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>, val title: String, val description: String, val dueDate: LocalDate, val revenueMonth: LocalDate, val rows: List<InvoiceRow> )
 
+data class InvoiceUpdateRequest(val id: InvoiceId, val date: LocalDate, val title: String, val description: String, val dueDate: LocalDate, val revenueMonth: LocalDate, val rows: List<InvoiceRow>)

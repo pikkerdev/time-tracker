@@ -2,16 +2,19 @@
   import {formatAmount, formatDate, lang, t} from 'i18n'
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import SortableTable from 'src/components/SortableTable.svelte'
-  import {type InvoiceId, InvoiceStatus, type InvoiceView, type LocalDate} from 'src/api/types'
+  import {type Invoice, type InvoiceId, InvoiceStatus, type InvoiceView, type LocalDate} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import Button from 'src/components/Button.svelte'
   import {showToast} from 'src/stores/toasts'
   import Icon from 'src/icons/Icon.svelte'
+  import Modal from 'src/components/Modal.svelte'
+  import InvoiceForm from 'src/pages/invoices/InvoiceForm.svelte'
 
   const todayStr = new Date().toISOString().slice(0, 10)
 
   let invoices: InvoiceView[]
+  let invoiceToEdit: Invoice | false = false
 
   onMount(async () => {
     invoices = await api.get('invoices')
@@ -29,7 +32,7 @@
 
   async function setStatus(invoiceView: InvoiceView, status: InvoiceStatus) {
     if (confirm(`${t.invoices.setInvoiceStatusTo} ${status.toLowerCase()}?`)) {
-      const res = await api.post(`invoices/${invoiceView.invoice.id}`, `"${status}"`)
+      const res = await api.post(`invoices/${invoiceView.invoice.id}/status`, `"${status}"`)
       if (res) {
         invoiceView.invoice.status = status
         invoices = invoices
@@ -48,6 +51,11 @@
 
   function isOverdue(invoice: InvoiceView): boolean {
     return invoice.invoice.dueDate < todayStr && invoice.invoice.status !== InvoiceStatus.PAID
+  }
+
+  function onInvoiceSaved(invoice: Invoice) {
+    invoices = invoices.map(i => i.invoice.id === invoice.id ? {...i, invoice} : i)
+    invoiceToEdit = false
   }
 
 </script>
@@ -85,6 +93,7 @@
           <a class="btn default icon-only" href="/invoices/{i.invoice.id}" target="_blank">
             <Icon name="eye"/>
           </a>
+          <Button title={t.general.edit} icon="pencil" onclick={() => invoiceToEdit = structuredClone(i.invoice)}/>
           <Button icon="trash" disabled={i.invoice.status === 'PAID'} onclick={() => del(i.invoice.id)}/>
         </div>
       </td>
@@ -92,3 +101,8 @@
   </SortableTable>
 </MainPageLayout>
 
+<Modal title={t.invoices.edit} bind:show={invoiceToEdit}>
+  {#if invoiceToEdit}
+    <InvoiceForm invoice={invoiceToEdit} onSaved={onInvoiceSaved}/>
+  {/if}
+</Modal>

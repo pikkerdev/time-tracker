@@ -14,8 +14,12 @@ export interface InvoiceCreateRequest {date: LocalDate; description: string; due
 export interface InvoiceDetails {creator: User; customer: Customer; invoice: Invoice; vat: number}
 // class invoices.InvoiceId
 export type InvoiceId = number
+// class invoices.InvoiceRow$Type
+export enum InvoiceRowType {CUSTOM = 'CUSTOM', TIMEENTRY = 'TIMEENTRY'}
 // class invoices.InvoiceRow
-export interface InvoiceRow {amount: number; description: string; hours?: number; rate?: number}
+export interface InvoiceRow {amount: number; description: string; hours?: number; rate?: number; type: InvoiceRowType}
+// class invoices.InvoiceUpdateRequest
+export interface InvoiceUpdateRequest {date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; revenueMonth: LocalDate; rows: Array<InvoiceRow>; title: string}
 // class invoices.InvoiceView
 export interface InvoiceView {creatorName: string; customerName: string; invoice: Invoice; projectName: string}
 // class invoices.InvoiceWithIds

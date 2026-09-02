@@ -116,9 +116,9 @@ class TimeEntryRepositoryTest: DBTest() {
     repository.save(timeEntry3.copy(invoiceId = invoice.id, projectId = project.id, hours = 4.d, hourlyRate = 100.d, role = ARCHITECT))
 
     expect(repository.initialRows(listOf(timeEntry.id, timeEntry2.id, timeEntry3.id))).toContain(
-      InvoiceRow("DEVELOPER", 660.d, 7.5.d, 88.d),
-      InvoiceRow("DEVELOPER", 240.d, 4.d, 60.d),
-      InvoiceRow("ARCHITECT", 400.d, 4.d, 100.d),
+      InvoiceRow("DEVELOPER", 660.d, 7.5.d, 88.d, type = InvoiceRow.Type.TIMEENTRY),
+      InvoiceRow("DEVELOPER", 240.d, 4.d, 60.d, type = InvoiceRow.Type.TIMEENTRY),
+      InvoiceRow("ARCHITECT", 400.d, 4.d, 100.d, type = InvoiceRow.Type.TIMEENTRY),
     )
   }
 

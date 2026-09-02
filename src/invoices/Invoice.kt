@@ -35,8 +35,11 @@ data class InvoiceRow(
   val description: String,
   val amount: Decimal,
   val hours: Decimal? = null,
-  val rate: Decimal? = null
+  val rate: Decimal? = null,
+  val type: Type = Type.CUSTOM
 ) {
+  enum class Type { CUSTOM, TIMEENTRY }
+
   init {
     if (hours != null && rate != null) {
       require(hours * rate == amount) {
