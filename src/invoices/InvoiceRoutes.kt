@@ -7,6 +7,7 @@ import invoices.Invoice.Status
 import invoices.Invoice.Status.PAID
 import klite.ForbiddenException
 import klite.annotations.*
+import klite.d
 import projects.Project
 import timeentries.TimeEntry
 import timeentries.TimeEntryRepository
@@ -27,7 +28,8 @@ class InvoiceRoutes(
     val withCustomer = repository.getWithIds(id)
     val customer = customerRepository.get(withCustomer.customerId)
     val user = userRepository.get(withCustomer.creatorId)
-    return InvoiceDetails(withCustomer.invoice, customer, user)
+    val invoice = withCustomer.invoice.copy(rows = withCustomer.invoice.rows.filter { it.amount > 0.d })
+    return InvoiceDetails(invoice, customer, user)
   }
 
   @POST fun create(req: InvoiceCreateRequest): Invoice {
