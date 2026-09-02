@@ -90,10 +90,10 @@
         <tr>
           <td class="td">{row.description.toTitleCase()} {['DEVELOPER', 'INTERN', 'ARCHITECT'].includes(row.description) ? ` ${t.invoices.workingHour}` : ''}</td>
           <td class="td td-num">{row.hours}</td>
-          {#if row.rate}
-          <td class="td td-num">{formatAmount(row.rate)}</td>
+          {#if row.rate != null}
+            <td class="td td-num">{formatAmount(row.rate)}</td>
           {:else }
-            <td></td>
+            <td class="td"></td>
           {/if}
           <td class="td td-num">{formatAmount(row.amount)}</td>
         </tr>
