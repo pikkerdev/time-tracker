@@ -137,15 +137,20 @@ class TimeEntryRepositoryTest: DBTest() {
   }
 
   @Test fun `stats for project`() {
-    val entry = timeEntry.copy(date = yesterday, hours = 3.d, id = Id())
-    val entry2 = timeEntry.copy(date = yesterday, hours = 4.d, id = Id(), invoiceId = invoice.id)
-    val entry3 = timeEntry.copy(date = twoDaysAgo, hours = 2.d, id = Id())
-    val entry4 = timeEntry3.copy(date = today, hours = 6.d, id = Id())
-    val entry5 = timeEntry.copy(date = today.withYear(2024), hours = 2.d, id = Id())
+    val entry = timeEntry.copy(date = date.minusDays(1), hours = 3.d, id = Id())
+    val entry2 = timeEntry.copy(date = date.minusDays(1), hours = 4.d, id = Id(), invoiceId = invoice.id)
+    val entry3 = timeEntry.copy(date = date.minusDays(2), hours = 2.d, id = Id())
+    val entry4 = timeEntry3.copy(date = date, hours = 6.d, id = Id())
+    val entry5 = timeEntry.copy(date = date.withYear(2024), hours = 2.d, id = Id())
 
-    val projectStats1 = mapOf(today.withDayOfMonth(1) to MonthlyStats(0.d, 5.d, 0.d, 5.d.times(timeEntry.hourlyRate)),
-      today.withYear(2024).withDayOfMonth(1) to MonthlyStats(0.d, 2.d, 0.d, 2.d.times(timeEntry.hourlyRate)))
-    val projectStats2 = mapOf(today.withDayOfMonth(1) to MonthlyStats(0.d, 6.d, 0.d, 6.d.times(timeEntry3.hourlyRate)))
+    val projectStats1 = mapOf(
+      date.withDayOfMonth(1) to MonthlyStats(0.d, 5.d, 0.d, 5.d.times(timeEntry.hourlyRate)),
+      entry5.date.withDayOfMonth(1) to MonthlyStats(0.d, 2.d, 0.d, 2.d.times(timeEntry.hourlyRate))
+    )
+
+    val projectStats2 = mapOf(
+      date.withDayOfMonth(1) to MonthlyStats(0.d, 6.d, 0.d, 6.d.times(timeEntry3.hourlyRate))
+    )
 
     invoiceRepository.save(invoice)
     repository.save(entry)
