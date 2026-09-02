@@ -49,7 +49,7 @@
 
 <svelte:window on:scroll={debounce(onScroll, 300)}/>
 
-<div class="-mx-6 overflow-x-auto md:mx-0 md:overflow-visible {$$props.class ?? ''}">
+<div class="-mx-2 overflow-x-auto md:mx-0 md:overflow-visible {$$props.class ?? ''}">
   <div class="min-w-full pb-3">
     <table {id}>
       <thead>
