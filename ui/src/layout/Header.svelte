@@ -42,7 +42,7 @@
 
 {#snippet mainLink(to: string, label: string, icon: string)}
   {@const selected = $activePath.startsWith(to)}
-  <Link {to} onclick={closeMenu} class="flex flex-col text-xl group">
+  <Link {to} onclick={closeMenu} class="flex flex-col text-xl group w-fit">
     <div class="flex items-center gap-1">
       <Icon name={icon}/>
       {label}
