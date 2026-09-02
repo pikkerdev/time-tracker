@@ -26,6 +26,7 @@ dependencies {
   testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.0.3")
   testImplementation("ch.tutteli.atrium:atrium-fluent:1.3.0-alpha-2")
   testImplementation("io.mockk:mockk:1.14.11")
+  testImplementation("com.codeborne:selenide:7.16.0")
 }
 
 java {
@@ -47,6 +48,13 @@ sourceSets {
 
 tasks.test {
   workingDir(rootDir)
+  forkEvery = 1
+  if (project.hasProperty("ci")) {
+    println("Using headless Chrome for testing in CI")
+    systemProperties["selenide.headless"] = "true"
+    systemProperties["chromeoptions.args"] = "--headless,--no-sandbox"
+    systemProperties["buildUI"] = "false"
+  }
   useJUnitPlatform()
   jvmArgs("-DENV=test", "--add-opens=java.base/java.lang=ALL-UNNAMED", "-XX:-OmitStackTraceInFastThrow")
 }

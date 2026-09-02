@@ -3,6 +3,7 @@ import auth.AuthUserProvider
 import auth.Public
 import customers.CustomerRoutes
 import db.initDB
+import e2e.E2eAuthRoutes
 import invoices.InvoiceRoutes
 import klite.*
 import klite.annotations.annotated
@@ -54,6 +55,7 @@ fun main() {
       annotated<UserRoutes>("/users")
       annotated<InvoiceRoutes>("/invoices")
       annotated<AuthRoutes>(annotations = listOf(Public()))
+      if (Config.optional("E2E_AUTH") == "true") annotated<E2eAuthRoutes>("/e2e/login")
     }
     start()
   }
