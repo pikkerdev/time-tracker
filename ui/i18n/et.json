@@ -176,7 +176,9 @@
     "revenueMonth": "Käibe kuu",
     "revenue": "Käive",
     "dueDateBeforeDate": "Tähtaeg ei tohi olla enne arve kuupäeva",
-    "showPaid": "Näita makstud"
+    "showPaid": "Näita makstud",
+    "unpaid": "Maksmata",
+    "overdue": "Tähtaja ületanud"
   },
   "company": {
     "name": "Pikker Technology OÜ",

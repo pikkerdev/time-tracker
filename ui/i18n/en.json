@@ -176,7 +176,9 @@
     "revenueMonth": "Revenue month",
     "revenue": "Revenue",
     "dueDateBeforeDate": "Due date cannot be before invoice date",
-    "showPaid": "Show paid"
+    "showPaid": "Show paid",
+    "unpaid": "Unpaid",
+    "overdue": "Overdue"
   },
   "company": {
     "name": "Pikker Technology OÜ",
