@@ -72,12 +72,12 @@
 </script>
 
 <MainPageLayout class="relative spaced" title={t.invoices.title}>
-  <div slot="after-title" class="flex items-center gap-4">
-    <CheckboxField label={t.invoices.showPaid} title={t.invoices.showPaid} onchange={() => showPaid = !showPaid}/>
+  <div slot="after-title" class="flex flex-wrap items-center gap-4">
     <span class="text-sm">{t.invoices.unpaid}: <strong>{formatAmount(unpaidTotal)}</strong></span>
     {#if overdueTotal > 0}
       <span class="text-sm text-red-500">{t.invoices.overdue}: <strong>{formatAmount(overdueTotal)}</strong></span>
     {/if}
+    <CheckboxField label={t.invoices.showPaid} title={t.invoices.showPaid} onchange={() => showPaid = !showPaid}/>
   </div>
   <SortableTable items={invoices} columns={[
     [t.invoices.id, i => i.invoice.id],
