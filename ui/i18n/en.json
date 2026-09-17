@@ -175,7 +175,8 @@
     "setInvoiceStatusTo": "Set invoice status to",
     "revenueMonth": "Revenue month",
     "revenue": "Revenue",
-    "dueDateBeforeDate": "Due date cannot be before invoice date"
+    "dueDateBeforeDate": "Due date cannot be before invoice date",
+    "showPaid": "Show paid"
   },
   "company": {
     "name": "Pikker Technology OÜ",

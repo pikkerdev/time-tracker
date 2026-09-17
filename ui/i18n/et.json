@@ -175,7 +175,8 @@
     "setInvoiceStatusTo": "Muuda arve staatus",
     "revenueMonth": "Käibe kuu",
     "revenue": "Käive",
-    "dueDateBeforeDate": "Tähtaeg ei tohi olla enne arve kuupäeva"
+    "dueDateBeforeDate": "Tähtaeg ei tohi olla enne arve kuupäeva",
+    "showPaid": "Näita makstud"
   },
   "company": {
     "name": "Pikker Technology OÜ",

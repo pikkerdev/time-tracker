@@ -26,11 +26,19 @@ class InvoiceRoutesTest: BaseMocks() {
   val routes = create<InvoiceRoutes>()
 
   @Test fun get() {
-    every { invoiceRepository.listView(null) } returns listOf(invoiceView)
+    every { invoiceRepository.listView(null, false) } returns listOf(invoiceView)
 
-    expect(routes.get(null)).toEqual(listOf(invoiceView))
+    expect(routes.get(null, null)).toEqual(listOf(invoiceView))
 
-    verify { invoiceRepository.listView(null) }
+    verify { invoiceRepository.listView(null, false) }
+  }
+
+  @Test fun `get with showPaid`() {
+    every { invoiceRepository.listView(null, true) } returns listOf(invoiceView)
+
+    expect(routes.get(null, true)).toEqual(listOf(invoiceView))
+
+    verify { invoiceRepository.listView(null, true) }
   }
 
   @Test fun getDetails() {

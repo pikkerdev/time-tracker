@@ -3,22 +3,27 @@
   import MainPageLayout from 'src/layout/MainPageLayout.svelte'
   import SortableTable from 'src/components/SortableTable.svelte'
   import {type Invoice, type InvoiceId, InvoiceStatus, type InvoiceView, type LocalDate} from 'src/api/types'
-  import {onMount} from 'svelte'
   import api from 'src/api/api'
   import Button from 'src/components/Button.svelte'
   import {showToast} from 'src/stores/toasts'
   import Icon from 'src/icons/Icon.svelte'
   import Modal from 'src/components/Modal.svelte'
   import InvoiceForm from 'src/pages/invoices/InvoiceForm.svelte'
+  import CheckboxField from 'src/forms/CheckboxField.svelte'
 
   const todayStr = new Date().toISOString().slice(0, 10)
 
   let invoices: InvoiceView[]
   let invoiceToEdit: Invoice | false = false
+  let showPaid: boolean = false
 
-  onMount(async () => {
-    invoices = await api.get('invoices')
-  })
+  async function load(showPaid: boolean) {
+    const params = new URLSearchParams()
+    if (showPaid) params.append('showPaid', 'true')
+    invoices = await api.get(`invoices?${params}`)
+  }
+
+  $: load(showPaid)
 
   async function del(id: InvoiceId) {
     if (confirm(t.general.deleteConfirm)) {
@@ -61,6 +66,9 @@
 </script>
 
 <MainPageLayout class="relative spaced" title={t.invoices.title}>
+  <div slot="after-title" class="flex items-center gap-4">
+    <CheckboxField label={t.invoices.showPaid} title={t.invoices.showPaid} onchange={() => showPaid = !showPaid}/>
+  </div>
   <SortableTable items={invoices} columns={[
     [t.invoices.id, i => i.invoice.id],
     [t.invoices.project, i => `${i.customerName} - ${i.projectName}`],

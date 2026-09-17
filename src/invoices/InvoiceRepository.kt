@@ -3,16 +3,10 @@ package invoices
 import db.Id
 import invoices.Invoice.Status
 import klite.Decimal
-import klite.jdbc.BaseCrudRepository
-import klite.jdbc.delete
-import klite.jdbc.eq
-import klite.jdbc.getLocalDate
-import klite.jdbc.query
-import klite.jdbc.select
-import klite.jdbc.update
+import klite.jdbc.*
 import klite.notNullValues
-import projects.Project
 import projects.MonthlyStats
+import projects.Project
 import java.sql.ResultSet
 import java.time.LocalDate
 import javax.sql.DataSource
@@ -32,8 +26,11 @@ class InvoiceRepository(db: DataSource): BaseCrudRepository<Invoice, InvoiceId>(
       InvoiceWithIds(mapper(), Id(getLong("c.id")), Id(getLong("u.id")))
     }.first()
 
-  fun listView(projectId: Id<Project>?) =
-    db.select(viewFrom, notNullValues(Invoice::projectId eq projectId), suffix = defaultOrder) { viewMapper() }
+  fun listView(projectId: Id<Project>?, showPaid: Boolean = false) =
+    db.select(viewFrom, notNullValues(
+      Invoice::projectId eq projectId,
+      if (!showPaid) "invoices.status" neq Status.PAID else null
+    ), suffix = defaultOrder) { viewMapper() }
 
   private fun ResultSet.viewMapper() =
     InvoiceView(

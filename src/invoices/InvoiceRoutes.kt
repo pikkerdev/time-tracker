@@ -22,7 +22,7 @@ class InvoiceRoutes(
   val timeEntryRepository: TimeEntryRepository,
   val userRepository: UserRepository
 ) {
-  @GET fun get(@QueryParam projectId: Id<Project>?) = repository.listView(projectId)
+  @GET fun get(@QueryParam projectId: Id<Project>?, @QueryParam showPaid: Boolean?) = repository.listView(projectId, showPaid ?: false)
 
   @GET("/:id") fun getDetails(@PathParam id: InvoiceId): InvoiceDetails {
     val withCustomer = repository.getWithIds(id)
