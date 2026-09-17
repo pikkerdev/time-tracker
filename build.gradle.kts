@@ -47,17 +47,34 @@ sourceSets {
   }
 }
 
-tasks.test {
+fun Test.commonTestConfig() {
   workingDir(rootDir)
+  useJUnitPlatform()
+  jvmArgs("-DENV=test", "--add-opens=java.base/java.lang=ALL-UNNAMED", "-XX:-OmitStackTraceInFastThrow")
+}
+
+tasks.test {
+  commonTestConfig()
+  exclude("**/e2e/**")
+}
+
+tasks.register<Test>("e2eTest") {
+  commonTestConfig()
   forkEvery = 1
+  testClassesDirs = sourceSets.test.get().output.classesDirs
+  classpath = sourceSets.test.get().runtimeClasspath
+  include("**/e2e/**")
   if (project.hasProperty("ci")) {
-    println("Using headless Chrome for testing in CI")
+    println("Using headless Chrome for e2e tests in CI")
     systemProperties["selenide.headless"] = "true"
     systemProperties["chromeoptions.args"] = "--headless,--no-sandbox"
     systemProperties["buildUI"] = "false"
   }
-  useJUnitPlatform()
-  jvmArgs("-DENV=test", "--add-opens=java.base/java.lang=ALL-UNNAMED", "-XX:-OmitStackTraceInFastThrow")
+  shouldRunAfter(tasks.test)
+}
+
+tasks.check {
+  dependsOn(tasks.named("e2eTest"))
 }
 
 tasks.withType<KotlinCompile> {

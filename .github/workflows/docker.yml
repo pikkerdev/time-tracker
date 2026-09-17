@@ -35,7 +35,7 @@ jobs:
         run: cd ui && npm ci && npm run build && npm run test:run
 
       - name: API tests
-        run: ./gradlew test
+        run: ./gradlew test e2eTest -Pci
 
   build-and-push:
     runs-on: ubuntu-latest
