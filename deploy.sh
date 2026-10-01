@@ -1,4 +1,8 @@
 #!/bin/bash
+set -e
+
+export DOCKER_CONFIG=$(mktemp -d)
+trap 'rm -rf "$DOCKER_CONFIG"' EXIT
 
 mkdir -p logs
 docker compose logs -t app 2>&1 | gzip > logs/app-"$(date +%Y-%m-%d_%H:%M:%S)".log.gz
