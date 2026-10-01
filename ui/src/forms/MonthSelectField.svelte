@@ -21,15 +21,10 @@
   )
 
   function onchange(e: FormEvent) {
-    value = e.currentTarget.value
-    valueChanged()
+   [from, to]  = e.currentTarget.value.split(':')
   }
 
-  function valueChanged() {
-    [from, to] = value.split(':')
-  }
-
-  $: if (value != from + ':' + to) value = ''
+  $: value = Object.keys(monthOptions).find(m => m.split(':')[0] === from) ?? ''
 </script>
 
 <SelectField {value} {onchange} options={monthOptions} {...$$restProps}/>
