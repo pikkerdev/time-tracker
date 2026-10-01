@@ -16,6 +16,7 @@
   let invoices: InvoiceView[]
   let invoiceToEdit: Invoice | false = false
   let showPaid: boolean = false
+  let breakdown: 'unpaid' | 'overdue' | false = false
 
   async function load(showPaid: boolean) {
     const params = new URLSearchParams()
@@ -64,6 +65,33 @@
   $: overdueTotal = invoices?.filter(i => isOverdue(i))
     .reduce((sum, i) => sum + amount(i), 0) ?? 0
 
+  type CustomerBreakdown = {customerName: string, total: number, projects: {projectName: string, total: number}[]}
+
+  function groupByCustomer(invoices: InvoiceView[]): CustomerBreakdown[] {
+    const customers = new Map<string, CustomerBreakdown>()
+    for (const i of invoices) {
+      const amt = amount(i)
+      let customer = customers.get(i.customerName)
+      if (!customer) {
+        customer = {customerName: i.customerName, total: 0, projects: []}
+        customers.set(i.customerName, customer)
+      }
+      customer.total += amt
+      let project = customer.projects.find(p => p.projectName === i.projectName)
+      if (!project) {
+        project = {projectName: i.projectName, total: 0}
+        customer.projects.push(project)
+      }
+      project.total += amt
+    }
+    return [...customers.values()].sort((a, b) => a.customerName.localeCompare(b.customerName))
+  }
+
+  $: breakdownInvoices = (invoices ?? []).filter(i =>
+    breakdown === 'overdue' ? isOverdue(i) : i.invoice.status !== InvoiceStatus.PAID)
+
+  $: customerTotals = groupByCustomer(breakdownInvoices)
+
   function onInvoiceSaved(invoice: Invoice) {
     invoices = invoices.map(i => i.invoice.id === invoice.id ? {...i, invoice} : i)
     invoiceToEdit = false
@@ -73,9 +101,13 @@
 
 <MainPageLayout class="relative spaced" title={t.invoices.title}>
   <div slot="after-title" class="flex flex-wrap items-center gap-4">
-    <span class="text-sm">{t.invoices.unpaid}: <strong>{formatAmount(unpaidTotal)}</strong></span>
+    <button type="button" class="text-sm hover:underline cursor-pointer" onclick={() => breakdown = 'unpaid'}>
+      {t.invoices.unpaid}: <strong>{formatAmount(unpaidTotal)}</strong>
+    </button>
     {#if overdueTotal > 0}
-      <span class="text-sm text-red-500">{t.invoices.overdue}: <strong>{formatAmount(overdueTotal)}</strong></span>
+      <button type="button" class="text-sm text-red-500 hover:underline cursor-pointer" onclick={() => breakdown = 'overdue'}>
+        {t.invoices.overdue}: <strong>{formatAmount(overdueTotal)}</strong>
+      </button>
     {/if}
     <CheckboxField label={t.invoices.showPaid} title={t.invoices.showPaid} onchange={() => showPaid = !showPaid}/>
   </div>
@@ -122,5 +154,25 @@
 <Modal title={t.invoices.edit} bind:show={invoiceToEdit}>
   {#if invoiceToEdit}
     <InvoiceForm invoice={invoiceToEdit} onSaved={onInvoiceSaved}/>
+  {/if}
+</Modal>
+
+<Modal title={breakdown === 'overdue' ? t.invoices.overdue : t.invoices.unpaid} bind:show={breakdown}>
+  {#if breakdown}
+    <SortableTable items={customerTotals} columns={[
+      [t.customers.customer, c => c.customerName],
+      [t.invoices.amount, c => c.total]
+    ]} let:item={c}>
+      <tr class="font-medium">
+        <td>{c.customerName}</td>
+        <td>{formatAmount(c.total)}</td>
+      </tr>
+      {#each c.projects as p}
+        <tr>
+          <td><span class="ml-8 text-gray-500">{p.projectName}</span></td>
+          <td class="text-gray-500">{formatAmount(p.total)}</td>
+        </tr>
+      {/each}
+    </SortableTable>
   {/if}
 </Modal>
