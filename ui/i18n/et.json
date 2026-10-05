@@ -75,6 +75,7 @@
     "currency": "Valuuta",
     "budget": "Eelarve",
     "budgetRemaining": "Eelarve jääk",
+    "overBudget": "Eelarve ületatud",
     "edit": "Muuda projekti",
     "myProjects": "Minu projektid",
     "showMyProjects": "Näita minu projekte",

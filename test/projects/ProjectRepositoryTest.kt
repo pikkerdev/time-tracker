@@ -10,13 +10,19 @@ import db.DBTest
 import db.Status.ACTIVE
 import db.Status.DELETED
 import db.TestData.customer
+import db.TestData.invoice
 import db.TestData.project
 import db.TestData.project2
 import db.TestData.project3
+import db.TestData.timeEntry
+import db.TestData.timeEntry2
 import db.TestData.user
+import invoices.InvoiceRepository
+import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import projects.ProjectMember.Role.CUSTOMER
+import timeentries.TimeEntryRepository
 import users.UserRepository
 
 class ProjectRepositoryTest: DBTest() {
@@ -31,6 +37,13 @@ class ProjectRepositoryTest: DBTest() {
   @Test fun `get with customer`() {
     repository.save(project)
     expect(repository.get(project.id)).toEqual(project)
+  }
+
+  @Test fun `spent includes unbilled time and invoices`() {
+    repository.save(project)
+    TimeEntryRepository(db).apply { save(timeEntry); save(timeEntry2) }
+    InvoiceRepository(db).save(invoice)
+    expect(repository.get(project.id).spent).toEqual(915.d)
   }
 
   @Test fun `get lists`() {

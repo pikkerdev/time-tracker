@@ -55,7 +55,7 @@ export interface MeritInvoice {currencyCode: string; customer: MeritInvoiceCusto
 // class projects.MonthlyStats
 export interface MonthlyStats {billedHours: number; billedRevenue: number; unbilledHours: number; unbilledRevenue: number}
 // class projects.Project
-export interface Project {activities: Array<string>; budget: number; color: string; currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; status: Status; storyTrackerId?: number; updatedAt?: Instant}
+export interface Project {activities: Array<string>; budget: number; color: string; currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; spent: number; status: Status; storyTrackerId?: number; updatedAt?: Instant}
 // class projects.ProjectMember$Role
 export enum ProjectMemberRole {DEVELOPER = 'DEVELOPER', ARCHITECT = 'ARCHITECT', INTERN = 'INTERN', CUSTOMER = 'CUSTOMER'}
 // class projects.ProjectMember

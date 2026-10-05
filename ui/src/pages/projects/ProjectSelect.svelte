@@ -5,6 +5,7 @@
   import {onMount} from 'svelte'
   import {user} from 'src/stores/auth'
   import api from 'src/api/api'
+  import {isOverBudget} from 'src/pages/projects/context'
 
   export let projectId: Id<Project> = ''
   export let project: Project | undefined = undefined
@@ -26,6 +27,11 @@
   $: project = projects.find(p => p.id == projectId) as Project
 </script>
 
-<SelectField bind:value={projectId} label={showLastProject? t.projects.project : undefined}
-             emptyOption={!showLastProject? t.projects.all : undefined}
-             options={projects.map(p => [p.id, p.customerName? `${p.customerName} - ${p.name}` : p.name]).toObject()}/>
+<div>
+  <SelectField bind:value={projectId} label={showLastProject? t.projects.project : undefined}
+               emptyOption={!showLastProject? t.projects.all : undefined}
+               options={projects.map(p => [p.id, p.customerName? `${p.customerName} - ${p.name}` : p.name]).toObject()}/>
+  {#if isOverBudget(project)}
+    <p class="text-sm font-medium text-red-700">{t.projects.overBudget}</p>
+  {/if}
+</div>

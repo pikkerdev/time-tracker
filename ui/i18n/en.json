@@ -75,6 +75,7 @@
     "currency": "Currency",
     "budget": "Budget",
     "budgetRemaining": "Budget remaining",
+    "overBudget": "Over budget",
     "edit": "Edit project",
     "myProjects": "My projects",
     "showMyProjects": "Show my projects",

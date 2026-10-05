@@ -7,6 +7,7 @@
   import {Link} from '@keksworks/svelte-tiny-router'
   import {user} from 'src/stores/auth'
   import CheckboxField from 'src/forms/CheckboxField.svelte'
+  import {isOverBudget} from 'src/pages/projects/context'
 
   const SHOW_MY_PROJECTS_KEY = 'showMyProjects'
 
@@ -52,6 +53,9 @@
       <Link to="/projects/{project.id}" class="flex flex-col border border-gray-300 rounded-lg px-4 py-3 bg-white hover:bg-stone-50">
         <h4>{project.customerName} - {project.name}</h4>
         <div class="flex justify-end gap-4 text-sm mt-auto">
+          {#if isOverBudget(project)}
+            <p><span class="font-medium text-red-700">{t.projects.overBudget}</span></p>
+          {/if}
           {#if project.status == 'DELETED'}
             <p><span class="font-medium text-red-700">{project.status}</span></p>
           {/if}

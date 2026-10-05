@@ -6,7 +6,7 @@
   import {formatAmount, t} from 'i18n'
   import ProjectFormModal from 'src/pages/projects/ProjectFormModal.svelte'
 
-  import type {ProjectContext} from 'src/pages/projects/context'
+  import {isOverBudget, type ProjectContext} from 'src/pages/projects/context'
   import ProjectMembersModal from 'src/pages/projects/project/ProjectMembersModal.svelte'
   import {user} from 'src/stores/auth'
   import Button from 'src/components/Button.svelte'
@@ -86,7 +86,7 @@
             <span>{t.projects.budget}</span>
             <span>{formatAmount(ctx?.project?.budget ?? 0, ctx?.project?.currency)}</span>
             <span>{t.projects.budgetRemaining}</span>
-            <span class:text-red-600={budgetRemaining < 0}>{formatAmount(budgetRemaining, ctx?.project?.currency)}</span>
+            <span class:text-red-600={isOverBudget(ctx?.project)}>{formatAmount(budgetRemaining, ctx?.project?.currency)}</span>
               </div>
         </div>
         <div class="flex flex-col">
