@@ -73,6 +73,8 @@
     "hourlyRates": "Hourly rates",
     "storyTrackerId": "Story tracker id",
     "currency": "Currency",
+    "budget": "Budget",
+    "budgetRemaining": "Budget remaining",
     "edit": "Edit project",
     "myProjects": "My projects",
     "showMyProjects": "Show my projects",

@@ -73,6 +73,8 @@
     "hourlyRates": "Tunnihinnad",
     "storyTrackerId": "Loo jälitaja ID",
     "currency": "Valuuta",
+    "budget": "Eelarve",
+    "budgetRemaining": "Eelarve jääk",
     "edit": "Muuda projekti",
     "myProjects": "Minu projektid",
     "showMyProjects": "Näita minu projekte",

@@ -9,9 +9,7 @@ import projects.*
 import projects.ProjectMember.Role.DEVELOPER
 import timeentries.TimeEntry
 import timeentries.TimeEntryView
-import users.AuthRole.ADMIN
-import users.AuthRole.CUSTOMER
-import users.AuthRole.EXTERNAL
+import users.AuthRole.*
 import users.User
 import java.time.LocalDate
 import java.time.ZoneOffset.UTC
@@ -31,7 +29,7 @@ object TestData {
 
   val customer = Customer("Customer1")
   val customer2 = Customer("Customer2", status = DELETED)
-  val project = Project(customer.id, "Project1", hourlyRates = mapOf(DEVELOPER to 88.d), customerName = customer.name)
+  val project = Project(customer.id, "Project1", hourlyRates = mapOf(DEVELOPER to 88.d), budget = 1000.d, customerName = customer.name)
   val project2 = Project(customer.id, "Project2", hourlyRates = mapOf(DEVELOPER to 44.d), customerName = customer.name)
   val project3 = Project(customer.id, "Project3", hourlyRates = mapOf(DEVELOPER to 44.d), customerName = customer.name, status = DELETED)
   val projectStats = mapOf(LocalDate.of(2026, 6, 1) to MonthlyStats(10.d, 20.d, 30.d, 40.d))

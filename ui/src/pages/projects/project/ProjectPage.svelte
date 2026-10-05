@@ -3,7 +3,7 @@
   import {type Id, type Project, ProjectMemberRole, type ProjectMemberUser, Status} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
-  import {formatAmount, formatCurrency, t} from 'i18n'
+  import {formatAmount, t} from 'i18n'
   import ProjectFormModal from 'src/pages/projects/ProjectFormModal.svelte'
 
   import type {ProjectContext} from 'src/pages/projects/context'
@@ -18,6 +18,13 @@
   export let id: Id<Project>
 
   let ctx: ProjectContext | undefined
+
+  $: stats = Object.values(ctx?.stats ?? {})
+  $: totalHours = stats.reduce((sum, item) => sum + item.unbilledHours + item.billedHours, 0)
+  $: unbilledHours = stats.reduce((sum, item) => sum + item.unbilledHours, 0)
+  $: totalRevenue = stats.reduce((sum, item) => sum + item.unbilledRevenue + item.billedRevenue, 0)
+  $: unbilledRevenue = stats.reduce((sum, item) => sum + item.unbilledRevenue, 0)
+  $: budgetRemaining = (ctx?.project?.budget ?? 0) - totalRevenue
 
   onMount(async () => {
     ctx = await api.get('projects/' + id)
@@ -69,20 +76,17 @@
           <hr class="text-pikker-gold border-t-3">
           <div class="grid grid-cols-2 gap-x-4">
             <span>{t.projects.totalHours}</span>
-            <span>{Object.values(ctx?.stats ?? {}).reduce((sum, item) => sum + (item.unbilledHours + item.billedHours), 0)}</span>
+            <span>{totalHours}</span>
             <span>{t.projects.unbilledHours}</span>
-            <span>{Object.values(ctx?.stats ?? {}).reduce((sum, item) => sum + (item.unbilledHours), 0)}</span>
-            {#if ctx?.project?.currency}
-              <span>{t.projects.totalRevenue}</span>
-              <span>{Object.values(ctx?.stats ?? {}).reduce((sum, item) => sum + (item.unbilledRevenue + item.billedRevenue), 0)} {formatCurrency(ctx?.project?.currency)}</span>
-              <span>{t.projects.unbilledRevenue}</span>
-              <span>{Object.values(ctx?.stats ?? {}).reduce((sum, item) => sum + (item.unbilledRevenue), 0)} {formatCurrency(ctx?.project?.currency)}</span>
-            {:else }
-              <span>{t.projects.totalRevenue}</span>
-              <span>{Object.values(ctx?.stats ?? {}).reduce((sum, item) => sum + (item.unbilledRevenue + item.billedRevenue), 0)}</span>
-              <span>{t.projects.unbilledRevenue}</span>
-              <span>{Object.values(ctx?.stats ?? {}).reduce((sum, item) => sum + (item.unbilledRevenue), 0)}</span>
-            {/if}
+            <span>{unbilledHours}</span>
+            <span>{t.projects.totalRevenue}</span>
+            <span>{formatAmount(totalRevenue, ctx?.project?.currency)}</span>
+            <span>{t.projects.unbilledRevenue}</span>
+            <span>{formatAmount(unbilledRevenue, ctx?.project?.currency)}</span>
+            <span>{t.projects.budget}</span>
+            <span>{formatAmount(ctx?.project?.budget ?? 0, ctx?.project?.currency)}</span>
+            <span>{t.projects.budgetRemaining}</span>
+            <span class:text-red-600={budgetRemaining < 0}>{formatAmount(budgetRemaining, ctx?.project?.currency)}</span>
               </div>
         </div>
         <div class="flex flex-col">

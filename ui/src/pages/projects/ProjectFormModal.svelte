@@ -54,6 +54,7 @@
       {/each}
     </div>
     <ColorField label={t.projects.color} bind:value={newProject.color} />
+    <NumberField label={t.projects.budget} bind:value={newProject.budget} unit={formatCurrency(newProject.currency)} step="0.01"/>
     <FormField label={t.projects.storyTrackerId} bind:value={newProject.storyTrackerId} required={false}/>
     <Button type="submit" label={t.general.save} class="primary"/>
   </Form>

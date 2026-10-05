@@ -6,6 +6,7 @@ import db.Id
 import db.Status
 import db.Status.ACTIVE
 import klite.Decimal
+import klite.d
 import klite.jdbc.JsonColumn
 import klite.jdbc.UpdatableEntity
 import klite.json.JsonProperty
@@ -21,6 +22,7 @@ data class Project(
   val description: String? = null,
   @JsonColumn val hourlyRates: Map<ProjectMember.Role, Decimal>,
   val currency: Currency = EUR,
+  val budget: Decimal = 0.d,
   val storyTrackerId: Long? = null,
   val activities: Set<String> = setOf("Development", "Meeting", "Consultancy", "Testing", "Research", "Support"),
   override var updatedAt: Instant? = null,
