@@ -181,7 +181,8 @@
     "dueDateBeforeDate": "Tähtaeg ei tohi olla enne arve kuupäeva",
     "showPaid": "Näita makstud",
     "unpaid": "Maksmata",
-    "overdue": "Tähtaja ületanud"
+    "overdue": "Tähtaja ületanud",
+    "selected": "Valitud"
   },
   "company": {
     "name": "Pikker Technology OÜ",
