@@ -28,10 +28,16 @@ class TimeEntryRoutes(
   }
 
   @GET @Access(ADMIN, INTERNAL, EXTERNAL, CUSTOMER)
-  fun timeEntries(@AttrParam user: User, @QueryParam myTimeEntries: Boolean? = false, @QueryParam projectId: Id<Project>? = null, @QueryParam from: LocalDate? = null, @QueryParam to: LocalDate? = null) =
-    if (myTimeEntries == true || user.isInternal || user.isExternal) timeEntryRepository.listView(user.id, projectId, from, to)
-    else if (user.isCustomer) timeEntryRepository.listViewForCustomer(user.id, projectId, from, to)
-    else timeEntryRepository.listView(projectId = projectId, from = from, to = to)
+  fun timeEntries(
+    @AttrParam user: User,
+    @QueryParam userId: Id<User>? = null,
+    @QueryParam projectId: Id<Project>? = null,
+    @QueryParam from: LocalDate? = null,
+    @QueryParam to: LocalDate? = null
+  ) =
+    if (user.isCustomer) timeEntryRepository.listViewForCustomer(user.id, projectId, from, to)
+    else if (user.isAdmin) timeEntryRepository.listView(userId, projectId, from, to)
+    else timeEntryRepository.listView(user.id, projectId, from, to)
 
   @POST @Access(ADMIN, INTERNAL, EXTERNAL)
   fun saveTimeEntry(@AttrParam user: User, timeEntry: TimeEntry): TimeEntry {

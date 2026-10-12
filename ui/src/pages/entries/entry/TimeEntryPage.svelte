@@ -9,6 +9,7 @@
   import Modal from 'src/components/Modal.svelte'
   import {showToast} from 'src/stores/toasts'
   import Button from 'src/components/Button.svelte'
+  import {user} from 'src/stores/auth'
 
   let date = today
   let timeEntries: TimeEntryView[] = []
@@ -22,7 +23,7 @@
 
   async function loadEntries(date: string) {
     editingTimeEntry = false
-    timeEntries = await api.get(`timeentries?myTimeEntries=true&from=${date}`)
+    timeEntries = await api.get(`timeentries?userId=${$user.id}&from=${date}`)
     timeEntryHours = await api.get(`timeentries/user?from=${dates[0]}`)
   }
 

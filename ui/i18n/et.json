@@ -124,7 +124,6 @@
     "storyId": "Lugu",
     "storyIds": "Lood",
     "description": "Kirjeldus",
-    "showMyTimeEntries": "Näita minu ajaandeid",
     "fromDate": "Alates",
     "toDate": "Kuni",
     "activity": "Tegevus",
@@ -133,7 +132,9 @@
     "editEntries": "Muuda ajaandeid",
     "selectEntries": "Vali ajaandeid",
     "stopSelecting": "Lõpeta valimine",
-    "noEntries": "Sissekanded puuduvad"
+    "noEntries": "Sissekanded puuduvad",
+    "totalHours": "Tundide koguarv",
+    "allUsers": "Kõik kasutajad"
   },
   "invoices": {
     "title": "Arved",

@@ -46,10 +46,11 @@ class TimeEntryRoutesTest: BaseMocks() {
     every { timeEntryRepository.listView(projectId = project.id, from = date, to = today) } returns listOf(timeEntryView)
 
     expect(routes.timeEntries(user)).toContainExactly(timeEntryView)
-    expect(routes.timeEntries(user, myTimeEntries = true)).toEqual(timeEntries)
-    expect(routes.timeEntries(user, myTimeEntries = true, to = today)).toEqual(timeEntries)
-    expect(routes.timeEntries(user, myTimeEntries = false, project.id, from = date, to = today)).toEqual(timeEntries)
-    expect(routes.timeEntries(admin, myTimeEntries = false, project.id, from = date, to = today)).toEqual(timeEntries)
+    expect(routes.timeEntries(user, to = today)).toEqual(timeEntries)
+    expect(routes.timeEntries(user, projectId = project.id, from = date, to = today)).toEqual(timeEntries)
+    expect(routes.timeEntries(admin, projectId = project.id, from = date, to = today)).toEqual(timeEntries)
+    expect(routes.timeEntries(admin, userId = user.id)).toEqual(timeEntries)
+    expect(routes.timeEntries(user, userId = admin.id)).toEqual(timeEntries)
 
     every { timeEntryRepository.listViewForCustomer(customerUser.id) } returns listOf(timeEntryView)
     every { timeEntryRepository.listViewForCustomer(customerUser.id, to = today) } returns listOf(timeEntryView)

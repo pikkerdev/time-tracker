@@ -19,18 +19,18 @@ class TimeEntriesPageTest : E2ETest() {
       openPage("/timeentries", role)
       pageTitle("timeEntries.title")
       elements("input[type='date']").shouldHave(size(2))
-      elements("select").shouldHave(size(2))
+      elements("select").shouldHave(size(if (role == AuthRole.ADMIN) 3 else 2))
     }
   }
 
   @Test @Order(2)
-  fun adminOnlyBulkActionsAndMyEntriesFilter() {
+  fun adminOnlyBulkActionsAndUserFilter() {
     openPage("/timeentries")
-    byText("timeEntries.showMyTimeEntries").should(exist)
+    byText("timeEntries.allUsers").should(exist)
     byText("timeEntries.editEntries").shouldNot(exist)
 
     openPage("/timeentries", AuthRole.INTERNAL)
-    byText("timeEntries.showMyTimeEntries").shouldNot(exist)
+    byText("timeEntries.allUsers").shouldNot(exist)
     byText("timeEntries.editEntries").shouldNot(exist)
   }
 

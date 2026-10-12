@@ -124,7 +124,6 @@
     "storyId": "Story",
     "storyIds": "Stories",
     "description": "Description",
-    "showMyTimeEntries": "Show my time entries",
     "fromDate": "From",
     "toDate": "To",
     "activity": "Activity",
@@ -133,7 +132,9 @@
     "editEntries": "Edit entries",
     "selectEntries": "Select entries",
     "stopSelecting": "Stop selecting",
-    "noEntries": "No Entries"
+    "noEntries": "No Entries",
+    "totalHours": "Total hours",
+    "allUsers": "All users"
   },
   "invoices": {
     "title": "Invoices",
