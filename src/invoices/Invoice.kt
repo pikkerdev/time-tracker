@@ -66,6 +66,7 @@ data class InvoiceDetails(
   val invoice: Invoice,
   val customer: Customer,
   val creator: User,
+  val projectName: String,
   val vat: Decimal = vatRate
 )
 

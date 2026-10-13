@@ -12,6 +12,7 @@ import db.TestData.invoiceDetails
 import db.TestData.invoiceRow
 import db.TestData.invoiceView
 import db.TestData.invoiceWithIds
+import db.TestData.project
 import db.TestData.timeEntry
 import db.TestData.timeEntry2
 import db.TestData.user
@@ -45,12 +46,14 @@ class InvoiceRoutesTest: BaseMocks() {
     every { invoiceRepository.getWithIds(invoice.id) } returns invoiceWithIds
     every { customerRepository.get(customer.id) } returns customer
     every { userRepository.get(user.id) } returns user
+    every { projectRepository.get(project.id) } returns project
     expect(routes.getDetails(invoice.id)).toEqual(invoiceDetails)
 
     verify {
       invoiceRepository.getWithIds(invoice.id)
       customerRepository.get(customer.id)
       userRepository.get(user.id)
+      projectRepository.get(project.id)
     }
   }
 

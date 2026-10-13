@@ -15,7 +15,7 @@ export interface Invoice {date: LocalDate; description: string; dueDate: LocalDa
 // class invoices.InvoiceCreateRequest
 export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; revenueMonth: LocalDate; rows: Array<InvoiceRow>; timeEntryIds: Array<Id<TimeEntry>>; title: string}
 // class invoices.InvoiceDetails
-export interface InvoiceDetails {creator: User; customer: Customer; invoice: Invoice; vat: number}
+export interface InvoiceDetails {creator: User; customer: Customer; invoice: Invoice; projectName: string; vat: number}
 // class invoices.InvoiceId
 export type InvoiceId = number
 // class invoices.InvoiceRow$Type

@@ -35,8 +35,11 @@
 <div class="invoice-bg flex justify-center p-8 bg-gray-100 min-h-screen">
   <div
     class="invoice-page bg-white box-border w-[210mm] min-h-[297mm] p-[20mm_25mm] shadow-lg print:w-full print:min-h-0 print:p-[15mm_20mm] print:shadow-none">
-    <header class="flex justify-between items-start mb-8 pb-6 border-b-2 border-gray-800">
-      <img alt="Logo" class="h-12 print:h-8" src="/own-logo.svg"/>
+    <header class="flex justify-between mb-8 pb-6 border-b-2 border-gray-800">
+      <div class="flex flex-col items-start justify-between">
+        <img alt="Logo" class="h-12 print:h-8" src="/own-logo.svg"/>
+        <b>{details?.projectName}</b>
+      </div>
       <div class="text-right">
         <h1
           class="text-3xl font-bold text-gray-800 mb-2 tracking-wide print:text-2xl print:mb-1">{t.invoices.invoice.toUpperCase()}</h1>

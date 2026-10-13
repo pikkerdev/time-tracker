@@ -47,5 +47,5 @@ object TestData {
   val invoiceCreateRequest = InvoiceCreateRequest(LocalDate.of(2026, 6, 1), listOf(timeEntry.id, timeEntry2.id),"Invoice 1", description= "development", dueDate = LocalDate.of(2026, 6, 14), revenueMonth = LocalDate.of(2026, 5, 1), rows = listOf(invoiceRow))
   val invoiceView = InvoiceView(invoice, user.name, customer.name, project.name)
   val invoiceWithIds = InvoiceWithIds(invoice, customer.id, user.id)
-  val invoiceDetails = InvoiceDetails(invoice, customer, user, 0.24.d)
+  val invoiceDetails = InvoiceDetails(invoice, customer, user, project.name, 0.24.d)
 }
