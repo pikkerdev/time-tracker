@@ -1,7 +1,20 @@
-import {type InvoiceView} from 'src/api/types'
+import {InvoiceStatus, type InvoiceView} from 'src/api/types'
 
 export function amount(invoiceView: InvoiceView): number {
   return invoiceView.invoice.rows?.reduce((sum, row) => sum + row.amount, 0) ?? 0
+}
+
+export function totalAmount(invoiceView: InvoiceView): number {
+  return amount(invoiceView) * (1 + (invoiceView.vat ?? 0))
+}
+
+export function paidAmount(invoiceView: InvoiceView): number {
+  const paid = invoiceView.invoice.paidAmount ?? 0
+  return invoiceView.invoice.status === InvoiceStatus.PAID ? Math.max(paid, totalAmount(invoiceView)) : paid
+}
+
+export function remainingAmount(invoiceView: InvoiceView): number {
+  return Math.max(0, totalAmount(invoiceView) - paidAmount(invoiceView))
 }
 
 export type CustomerBreakdown = {customerName: string, total: number, projects: {projectName: string, total: number}[]}
@@ -9,7 +22,7 @@ export type CustomerBreakdown = {customerName: string, total: number, projects: 
 export function groupByCustomer(invoices: InvoiceView[]): CustomerBreakdown[] {
   const customers = new Map<string, CustomerBreakdown>()
   for (const i of invoices) {
-    const amt = amount(i)
+    const amt = remainingAmount(i)
     let customer = customers.get(i.customerName)
     if (!customer) {
       customer = {customerName: i.customerName, total: 0, projects: []}

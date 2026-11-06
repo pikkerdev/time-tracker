@@ -20,6 +20,7 @@ import invoices.Invoice.Status.*
 import io.mockk.every
 import io.mockk.verify
 import io.mockk.verifySequence
+import klite.d
 import org.junit.jupiter.api.Test
 
 
@@ -127,11 +128,55 @@ class InvoiceRoutesTest: BaseMocks() {
     verifySequence {
       invoiceRepository.setStatus(invoice.id, CREATED)
       invoiceRepository.setStatus(invoice.id, SENT)
-      invoiceRepository.setStatus(invoice.id, PAID)
+      invoiceRepository.get(invoice.id)
+      invoiceRepository.setPayment(invoice.id, invoice.totalAmount(), PAID)
     }
 
     every { invoiceRepository.setStatus(invoice.id, SENT) } returns true
 
     expect(routes.setStatus(invoice.id, SENT)).toEqual(true)
+  }
+
+  @Test fun `set paid amount`() {
+    val paidInvoice = invoice.copy(paidAmount = 5.d)
+    every { invoiceRepository.get(invoice.id) } returnsMany listOf(invoice, paidInvoice)
+    every { invoiceRepository.setPaidAmount(invoice.id, 5.d) } returns true
+
+    expect(routes.setPaidAmount(invoice.id, 5.d)).toEqual(paidInvoice)
+
+    verify {
+      invoiceRepository.setPaidAmount(invoice.id, 5.d)
+      invoiceRepository.get(invoice.id)
+    }
+  }
+
+  @Test fun `set paid amount to full marks invoice as paid`() {
+    val total = invoice.totalAmount()
+    val paidInvoice = invoice.copy(status = PAID, paidAmount = total)
+    every { invoiceRepository.get(invoice.id) } returnsMany listOf(invoice, paidInvoice)
+    every { invoiceRepository.setPayment(invoice.id, total, PAID) } returns true
+
+    expect(routes.setPaidAmount(invoice.id, total)).toEqual(paidInvoice)
+
+    verify { invoiceRepository.setPayment(invoice.id, total, PAID) }
+  }
+
+  @Test fun `set partial paid amount on paid invoice reverts status to sent`() {
+    val paidInvoice = invoice.copy(status = PAID, paidAmount = invoice.totalAmount())
+    val partiallyPaidInvoice = paidInvoice.copy(status = SENT, paidAmount = 5.d)
+    every { invoiceRepository.get(invoice.id) } returnsMany listOf(paidInvoice, partiallyPaidInvoice)
+    every { invoiceRepository.setPayment(invoice.id, 5.d, SENT) } returns true
+
+    expect(routes.setPaidAmount(invoice.id, 5.d)).toEqual(partiallyPaidInvoice)
+
+    verify { invoiceRepository.setPayment(invoice.id, 5.d, SENT) }
+  }
+
+  @Test fun `set negative paid amount throws`() {
+    expect { routes.setPaidAmount(invoice.id, (-1).d) }.toThrow<IllegalArgumentException>()
+  }
+
+  @Test fun `set paid amount above total throws`() {
+    expect { routes.setPaidAmount(invoice.id, invoice.totalAmount() + 1.d) }.toThrow<IllegalArgumentException>()
   }
 }

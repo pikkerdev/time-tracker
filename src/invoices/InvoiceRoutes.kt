@@ -5,6 +5,8 @@ import customers.CustomerRepository
 import db.Id
 import invoices.Invoice.Status
 import invoices.Invoice.Status.PAID
+import invoices.Invoice.Status.SENT
+import klite.Decimal
 import klite.ForbiddenException
 import klite.annotations.*
 import klite.d
@@ -70,7 +72,27 @@ class InvoiceRoutes(
     else repository.delete(id)
 
   @POST("/:id/status")
-  fun setStatus(@PathParam id: InvoiceId, status: Status) = repository.setStatus(id, status)
+  fun setStatus(@PathParam id: InvoiceId, status: Status): Boolean =
+    if (status == PAID) {
+      val invoice = repository.get(id)
+      repository.setPayment(id, invoice.totalAmount(), PAID)
+    } else repository.setStatus(id, status)
+
+  @POST("/:id/paidAmount")
+  fun setPaidAmount(@PathParam id: InvoiceId, paidAmount: Decimal): Invoice {
+    require(paidAmount >= 0.d) { "Paid amount can not be negative" }
+    val invoice = repository.get(id)
+    val total = invoice.totalAmount()
+    require(paidAmount <= total) { "Paid amount can not exceed total amount" }
+    val status = when {
+      paidAmount >= total -> PAID
+      invoice.status == PAID -> SENT
+      else -> invoice.status
+    }
+    if (status == invoice.status) repository.setPaidAmount(id, paidAmount)
+    else repository.setPayment(id, paidAmount, status)
+    return repository.get(id)
+  }
 }
 
 data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>, val title: String, val description: String, val dueDate: LocalDate, val revenueMonth: LocalDate, val rows: List<InvoiceRow> )

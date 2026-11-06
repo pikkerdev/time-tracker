@@ -65,3 +65,13 @@ alter table invoices add column title text not null default '';
 
 --changeset invoices.revenueMonth
 alter table invoices add column revenueMonth date;
+
+--changeset invoices.paidAmount
+alter table invoices add column paidAmount decimal not null default 0;
+
+--changeset invoices.paidAmount:set-paid-invoices
+-- total amount includes the default 24% VAT_RATE
+update invoices set paidAmount = coalesce((
+  select sum((r->>'amount')::numeric)
+  from jsonb_array_elements(rows) r
+), 0) * 1.24 where status = 'PAID';

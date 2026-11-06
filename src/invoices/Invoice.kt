@@ -6,6 +6,7 @@ import db.Id
 import invoices.Invoice.Status.CREATED
 import klite.Converter
 import klite.Decimal
+import klite.d
 import klite.jdbc.BaseEntity
 import klite.jdbc.JsonColumn
 import klite.jdbc.UpdatableEntity
@@ -24,6 +25,7 @@ data class Invoice(
   val revenueMonth: LocalDate,
   @JsonColumn val rows: List<InvoiceRow> = emptyList(),
   val status: Status = CREATED,
+  val paidAmount: Decimal = 0.d,
   override var updatedAt: Instant? = null,
 ): BaseEntity<InvoiceId>, UpdatableEntity {
   enum class Status {
@@ -49,11 +51,15 @@ data class InvoiceRow(
   }
 }
 
+fun Invoice.totalAmount(vat: Decimal = vatRate): Decimal =
+  rows.fold(0.d) { sum, row -> sum + row.amount } * (1.d + vat)
+
 data class InvoiceView(
   val invoice: Invoice,
   val creatorName: String,
   val customerName: String,
   val projectName: String,
+  val vat: Decimal = vatRate,
 )
 
 data class InvoiceWithIds(

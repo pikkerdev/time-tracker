@@ -11,7 +11,7 @@ export enum Status {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class invoices.Invoice$Status
 export enum InvoiceStatus {CREATED = 'CREATED', SENT = 'SENT', PAID = 'PAID'}
 // class invoices.Invoice
-export interface Invoice {date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; projectId: Id<Project>; revenueMonth: LocalDate; rows: Array<InvoiceRow>; status: InvoiceStatus; title: string; updatedAt?: Instant}
+export interface Invoice {date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; paidAmount: number; projectId: Id<Project>; revenueMonth: LocalDate; rows: Array<InvoiceRow>; status: InvoiceStatus; title: string; updatedAt?: Instant}
 // class invoices.InvoiceCreateRequest
 export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; revenueMonth: LocalDate; rows: Array<InvoiceRow>; timeEntryIds: Array<Id<TimeEntry>>; title: string}
 // class invoices.InvoiceDetails
@@ -25,7 +25,7 @@ export interface InvoiceRow {amount: number; description: string; hours?: number
 // class invoices.InvoiceUpdateRequest
 export interface InvoiceUpdateRequest {date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; revenueMonth: LocalDate; rows: Array<InvoiceRow>; title: string}
 // class invoices.InvoiceView
-export interface InvoiceView {creatorName: string; customerName: string; invoice: Invoice; projectName: string}
+export interface InvoiceView {creatorName: string; customerName: string; invoice: Invoice; projectName: string; vat: number}
 // class invoices.InvoiceWithIds
 export interface InvoiceWithIds {creatorId: Id<User>; customerId: Id<Customer>; invoice: Invoice}
 // class locations.CountryCode

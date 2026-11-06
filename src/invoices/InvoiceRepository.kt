@@ -44,9 +44,18 @@ class InvoiceRepository(db: DataSource): BaseCrudRepository<Invoice, InvoiceId>(
     return if (db.delete(table, Invoice::id eq id) == 1) true else throw NoSuchElementException()
   }
 
-  fun setStatus(id: InvoiceId, status: Status): Boolean{
-    return if (db.update(table, mapOf(Invoice::status to status), Invoice::id to id) == 1) true else throw NoSuchElementException()
+  private fun update(id: InvoiceId, values: ValueMap): Boolean {
+    return if (db.update(table, values, Invoice::id eq id) == 1) true else throw NoSuchElementException()
   }
+
+  fun setStatus(id: InvoiceId, status: Status): Boolean =
+    update(id, mapOf(Invoice::status to status))
+
+  fun setPaidAmount(id: InvoiceId, paidAmount: Decimal): Boolean =
+    update(id, mapOf(Invoice::paidAmount to paidAmount))
+
+  fun setPayment(id: InvoiceId, paidAmount: Decimal, status: Status): Boolean =
+    update(id, mapOf(Invoice::paidAmount to paidAmount, Invoice::status to status))
 
   fun statsForProject(
     projectId: Id<Project>,

@@ -17,8 +17,10 @@ function invoiceView(customerName: string, projectName: string, amounts: number[
       revenueMonth: '2026-01-01',
       rows: amounts.map(amount => ({amount, description: '', type: InvoiceRowType.CUSTOM})),
       status: InvoiceStatus.SENT,
-      title: ''
-    }
+      title: '',
+      paidAmount: 0
+    },
+    vat: 0
   }
 }
 

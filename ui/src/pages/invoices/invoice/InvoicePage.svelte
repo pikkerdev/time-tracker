@@ -2,6 +2,7 @@
   import {changeLangInUrl, formatAmount, formatDate, lang, langsOptions, t} from 'i18n'
   import Button from 'src/components/Button.svelte'
   import type {InvoiceDetails, InvoiceId} from 'src/api/types'
+  import {InvoiceStatus} from 'src/api/types'
   import {onMount} from 'svelte'
   import api from 'src/api/api'
   import SelectField from 'src/forms/SelectField.svelte'
@@ -9,11 +10,20 @@
   export let id: InvoiceId
 
   let amount: number
+  let total: number
+  let paid: number
+  let remaining: number
   let details: InvoiceDetails
   onMount(async () => {
     details = await api.get(`invoices/${id}`)
     amount = details.invoice.rows.reduce((sum, row) => sum + row.amount, 0)
+    total = amount * (1 + details.vat)
   })
+
+  $: paid = details?.invoice.status === InvoiceStatus.PAID
+    ? Math.max(details.invoice.paidAmount, total)
+    : details?.invoice.paidAmount ?? 0
+  $: remaining = Math.max(0, (total ?? 0) - paid)
 
   function print() {
     window.print()
@@ -116,6 +126,16 @@
         <td
           class="tfoot-value tfoot-value-total">{formatAmount((amount ?? 0) + (amount * details?.vat))}</td>
       </tr>
+      {#if paid > 0}
+        <tr>
+          <td class="tfoot-label" colspan="3">{t.invoices.paidAmount}</td>
+          <td class="tfoot-value">{formatAmount(paid)}</td>
+        </tr>
+        <tr>
+          <td class="tfoot-label" colspan="3">{t.invoices.remainingAmount}</td>
+          <td class="tfoot-value">{formatAmount(remaining)}</td>
+        </tr>
+      {/if}
       </tfoot>
     </table>
 

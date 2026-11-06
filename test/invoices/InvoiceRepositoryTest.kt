@@ -12,9 +12,7 @@ import db.TestData.invoice
 import db.TestData.project
 import db.TestData.project3
 import db.TestData.user
-import invoices.Invoice.Status.CREATED
-import invoices.Invoice.Status.PAID
-import invoices.Invoice.Status.SENT
+import invoices.Invoice.Status.*
 import klite.d
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -82,6 +80,18 @@ class InvoiceRepositoryTest: DBTest() {
     expect(repository.get(invoice.id).status).toEqual(PAID)
     repository.setStatus(invoice.id, CREATED)
     expect(repository.get(invoice.id).status).toEqual(CREATED)
+  }
+
+  @Test fun `set paid amount`() {
+    repository.save(invoice)
+    expect(repository.setPaidAmount(invoice.id, 5.d)).toEqual(true)
+    expect(repository.get(invoice.id)).toEqual(invoice.copy(paidAmount = 5.d))
+  }
+
+  @Test fun `set payment`() {
+    repository.save(invoice)
+    expect(repository.setPayment(invoice.id, 5.d, SENT)).toEqual(true)
+    expect(repository.get(invoice.id)).toEqual(invoice.copy(paidAmount = 5.d, status = SENT))
   }
 
   @Test fun `stats for project`() {
