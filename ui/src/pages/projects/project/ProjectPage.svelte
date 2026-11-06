@@ -6,7 +6,7 @@
   import {formatAmount, t} from 'i18n'
   import ProjectFormModal from 'src/pages/projects/ProjectFormModal.svelte'
 
-  import {isOverBudget, type ProjectContext} from 'src/pages/projects/context'
+  import {isOverBudget, type ProjectContext, projectTotals} from 'src/pages/projects/context'
   import ProjectMembersModal from 'src/pages/projects/project/ProjectMembersModal.svelte'
   import {user} from 'src/stores/auth'
   import Button from 'src/components/Button.svelte'
@@ -19,12 +19,8 @@
 
   let ctx: ProjectContext | undefined
 
-  $: stats = Object.values(ctx?.stats ?? {})
-  $: totalHours = stats.reduce((sum, item) => sum + item.unbilledHours + item.billedHours, 0)
-  $: unbilledHours = stats.reduce((sum, item) => sum + item.unbilledHours, 0)
-  $: totalRevenue = stats.reduce((sum, item) => sum + item.unbilledRevenue + item.billedRevenue, 0)
-  $: unbilledRevenue = stats.reduce((sum, item) => sum + item.unbilledRevenue, 0)
-  $: budgetRemaining = (ctx?.project?.budget ?? 0) - totalRevenue
+  $: totals = projectTotals(ctx?.stats ?? {})
+  $: budgetRemaining = (ctx?.project?.budget ?? 0) - totals.revenue
 
   onMount(async () => {
     ctx = await api.get('projects/' + id)
@@ -76,13 +72,17 @@
           <hr class="text-pikker-gold border-t-3">
           <div class="grid grid-cols-2 gap-x-4">
             <span>{t.projects.totalHours}</span>
-            <span>{totalHours}</span>
+            <span>{totals.totalHours}</span>
             <span>{t.projects.unbilledHours}</span>
-            <span>{unbilledHours}</span>
-            <span>{t.projects.totalRevenue}</span>
-            <span>{formatAmount(totalRevenue, ctx?.project?.currency)}</span>
-            <span>{t.projects.unbilledRevenue}</span>
-            <span>{formatAmount(unbilledRevenue, ctx?.project?.currency)}</span>
+            <span>{totals.unbilledHours}</span>
+            <span>{t.projects.workValue}</span>
+            <span>{formatAmount(totals.workValue, ctx?.project?.currency)}</span>
+            <span>{t.projects.revenue}</span>
+            <span>{formatAmount(totals.revenue, ctx?.project?.currency)}</span>
+            <span>{t.projects.unbilledWorkValue}</span>
+            <span>{formatAmount(totals.unbilledWorkValue, ctx?.project?.currency)}</span>
+            <span>{t.projects.profit}</span>
+            <span class:text-red-600={totals.profit < 0}>{formatAmount(totals.profit, ctx?.project?.currency)}</span>
             <span>{t.projects.budget}</span>
             <span>{formatAmount(ctx?.project?.budget ?? 0, ctx?.project?.currency)}</span>
             <span>{t.projects.budgetRemaining}</span>

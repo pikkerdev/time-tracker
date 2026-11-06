@@ -62,16 +62,19 @@ class InvoiceRepository(db: DataSource): BaseCrudRepository<Invoice, InvoiceId>(
   ): Map<LocalDate, MonthlyStats> =
     db.query(
       """select
-      coalesce(revenueMonth, date_trunc('month', date)::date) as month,
-      coalesce(sum(invoice.hours), 0) as billedHours,
-      coalesce(sum(invoice.total), 0) as billedRevenue
-      from $table,
-      lateral (
+      coalesce($table.revenueMonth, date_trunc('month', $table.date)::date) as month,
+      coalesce(sum(case when $table.fixedPrice then coalesce(entry.hours, 0) else invoiceRow.hours end), 0) as billedHours,
+      coalesce(sum(invoiceRow.total), 0) as billedRevenue
+      from $table
+      left join lateral (
+        select sum(hours) as hours from time_entry where time_entry.invoiceId = $table.id
+      ) entry on true
+      left join lateral (
         select
           coalesce(sum((r->>'hours')::numeric), 0) as hours,
           coalesce(sum((r->>'amount')::numeric), 0) as total
-        from jsonb_array_elements(rows) r
-      ) invoice""".trimIndent(),
+        from jsonb_array_elements($table.rows) r
+      ) invoiceRow on true""".trimIndent(),
       Invoice::projectId eq projectId,
       suffix = "group by month order by month"
     ) {
@@ -79,7 +82,8 @@ class InvoiceRepository(db: DataSource): BaseCrudRepository<Invoice, InvoiceId>(
         billedHours = Decimal(getString("billedHours")),
         unbilledHours = Decimal("0"),
         billedRevenue = Decimal(getString("billedRevenue")),
-        unbilledRevenue = Decimal("0")
+        unbilledRevenue = Decimal("0"),
+        workValue = Decimal("0")
       )
     }.toMap()
 }

@@ -6,6 +6,8 @@ import ch.tutteli.atrium.api.verbs.expect
 import db.BaseMocks
 import db.Id
 import db.TestData.customer
+import db.TestData.fixedPriceInvoice
+import db.TestData.fixedPriceRow
 import db.TestData.invoice
 import db.TestData.invoiceCreateRequest
 import db.TestData.invoiceDetails
@@ -58,6 +60,15 @@ class InvoiceRoutesTest: BaseMocks() {
     }
   }
 
+  @Test fun `getDetails hides zero amount rows`() {
+    val zeroRow = invoiceRow.copy(amount = 0.d, rate = 0.d)
+    every { invoiceRepository.getWithIds(invoice.id) } returns invoiceWithIds.copy(invoice = invoice.copy(rows = listOf(zeroRow, invoiceRow)))
+    every { customerRepository.get(customer.id) } returns customer
+    every { userRepository.get(user.id) } returns user
+    every { projectRepository.get(project.id) } returns project
+    expect(routes.getDetails(invoice.id).invoice.rows).toEqual(listOf(invoiceRow))
+  }
+
   @Test fun create() {
     val timeEntryIds = listOf(timeEntry.id, timeEntry2.id)
     val invoiceToSave = invoice.copy()
@@ -77,6 +88,42 @@ class InvoiceRoutesTest: BaseMocks() {
       invoiceRepository.save(invoiceToSave)
       timeEntryRepository.updateInvoiceId(timeEntryIds, invoice.id)
     }
+  }
+
+  @Test fun `create fixed price invoice`() {
+    val timeEntryIds = listOf(timeEntry.id, timeEntry2.id)
+    val request = invoiceCreateRequest.copy(rows = listOf(fixedPriceRow), fixedPrice = true)
+
+    every { timeEntryRepository.listByIds(timeEntryIds) } returns listOf(timeEntry, timeEntry2)
+
+    expect(routes.create(request)).toEqual(fixedPriceInvoice)
+
+    verify {
+      timeEntryRepository.listByIds(timeEntryIds)
+      invoiceRepository.nextId(invoice.date)
+      invoiceRepository.save(fixedPriceInvoice)
+      timeEntryRepository.updateInvoiceId(timeEntryIds, invoice.id)
+    }
+    verify(exactly = 0) { timeEntryRepository.initialRows(any()) }
+  }
+
+  @Test fun `create keeps zero amount time entry rows`() {
+    val timeEntryIds = listOf(timeEntry.id, timeEntry2.id)
+    val zeroRow = invoiceRow.copy(amount = 0.d, rate = 0.d)
+    every { timeEntryRepository.listByIds(timeEntryIds) } returns listOf(timeEntry, timeEntry2)
+    every { timeEntryRepository.initialRows(timeEntryIds) } returns listOf(zeroRow)
+
+    expect(routes.create(invoiceCreateRequest).rows).toEqual(invoiceCreateRequest.rows + zeroRow)
+
+    verify { timeEntryRepository.updateInvoiceId(timeEntryIds, invoice.id) }
+  }
+
+  @Test fun `create fixed price invoice without positive amount throws`() {
+    val timeEntryIds = listOf(timeEntry.id, timeEntry2.id)
+    every { timeEntryRepository.listByIds(timeEntryIds) } returns listOf(timeEntry, timeEntry2)
+
+    expect { routes.create(invoiceCreateRequest.copy(rows = listOf(fixedPriceRow.copy(amount = 0.d)), fixedPrice = true)) }
+      .toThrow<IllegalArgumentException>()
   }
 
   @Test fun delete() {
@@ -118,6 +165,17 @@ class InvoiceRoutesTest: BaseMocks() {
     val request = InvoiceUpdateRequest(invoice.id, invoice.date, invoice.title, invoice.description, invoice.dueDate, invoice.revenueMonth, emptyList())
 
     expect { routes.update(invoice.id, request) }.toThrow<IllegalArgumentException>()
+  }
+
+  @Test fun `update fixed price invoice does not check time entry rows`() {
+    val request = InvoiceUpdateRequest(invoice.id, invoice.date, invoice.title, invoice.description, invoice.dueDate, invoice.revenueMonth, listOf(fixedPriceRow.copy(amount = 2000.d)))
+    val updated = fixedPriceInvoice.copy(rows = request.rows)
+    every { invoiceRepository.get(invoice.id) } returns fixedPriceInvoice
+
+    expect(routes.update(invoice.id, request)).toEqual(updated)
+
+    verify { invoiceRepository.get(invoice.id); invoiceRepository.save(updated) }
+    verify(exactly = 0) { timeEntryRepository.invoiceRows(any()) }
   }
 
   @Test fun setStatus() {

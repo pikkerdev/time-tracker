@@ -122,6 +122,15 @@ class TimeEntryRepositoryTest: DBTest() {
     )
   }
 
+  @Test fun `initial rows with zero hourly rate`() {
+    val entry = timeEntry.copy(hourlyRate = 0.d)
+    repository.save(entry)
+
+    expect(repository.initialRows(listOf(entry.id))).toContainExactly(
+      InvoiceRow("DEVELOPER", 0.d, entry.hours, 0.d, type = InvoiceRow.Type.TIMEENTRY)
+    )
+  }
+
   @Test fun delete() {
     repository.save(timeEntry)
     repository.delete((timeEntry.id))
@@ -144,12 +153,12 @@ class TimeEntryRepositoryTest: DBTest() {
     val entry5 = timeEntry.copy(date = date.withYear(2024), hours = 2.d, id = Id())
 
     val projectStats1 = mapOf(
-      date.withDayOfMonth(1) to MonthlyStats(0.d, 5.d, 0.d, 5.d.times(timeEntry.hourlyRate)),
-      entry5.date.withDayOfMonth(1) to MonthlyStats(0.d, 2.d, 0.d, 2.d.times(timeEntry.hourlyRate))
+      date.withDayOfMonth(1) to MonthlyStats(0.d, 5.d, 0.d, 5.d.times(timeEntry.hourlyRate), 9.d.times(timeEntry.hourlyRate)),
+      entry5.date.withDayOfMonth(1) to MonthlyStats(0.d, 2.d, 0.d, 2.d.times(timeEntry.hourlyRate), 2.d.times(timeEntry.hourlyRate))
     )
 
     val projectStats2 = mapOf(
-      date.withDayOfMonth(1) to MonthlyStats(0.d, 6.d, 0.d, 6.d.times(timeEntry3.hourlyRate))
+      date.withDayOfMonth(1) to MonthlyStats(0.d, 6.d, 0.d, 6.d.times(timeEntry3.hourlyRate), 6.d.times(timeEntry3.hourlyRate))
     )
 
     invoiceRepository.save(invoice)

@@ -11,6 +11,7 @@ function invoiceView(options: {paidAmount?: number, status?: InvoiceStatus} = {}
       date: '2026-01-01',
       description: '',
       dueDate: '2026-01-01',
+      fixedPrice: false,
       id: 1,
       paidAmount: options.paidAmount ?? 0,
       projectId: '1',

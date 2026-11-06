@@ -38,6 +38,7 @@ data class MonthlyStats(
   val unbilledHours: Decimal,
   val billedRevenue: Decimal,
   val unbilledRevenue: Decimal,
+  val workValue: Decimal,
 )
 
 data class ProjectView(

@@ -9,6 +9,7 @@
   import {navigate} from '@keksworks/svelte-tiny-router'
   import InvoiceRowField from 'src/pages/invoices/invoice/InvoiceRowField.svelte'
   import MonthSelectField from 'src/forms/MonthSelectField.svelte'
+  import CheckboxField from 'src/forms/CheckboxField.svelte'
 
   export let selectedEntryIds: string[] = []
   export let show = true
@@ -19,14 +20,24 @@
     date: today,
     dueDate: toISODate(today, d => { d.setDate(d.getDate() + 14) }),
     revenueMonth: toISODate(today, d => { d.setDate(1) }),
-    timeEntryIds: selectedEntryIds
+    timeEntryIds: selectedEntryIds,
+    rows: [],
+    title: '',
+    description: '',
+    fixedPrice: false
   } as InvoiceCreateRequest
+
+  let fixedPrice = false
 
   $: isEdit = !!invoice
 
   async function submit() {
     if (req.dueDate < req.date) {
       showToast(t.invoices.dueDateBeforeDate, {type: ToastType.ERROR})
+      return
+    }
+    if (!invoice && fixedPrice && !(req.rows ?? []).some(row => row.amount > 0)) {
+      showToast(t.invoices.fixedPriceAmountRequired, {type: ToastType.ERROR})
       return
     }
     if (invoice) {
@@ -43,7 +54,7 @@
       show = false
       onSaved(saved)
     } else {
-      const saved = await api.post<Invoice>('invoices', {...req, title: req.title.replaceAll(' ', '_')})
+      const saved = await api.post<Invoice>('invoices', {...req, fixedPrice, title: req.title.replaceAll(' ', '_')})
       show = false
       navigate('/invoices')
     }
@@ -57,6 +68,12 @@
   <FormField bind:value={req.date} label={t.invoices.date} type="date"/>
   <FormField bind:value={req.dueDate} label={t.invoices.dueDate} type="date" min={req.date}/>
   <MonthSelectField bind:from={req.revenueMonth} to={undefined} label={t.invoices.revenueMonth}/>
+  {#if !isEdit}
+    <CheckboxField label={t.invoices.fixedPrice} bind:checked={fixedPrice}/>
+    {#if fixedPrice}
+      <p class="text-sm text-gray-500">{t.invoices.fixedPriceHelp}</p>
+    {/if}
+  {/if}
   <InvoiceRowField bind:rows={req.rows} label={t.invoices.customRows}/>
   <Button class="primary" label={isEdit ? t.invoices.save : t.invoices.create} type="submit"/>
 </Form>

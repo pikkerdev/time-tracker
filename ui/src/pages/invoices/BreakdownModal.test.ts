@@ -12,6 +12,7 @@ function invoiceView(customerName: string, projectName: string, amounts: number[
       date: '2026-01-01',
       description: '',
       dueDate: '2026-01-01',
+      fixedPrice: false,
       id: 1,
       projectId: '1',
       revenueMonth: '2026-01-01',

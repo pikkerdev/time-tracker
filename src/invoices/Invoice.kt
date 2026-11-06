@@ -24,6 +24,7 @@ data class Invoice(
   val dueDate: LocalDate,
   val revenueMonth: LocalDate,
   @JsonColumn val rows: List<InvoiceRow> = emptyList(),
+  val fixedPrice: Boolean = false,
   val status: Status = CREATED,
   val paidAmount: Decimal = 0.d,
   override var updatedAt: Instant? = null,

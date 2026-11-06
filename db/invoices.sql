@@ -75,3 +75,6 @@ update invoices set paidAmount = coalesce((
   select sum((r->>'amount')::numeric)
   from jsonb_array_elements(rows) r
 ), 0) * 1.24 where status = 'PAID';
+
+--changeset invoices.fixedPrice
+alter table invoices add column fixedPrice boolean not null default false;

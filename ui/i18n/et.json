@@ -86,11 +86,15 @@
     "overview": "Ülevaade",
     "totalHours": "Tundide koguarv",
     "unbilledHours": "Arveldamata tunnid",
+    "workValue": "Töö väärtus",
+    "revenue": "Käive",
+    "unbilledWorkValue": "Arveldamata töö väärtus",
+    "profit": "Kasum",
     "totalRevenue": "Kogukäive",
     "unbilledRevenue": "Arveldamata käive",
     "color": "Värv",
     "monthlyHours": "Tunnid kuude kaupa",
-    "monthlyHoursAndRevenue": "Tunnid ja käive kuude kaupa"
+    "monthlyHoursAndRevenue": "Tunnid, töö väärtus ja käive kuude kaupa"
   },
   "users": {
     "title": "Kasutajad",
@@ -188,7 +192,10 @@
     "showPaid": "Näita makstud",
     "unpaid": "Maksmata",
     "overdue": "Tähtaja ületanud",
-    "selected": "Valitud"
+    "selected": "Valitud",
+    "fixedPrice": "Püsihinnaga / ühekordse summaga arve",
+    "fixedPriceHelp": "Valitud tunnid märgitakse arveldatud, kuid arvele lisatakse ainult allpool olevad lisaread",
+    "fixedPriceAmountRequired": "Püsihinnaga arvel peab olema rida summaga, mis on suurem kui 0"
   },
   "company": {
     "name": "Pikker Technology OÜ",

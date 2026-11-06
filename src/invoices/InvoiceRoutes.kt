@@ -41,8 +41,9 @@ class InvoiceRoutes(
     val projectId = timeEntries.first().projectId
     if (timeEntries.any { it.projectId != projectId }) throw IllegalArgumentException("timeEntries.timeEntriesMustBelongToSameProject")
     require(timeEntries.all { it.invoiceId == null }) { "Already Invoiced" }
-    val initialRows = timeEntryRepository.initialRows(req.timeEntryIds)
-    val invoice = Invoice(repository.nextId(req.date), projectId, req.date, req.title, req.description, req.dueDate, req.revenueMonth, req.rows + initialRows)
+    if (req.fixedPrice) require(req.rows.any { it.amount > 0.d }) { "Fixed price invoice must have a positive amount" }
+    val rows = if (req.fixedPrice) req.rows else req.rows + timeEntryRepository.initialRows(req.timeEntryIds)
+    val invoice = Invoice(repository.nextId(req.date), projectId, req.date, req.title, req.description, req.dueDate, req.revenueMonth, rows, req.fixedPrice)
     repository.save(invoice)
     timeEntryRepository.updateInvoiceId(req.timeEntryIds, invoice.id)
     return invoice
@@ -51,11 +52,14 @@ class InvoiceRoutes(
   @POST("/:id")
   fun update(@PathParam id: InvoiceId, req: InvoiceUpdateRequest): Invoice {
     require(id == req.id) { "Wrong id" }
-    val lockedRows = timeEntryRepository.invoiceRows(id)
-    require(lockedRows.all { row -> req.rows.count { it == row } >= lockedRows.count { it == row } }) {
-      "Can not remove rows created from time entries"
+    val existing = repository.get(id)
+    if (!existing.fixedPrice) {
+      val lockedRows = timeEntryRepository.invoiceRows(id)
+      require(lockedRows.all { row -> req.rows.count { it == row } >= lockedRows.count { it == row } }) {
+        "Can not remove rows created from time entries"
+      }
     }
-    val invoice = repository.get(id).copy(
+    val invoice = existing.copy(
       date = req.date,
       title = req.title,
       description = req.description,
@@ -95,6 +99,6 @@ class InvoiceRoutes(
   }
 }
 
-data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>, val title: String, val description: String, val dueDate: LocalDate, val revenueMonth: LocalDate, val rows: List<InvoiceRow> )
+data class InvoiceCreateRequest(val date: LocalDate, val timeEntryIds: List<Id<TimeEntry>>, val title: String, val description: String, val dueDate: LocalDate, val revenueMonth: LocalDate, val rows: List<InvoiceRow>, val fixedPrice: Boolean = false)
 
 data class InvoiceUpdateRequest(val id: InvoiceId, val date: LocalDate, val title: String, val description: String, val dueDate: LocalDate, val revenueMonth: LocalDate, val rows: List<InvoiceRow>)

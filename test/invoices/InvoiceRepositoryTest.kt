@@ -8,9 +8,13 @@ import ch.tutteli.atrium.api.verbs.expect
 import customers.CustomerRepository
 import db.DBTest
 import db.TestData.customer
+import db.TestData.fixedPriceInvoice
 import db.TestData.invoice
+import db.TestData.invoiceRow
 import db.TestData.project
 import db.TestData.project3
+import db.TestData.timeEntry
+import db.TestData.timeEntry2
 import db.TestData.user
 import invoices.Invoice.Status.*
 import klite.d
@@ -18,6 +22,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import projects.MonthlyStats
 import projects.ProjectRepository
+import timeentries.TimeEntryRepository
 import users.UserRepository
 import java.time.LocalDate
 
@@ -38,6 +43,12 @@ class InvoiceRepositoryTest: DBTest() {
     expect(repository.delete(invoice.id)).toEqual(true)
 
     expect(repository.list()).toBeEmpty()
+  }
+
+  @Test fun `save and load fixed price invoice`() {
+    repository.save(fixedPriceInvoice)
+
+    expect(repository.get(fixedPriceInvoice.id)).toEqual(fixedPriceInvoice)
   }
 
   @Test fun `next id`() {
@@ -100,9 +111,9 @@ class InvoiceRepositoryTest: DBTest() {
     val invoice3 = invoice.copy(id = InvoiceId(2026060103), revenueMonth = LocalDate.of(2024, 5, 1))
     val invoice4 = invoice.copy(id = InvoiceId(2026060104), projectId = project3.id)
 
-    val projectStats1 = mapOf(LocalDate.of(2026, 5, 1) to MonthlyStats(6.d, 0.d, 30.d, 0.d),
-      LocalDate.of(2024, 5, 1) to MonthlyStats(3.d, 0.d, 15.d, 0.d))
-    val projectStats2 = mapOf(LocalDate.of(2026, 5, 1) to MonthlyStats(3.d, 0.d, 15.d, 0.d))
+    val projectStats1 = mapOf(LocalDate.of(2026, 5, 1) to MonthlyStats(6.d, 0.d, 30.d, 0.d, 0.d),
+      LocalDate.of(2024, 5, 1) to MonthlyStats(3.d, 0.d, 15.d, 0.d, 0.d))
+    val projectStats2 = mapOf(LocalDate.of(2026, 5, 1) to MonthlyStats(3.d, 0.d, 15.d, 0.d, 0.d))
 
     ProjectRepository(db).save(project3)
     repository.save(invoice1)
@@ -113,5 +124,27 @@ class InvoiceRepositoryTest: DBTest() {
     expect(repository.statsForProject(project.id)).toEqual(projectStats1)
     expect(repository.statsForProject(project3.id)).toEqual(projectStats2)
 
+  }
+
+  @Test fun `stats for fixed price project`() {
+    val fixedPriceInvoice = fixedPriceInvoice.copy(id = InvoiceId(2026060105), revenueMonth = LocalDate.of(2026, 5, 1))
+    val timeEntryRepository = TimeEntryRepository(db)
+
+    repository.save(fixedPriceInvoice)
+    timeEntryRepository.save(timeEntry.copy(invoiceId = fixedPriceInvoice.id, hours = 4.d))
+    timeEntryRepository.save(timeEntry2.copy(invoiceId = fixedPriceInvoice.id, hours = 6.d))
+
+    expect(repository.statsForProject(project.id)).toEqual(mapOf(
+      LocalDate.of(2026, 5, 1) to MonthlyStats(10.d, 0.d, 1000.d, 0.d, 0.d)
+    ))
+  }
+
+  @Test fun `stats include zero amount invoice rows`() {
+    val zeroRow = invoiceRow.copy(amount = 0.d, rate = 0.d)
+    repository.save(invoice.copy(id = InvoiceId(2026060106), rows = listOf(zeroRow)))
+
+    expect(repository.statsForProject(project.id)).toEqual(mapOf(
+      LocalDate.of(2026, 5, 1) to MonthlyStats(3.d, 0.d, 0.d, 0.d, 0.d)
+    ))
   }
 }

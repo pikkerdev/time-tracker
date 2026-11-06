@@ -13,12 +13,12 @@
       (_, i) => [new Date().getFullYear() - i, new Date().getFullYear() - i]))
   }
 
-  const modeOptions = {hours: t.invoices.hours, revenue: t.invoices.revenue}
+  const modeOptions = {hours: t.invoices.hours, workValue: t.projects.workValue, revenue: t.projects.revenue}
 
   export let data: Record<LocalDate, MonthlyStats> = {};
   export let label: string|undefined = undefined
 
-  let mode: 'hours' | 'revenue' = 'hours'
+  let mode: 'hours' | 'workValue' | 'revenue' = 'hours'
   let selectedRange: number | 'last12' = 'last12'
   let chartHeight = height - padding - padding;
   let months: LocalDate[] = []
@@ -39,11 +39,11 @@
     }
   }
 
-  function getValue(stats: MonthlyStats | undefined, currentMode: 'hours' | 'revenue'): number {
+  function getValue(stats: MonthlyStats | undefined, currentMode: 'hours' | 'workValue' | 'revenue'): number {
     if (stats === undefined) return 0;
     if (currentMode === 'hours') return stats.billedHours + stats.unbilledHours
-    else return stats.billedRevenue + stats.unbilledRevenue
-
+    if (currentMode === 'workValue') return stats.workValue
+    return stats.billedRevenue
   }
 
   $: getMonths(selectedRange)

@@ -39,7 +39,8 @@ class ProjectRoutes(
           billedHours = (time?.billedHours ?: 0.d) + (invoice?.billedHours ?: 0.d),
           unbilledHours = (time?.unbilledHours ?: 0.d) + (invoice?.unbilledHours ?: 0.d),
           billedRevenue = (time?.billedRevenue ?: 0.d) + (invoice?.billedRevenue ?: 0.d),
-          unbilledRevenue = (time?.unbilledRevenue ?: 0.d) + (invoice?.unbilledRevenue ?: 0.d)
+          unbilledRevenue = (time?.unbilledRevenue ?: 0.d) + (invoice?.unbilledRevenue ?: 0.d),
+          workValue = (time?.workValue ?: 0.d) + (invoice?.workValue ?: 0.d)
         )
       }
 

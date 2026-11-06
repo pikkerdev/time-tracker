@@ -113,7 +113,8 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
       """select
       date_trunc('month', date)::date as month,
       coalesce(sum(case when invoiceId is null then hours else 0 end), 0) as unbilledHours,
-      coalesce(sum(case when invoiceId is null then hours * hourlyRate else 0 end), 0) as unbilledRevenue
+      coalesce(sum(case when invoiceId is null then hours * hourlyRate else 0 end), 0) as unbilledRevenue,
+      coalesce(sum(hours * hourlyRate), 0) as workValue
       from $table""".trimIndent(),
       TimeEntry::projectId eq projectId,
       suffix = "group by month order by month"
@@ -122,7 +123,8 @@ class TimeEntryRepository(db: DataSource): CrudRepository<TimeEntry>(db, "time_e
         billedHours = 0.d,
         unbilledHours = Decimal(getString("unbilledHours")),
         billedRevenue = 0.d,
-        unbilledRevenue = Decimal(getString("unbilledRevenue"))
+        unbilledRevenue = Decimal(getString("unbilledRevenue")),
+        workValue = Decimal(getString("workValue"))
       )
     }.toMap()
 

@@ -86,11 +86,15 @@
     "overview": "Overview",
     "totalHours": "Total hours",
     "unbilledHours": "Unbilled hours",
+    "workValue": "Work value",
+    "revenue": "Revenue",
+    "unbilledWorkValue": "Unbilled work value",
+    "profit": "Profit",
     "totalRevenue": "Total revenue",
     "unbilledRevenue": "Unbilled revenue",
     "color": "Color",
     "monthlyHours": "Monthly hours",
-    "monthlyHoursAndRevenue": "Monthly hours and revenue"
+    "monthlyHoursAndRevenue": "Monthly hours, work value and revenue"
   },
   "users": {
     "title": "Users",
@@ -188,7 +192,10 @@
     "showPaid": "Show paid",
     "unpaid": "Unpaid",
     "overdue": "Overdue",
-    "selected": "Selected"
+    "selected": "Selected",
+    "fixedPrice": "Fixed price / lump-sum invoice",
+    "fixedPriceHelp": "Selected hours will be marked as billed, but only the custom rows below will be added to the invoice",
+    "fixedPriceAmountRequired": "Fixed price invoice must have a row with an amount greater than 0"
   },
   "company": {
     "name": "Pikker Technology OÜ",

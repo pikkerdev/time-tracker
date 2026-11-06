@@ -11,9 +11,9 @@ export enum Status {ACTIVE = 'ACTIVE', DELETED = 'DELETED'}
 // class invoices.Invoice$Status
 export enum InvoiceStatus {CREATED = 'CREATED', SENT = 'SENT', PAID = 'PAID'}
 // class invoices.Invoice
-export interface Invoice {date: LocalDate; description: string; dueDate: LocalDate; id: InvoiceId; paidAmount: number; projectId: Id<Project>; revenueMonth: LocalDate; rows: Array<InvoiceRow>; status: InvoiceStatus; title: string; updatedAt?: Instant}
+export interface Invoice {date: LocalDate; description: string; dueDate: LocalDate; fixedPrice: boolean; id: InvoiceId; paidAmount: number; projectId: Id<Project>; revenueMonth: LocalDate; rows: Array<InvoiceRow>; status: InvoiceStatus; title: string; updatedAt?: Instant}
 // class invoices.InvoiceCreateRequest
-export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; revenueMonth: LocalDate; rows: Array<InvoiceRow>; timeEntryIds: Array<Id<TimeEntry>>; title: string}
+export interface InvoiceCreateRequest {date: LocalDate; description: string; dueDate: LocalDate; fixedPrice: boolean; revenueMonth: LocalDate; rows: Array<InvoiceRow>; timeEntryIds: Array<Id<TimeEntry>>; title: string}
 // class invoices.InvoiceDetails
 export interface InvoiceDetails {creator: User; customer: Customer; invoice: Invoice; projectName: string; vat: number}
 // class invoices.InvoiceId
@@ -53,7 +53,7 @@ export interface MeritInvoiceTaxAmount {amount?: number; taxId: string}
 // class merit.MeritInvoice
 export interface MeritInvoice {currencyCode: string; customer: MeritInvoiceCustomer; docDate: LocalDate; dueDate: LocalDate; fComment: string; invoiceNo: string; invoiceRow: Array<MeritInvoiceRow>; taxAmount: Array<MeritInvoiceTaxAmount>; totalAmount: number; transactionDate: LocalDate}
 // class projects.MonthlyStats
-export interface MonthlyStats {billedHours: number; billedRevenue: number; unbilledHours: number; unbilledRevenue: number}
+export interface MonthlyStats {billedHours: number; billedRevenue: number; unbilledHours: number; unbilledRevenue: number; workValue: number}
 // class projects.Project
 export interface Project {activities: Array<string>; budget: number; color: string; currency: string; customerId: Id<Customer>; customerName?: string; description?: string; hourlyRates: Partial<Record<ProjectMemberRole, number>>; id: Id<Project>; name: string; spent: number; status: Status; storyTrackerId?: number; updatedAt?: Instant}
 // class projects.ProjectMember$Role
