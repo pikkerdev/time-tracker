@@ -1,8 +1,7 @@
 import type en from './en.json'
 import langs from './langs.json'
-import type {LocalDate} from 'src/api/types'
+import type {CountryCode, LocalDate} from 'src/api/types'
 import countriesData from './countries.json'
-import type {CountryCode} from 'src/api/types'
 
 export const countries: Record<CountryCode, {vatRate: number, currency: string, phoneAreaCode: string}> = countriesData
 
@@ -44,7 +43,9 @@ export function formatCurrency(code: string) {
 }
 
 export function formatAmount(amount: number, currency = 'EUR') {
-  return `${amount.toFixed(2)}\u00A0${formatCurrency(currency)}`
+  const [integer, decimals] = amount.toFixed(2).split('.')
+  const grouped = integer.replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0')
+  return `${grouped}.${decimals}\u00A0${formatCurrency(currency)}`
 }
 
 export function formatDate(date: Date | string) {
