@@ -177,6 +177,8 @@
     "paidAmount": "Paid amount",
     "remainingAmount": "Remaining amount",
     "payment": "Payment",
+    "receivedAmount": "Amount received (with VAT)",
+    "paymentHelp": "Enter the amount the client paid, including VAT",
     "customRows": "Custom rows",
     "addRow": "Add row",
     "setInvoiceStatusTo": "Set invoice status to",

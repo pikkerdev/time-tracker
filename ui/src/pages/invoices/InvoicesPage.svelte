@@ -11,7 +11,7 @@
   import InvoiceForm from 'src/pages/invoices/InvoiceForm.svelte'
   import CheckboxField from 'src/forms/CheckboxField.svelte'
   import BreakdownModal from 'src/pages/invoices/BreakdownModal.svelte'
-  import {amount, paidAmount, remainingAmount, totalAmount} from 'src/pages/invoices/invoiceUtils'
+  import {paidAmount, remainingAmount, totalAmount} from 'src/pages/invoices/invoiceUtils'
   import Form from 'src/forms/Form.svelte'
   import FormField from 'src/forms/FormField.svelte'
 
@@ -106,7 +106,7 @@
     [t.invoices.date, i => i.invoice.date],
     [t.invoices.dueDate, i => i.invoice.dueDate],
     [t.invoices.description, i => i.invoice.description],
-    [t.invoices.amount, i => amount(i)],
+    [t.invoices.amountWithVat, i => totalAmount(i)],
     [t.invoices.paidAmount, i => paidAmount(i)],
     [t.invoices.remainingAmount, i => remainingAmount(i)],
     [t.general.status, i => i.invoice.status],
@@ -128,7 +128,7 @@
       <td>
         <div class="max-w-32 truncate" title={i.invoice.description}>{i.invoice.description}</div>
       </td>
-      <td class="whitespace-nowrap">{formatAmount(amount(i))}</td>
+      <td class="whitespace-nowrap">{formatAmount(totalAmount(i))}</td>
       <td class="whitespace-nowrap">{formatAmount(paidAmount(i))}</td>
       <td class="whitespace-nowrap">{formatAmount(remainingAmount(i))}</td>
       <td class="whitespace-nowrap">{i.invoice.status}</td>
@@ -163,12 +163,12 @@
   {#if invoiceToPay}
     <Form submit={savePayment}>
       <div class="flex flex-wrap gap-x-6 gap-y-1 text-sm">
-        <span>{t.invoices.totalAmount}: <strong>{formatAmount(totalAmount(invoiceToPay))}</strong></span>
+        <span>{t.invoices.amountWithVat}: <strong>{formatAmount(totalAmount(invoiceToPay))}</strong></span>
         <span>{t.invoices.paidAmount}: <strong>{formatAmount(paidAmount(invoiceToPay))}</strong></span>
         <span>{t.invoices.remainingAmount}: <strong>{formatAmount(remainingAmount(invoiceToPay))}</strong></span>
       </div>
-      <FormField bind:value={paymentAmount} label={t.invoices.paidAmount} type="number" min="0"
-                 max={totalAmount(invoiceToPay)} step="0.01"/>
+      <FormField bind:value={paymentAmount} label={t.invoices.receivedAmount} helpText={t.invoices.paymentHelp}
+                 type="number" min="0" max={totalAmount(invoiceToPay)} step="0.01"/>
       <Button class="primary" label={t.invoices.save} type="submit"/>
     </Form>
   {/if}

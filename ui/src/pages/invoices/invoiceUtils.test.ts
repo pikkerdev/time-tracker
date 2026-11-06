@@ -29,9 +29,9 @@ describe('invoiceUtils', () => {
   })
 
   it('calculates remaining amount from partial payment', () => {
-    const invoice = invoiceView({paidAmount: 100})
-    expect(paidAmount(invoice)).to.eq(100)
-    expect(remainingAmount(invoice)).to.eq(24)
+    const invoice = invoiceView({paidAmount: 50})
+    expect(paidAmount(invoice)).to.eq(50)
+    expect(remainingAmount(invoice)).to.eq(74)
   })
 
   it('treats paid invoices as fully paid', () => {

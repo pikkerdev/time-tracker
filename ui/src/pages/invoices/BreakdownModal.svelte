@@ -46,7 +46,7 @@
     {/if}
     <SortableTable items={customerRows} columns={[
       [t.customers.customer, c => c.customerName],
-      [t.invoices.amount, c => c.total],
+      [t.invoices.amountWithVat, c => c.total],
       ''
     ]} let:item={c}>
       <tr class="font-medium">

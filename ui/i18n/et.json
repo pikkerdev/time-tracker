@@ -177,6 +177,8 @@
     "paidAmount": "Makstud summa",
     "remainingAmount": "Järelejäänud summa",
     "payment": "Makse",
+    "receivedAmount": "Laekunud summa (KM-ga)",
+    "paymentHelp": "Sisesta kliendi makstud summa koos käibemaksuga",
     "customRows": "Lisa read",
     "addRow": "Lisa rida",
     "setInvoiceStatusTo": "Muuda arve staatus",
