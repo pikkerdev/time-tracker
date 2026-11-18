@@ -19,13 +19,14 @@ export function projectTotals(stats: Record<LocalDate, MonthlyStats>): ProjectTo
   const values = Object.values(stats)
   const revenue = values.reduce((sum, item) => sum + item.billedRevenue, 0)
   const workValue = values.reduce((sum, item) => sum + item.workValue, 0)
+  const unbilledWorkValue = values.reduce((sum, item) => sum + item.unbilledRevenue, 0)
   return {
     totalHours: values.reduce((sum, item) => sum + item.billedHours + item.unbilledHours, 0),
     unbilledHours: values.reduce((sum, item) => sum + item.unbilledHours, 0),
     workValue,
     revenue,
-    unbilledWorkValue: values.reduce((sum, item) => sum + item.unbilledRevenue, 0),
-    profit: revenue - workValue,
+    unbilledWorkValue,
+    profit: revenue - (workValue - unbilledWorkValue),
   }
 }
 

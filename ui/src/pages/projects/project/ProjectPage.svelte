@@ -20,7 +20,7 @@
   let ctx: ProjectContext | undefined
 
   $: totals = projectTotals(ctx?.stats ?? {})
-  $: budgetRemaining = (ctx?.project?.budget ?? 0) - totals.revenue
+  $: budgetRemaining = (ctx?.project?.budget ?? 0) - (ctx?.project?.spent ?? 0)
 
   onMount(async () => {
     ctx = await api.get('projects/' + id)

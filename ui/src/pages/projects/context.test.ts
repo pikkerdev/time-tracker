@@ -13,6 +13,6 @@ it('calculates project totals', () => {
     workValue: 1200,
     revenue: 1500,
     unbilledWorkValue: 300,
-    profit: 300,
+    profit: 600,
   })
 })
